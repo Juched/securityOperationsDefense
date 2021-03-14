@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.SecurityOperationsDefense" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/light_blue_A200</item>
+        <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/light_blue_A200</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -22,7 +22,7 @@
         <item name="android:windowBackground">@null</item>
     </style>
 
-    <style name="ThemeOverlay.SecurityOperationsDefense.FullscreenContainer" parent="Theme.SecurityOperationsDefense">
+    <style name="ThemeOverlay.SecurityOperationsDefense.FullscreenContainer" parent="Theme.SecurityOperationsDefense.Fullscreen">
 
     </style>
 
@@ -31,7 +31,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.SecurityOperationsDefense.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.SecurityOperationsDefense.AppBarOverlay" parent="Theme.MaterialComponents.DayNight.DarkActionBar" />
 
-    <style name="Theme.SecurityOperationsDefense.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.SecurityOperationsDefense.PopupOverlay" parent="Theme.MaterialComponents.DayNight.DarkActionBar" />
 </resources>
