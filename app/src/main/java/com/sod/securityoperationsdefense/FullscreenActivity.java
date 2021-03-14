@@ -99,6 +99,8 @@ public class FullscreenActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_fullscreen);
 
+
+
         mVisible = true;
 
     }
