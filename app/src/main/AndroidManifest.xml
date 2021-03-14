@@ -9,9 +9,13 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.SecurityOperationsDefense">
         <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:theme="@style/Theme.SecurityOperationsDefense.NoActionBar" />
+        <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/Theme.SecurityOperationsDefense.NoActionBar"></activity>
+            android:theme="@style/Theme.SecurityOperationsDefense.NoActionBar" />
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
