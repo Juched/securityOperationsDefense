@@ -35,7 +35,7 @@
             android:id="@+id/spendableMoney"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:rotationX="15"
+            android:rotationX="0"
             android:textAlignment="center"
             app:cardBackgroundColor="#FFFFFF"
             tools:visibility="visible">
