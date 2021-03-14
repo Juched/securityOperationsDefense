@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:backgroundTint="?attr/colorSecondary"
+    android:backgroundTint="?attr/colorSecondaryVariant"
     style="@style/Theme.SecurityOperationsDefense"
     android:theme="@style/ThemeOverlay.SecurityOperationsDefense.FullscreenContainer"
     tools:context=".FullscreenActivity">
