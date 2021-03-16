@@ -3,6 +3,7 @@ package com.sod.securityoperationsdefense;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.view.Window;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,9 +24,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_game);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //toolbar.setVisibility(View.GONE);
+        //getSupportActionBar().hide();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
