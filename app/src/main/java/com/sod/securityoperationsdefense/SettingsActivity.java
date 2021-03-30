@@ -2,6 +2,7 @@ package com.sod.securityoperationsdefense;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,8 +19,8 @@ public class SettingsActivity extends AppCompatActivity {
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(v.getContext(), FullscreenActivity.class);
+                startActivity(intent);
             }
         });
     }

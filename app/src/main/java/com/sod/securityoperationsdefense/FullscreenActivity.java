@@ -117,7 +117,9 @@ public class FullscreenActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Settings Button", Toast.LENGTH_SHORT).show();//display the text of button1
+                Toast.makeText(getApplicationContext(), "Settings Button", Toast.LENGTH_SHORT).show();//display the text of button2
+                Intent intent = new Intent(view.getContext(), SettingsActivity.class);
+                startActivity(intent);
             }
         });
 
