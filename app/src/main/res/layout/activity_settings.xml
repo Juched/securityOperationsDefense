@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:backgroundTint="?attr/colorPrimary"
+    android:backgroundTint="?attr/colorPrimaryVariant"
     android:theme="@style/ThemeOverlay.SecurityOperationsDefense.FullscreenContainer">
 
     <LinearLayout
@@ -14,13 +14,16 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp">
 
-        <TableLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:backgroundTint="?attr/colorPrimaryVariant">
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:elevation="20dp"
+                app:cardElevation="20dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
                 android:backgroundTint="@color/secondary">
@@ -34,6 +37,7 @@
                         android:layout_height="match_parent"
                         android:clickable="true"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginTop="4dp"
                         android:contentDescription="@string/nav_header_desc"
                         app:srcCompat="@drawable/abc_vector_test" />
 
@@ -41,6 +45,8 @@
                         android:id="@+id/imageView2"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="4dp"
                         android:contentDescription="@string/action_settings"
                         app:srcCompat="@drawable/ic_settings" />
 
@@ -48,128 +54,136 @@
                         android:id="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
                         android:clickable="false"
-                        android:layout_marginTop="11dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/settings"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                         android:textColor="@color/white" />
                 </TableRow>
             </com.google.android.material.card.MaterialCardView>
-        </TableLayout>
+        </androidx.cardview.widget.CardView>
 
-        <View
-            android:id="@+id/view"
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginBottom="0dp"
-            android:background="@color/white" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_height="wrap_content"
-                    android:layout_width="155dp"
-                    android:backgroundTint="@color/secondary"
-                    android:elevation="20dp"
-                    android:layout_margin="8dp">
-
-                    <CheckBox
-                        android:id="@+id/checkBox"
-                        android:layout_width="155dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:checked="false"
-                        android:text="@string/music"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/cardview_dark_background"/>
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_height="70dp"
-                    android:layout_width="wrap_content"
-                    android:backgroundTint="@color/cardview_dark_background"
-                    android:elevation="20dp"
-                    android:layout_margin="8dp">
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/volume"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/white" />
-
-                    <SeekBar
-                        android:id="@+id/seekBar"
-                        android:layout_width="273dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="30dp"
-                        android:backgroundTint="#F1E3E3" />
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:backgroundTint="?attr/colorPrimaryVariant">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+
                 android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="250dp"
-                    android:layout_height="100dp"
-                    android:elevation="20dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp"
-                    android:backgroundTint="@color/secondary">
 
-                    <Button
-                            android:id="@+id/button"
+                    android:orientation="horizontal">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:backgroundTint="@color/secondary"
+                        android:elevation="20dp"
+                        app:cardElevation="20dp"
+                        android:layout_margin="8dp">
+
+                        <CheckBox
+                            android:id="@+id/checkBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:layout_gravity="center_horizontal"
+                            android:checked="false"
+                            android:text="@string/music"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                            android:textColor="@color/white"
+                            android:buttonTint="@color/cardview_dark_background"/>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_height="70dp"
+                        android:layout_width="wrap_content"
+                        android:backgroundTint="@color/cardview_dark_background"
+                        android:elevation="20dp"
+                        app:cardElevation="20dp"
+                        android:layout_margin="8dp">
+                        <TextView
+                            android:id="@+id/textView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:text="@string/volume"
+                            android:layout_margin="5dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/white" />
+
+                        <SeekBar
+                            android:id="@+id/seekBar"
+                            android:layout_width="273dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="30dp"
+                            android:backgroundTint="#F1E3E3" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="250dp"
+                        android:layout_height="100dp"
+                        android:elevation="20dp"
+                        app:cardElevation="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="8dp"
+                        android:backgroundTint="@color/secondary">
+
+                        <Button
+                                android:id="@+id/button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:backgroundTint="@color/cardview_dark_background"
+                                android:text="@string/newTutorial" />
+
+    <!--                </com.google.android.material.card.MaterialCardView>-->
+
+    <!--                <com.google.android.material.card.MaterialCardView-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:elevation="20dp"-->
+    <!--                    android:backgroundTint="@color/secondary">-->
+
+                        <Button
+                            android:id="@+id/button2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:backgroundTint="@color/cardview_dark_background"
-                            android:text="@string/newTutorial" />
+                            android:text="@string/reset"
+                            android:layout_marginTop="25dp"/>
+                    </com.google.android.material.card.MaterialCardView>
 
-<!--                </com.google.android.material.card.MaterialCardView>-->
-
-<!--                <com.google.android.material.card.MaterialCardView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:elevation="20dp"-->
-<!--                    android:backgroundTint="@color/secondary">-->
-
-                    <Button
-                        android:id="@+id/button2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:backgroundTint="@color/cardview_dark_background"
-                        android:text="@string/reset"
-                        android:layout_marginTop="25dp"/>
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
             </LinearLayout>
-
-        </LinearLayout>
-
+        </androidx.cardview.widget.CardView>
         <!-- idea for horizontal line (View) from https://www.geeksforgeeks.org/how-to-draw-horizontal-and-vertical-lines-in-an-android-app-using-xml/ -->
 
     </LinearLayout>
