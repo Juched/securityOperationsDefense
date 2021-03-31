@@ -107,7 +107,6 @@ public class FullscreenActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(getApplicationContext(), "Start Button", Toast.LENGTH_SHORT).show();//display the text of button1
             Intent intent = new Intent(view.getContext(), GameActivity.class);
             startActivity(intent);
         }});
@@ -117,7 +116,7 @@ public class FullscreenActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Settings Button", Toast.LENGTH_SHORT).show();//display the text of button2
+
                 Intent intent = new Intent(view.getContext(), SettingsActivity.class);
                 startActivity(intent);
             }

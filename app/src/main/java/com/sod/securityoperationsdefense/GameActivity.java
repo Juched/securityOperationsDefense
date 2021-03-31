@@ -1,6 +1,8 @@
 package com.sod.securityoperationsdefense;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.Window;
@@ -8,6 +10,7 @@ import android.view.Window;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,18 +19,31 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import android.content.SharedPreferences;
+import java.io.IOException;
+
 
 public class GameActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
+    private Game gameClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //get the shared preferences file manager
+        SharedPreferences sharedPreferences = this.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
+        // check here if we already have a saved game state open
+        try {
+            gameClass = (Game) ObjectSerializer.deserialize(
+                    sharedPreferences.getString("game", ObjectSerializer.serialize(new Game())));
+        } catch (IOException | ClassNotFoundException e) {
+            //no game exists
+            gameClass = new Game();
 
+        }
         setContentView(R.layout.activity_game);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         //toolbar.setVisibility(View.GONE);
         //getSupportActionBar().hide();
@@ -35,7 +51,7 @@ public class GameActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, gameClass.test, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -48,7 +64,7 @@ public class GameActivity extends AppCompatActivity {
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
@@ -65,4 +81,19 @@ public class GameActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SharedPreferences sharedPreferences = this.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
+
+    try{
+        sharedPreferences.edit().putString("game",
+                ObjectSerializer.serialize(gameClass)).apply();
+    } catch (IOException e) {
+        e.printStackTrace();
+        Log.e("SOD", "Couldn't create a file");
+    }
+    }
+
 }
