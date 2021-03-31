@@ -12,6 +12,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +22,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.SharedPreferences;
+import android.widget.TextView;
+
 import java.io.IOException;
 
 
@@ -48,11 +52,25 @@ public class GameActivity extends AppCompatActivity {
         //toolbar.setVisibility(View.GONE);
         //getSupportActionBar().hide();
         FloatingActionButton fab = findViewById(R.id.fab);
+        MutableLiveData<Double> currentMoney = gameClass.getCurrentFunds();
+        TextView spendableMoney = findViewById(R.id.spendableMoneyText);
+        spendableMoney.setText("$ "+ currentMoney.getValue().toString());
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, gameClass.test, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                double now = currentMoney.getValue();
+                now = now + 10;
+                currentMoney.setValue(now);
+            }
+        });
+
+        currentMoney.observe(this,new Observer<Double>() {
+            @Override
+            public void onChanged(Double changedValue) {
+                TextView spendableMoney = findViewById(R.id.spendableMoneyText);
+                spendableMoney.setText("$ "+ changedValue.toString());
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -90,6 +108,7 @@ public class GameActivity extends AppCompatActivity {
     try{
         sharedPreferences.edit().putString("game",
                 ObjectSerializer.serialize(gameClass)).apply();
+        sharedPreferences.edit().commit();
     } catch (IOException e) {
         e.printStackTrace();
         Log.e("SOD", "Couldn't create a file");
