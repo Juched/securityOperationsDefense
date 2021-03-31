@@ -21,5 +21,5 @@
     <string name="newTutorial">Show Tutorial</string>
     <string name="reset">Reset Game Progress</string>
     <string name="spendMoneyHeader">Spendable Money</string>
-    <string name="spendableMoneyText">$ 1.00</string>
+    <string name="spendableMoneyText">$ 0.00</string>
 </resources>
