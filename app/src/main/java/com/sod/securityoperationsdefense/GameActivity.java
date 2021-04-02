@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.Window;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -26,16 +27,20 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class GameActivity extends AppCompatActivity {
-
+    private Boolean paused;
     private AppBarConfiguration mAppBarConfiguration;
     private Game gameClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        paused = false;
         //get the shared preferences file manager
         gameClass = new Game(getApplicationContext());
         setContentView(R.layout.activity_game);
@@ -48,6 +53,19 @@ public class GameActivity extends AppCompatActivity {
         MutableLiveData<ArrayList<Double>> currentMoney = gameClass.getCurrentFunds();
         TextView spendableMoney = findViewById(R.id.spendableMoneyText);
         spendableMoney.setText("$ "+ currentMoney.getValue().toString());
+        LinearProgressIndicator dayProgress = (LinearProgressIndicator) findViewById(R.id.dayProgress);
+
+        Timer gameTimer = new Timer();
+        TimerTask gameUpdate = new TimerTask() {
+            @Override
+            public void run() {
+                if(!paused){
+                    dayProgress.setProgressCompat(dayProgress.getProgress() + 1,true);
+                }
+
+            }
+        };
+        gameTimer.scheduleAtFixedRate(gameUpdate,0,200);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,16 +74,23 @@ public class GameActivity extends AppCompatActivity {
                 ArrayList<Double> now = currentMoney.getValue();
                 now.set(0, now.get(0) + 10.0);
                 currentMoney.setValue(now);
+                paused = !paused;
+
             }
         });
+
 
         currentMoney.observe(this,new Observer<ArrayList<Double>>() {
             @Override
             public void onChanged(ArrayList<Double> changedValue) {
                 TextView spendableMoney = findViewById(R.id.spendableMoneyText);
-                spendableMoney.setText("$ "+ changedValue.get(0).toString());
+                DecimalFormat df2 = new DecimalFormat("#.00");
+                spendableMoney.setText("$ "+ df2.format(changedValue.get(0)));
             }
         });
+
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each

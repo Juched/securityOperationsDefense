@@ -42,7 +42,10 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
-
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/dayProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
