@@ -25,6 +25,8 @@ import android.content.SharedPreferences;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -35,16 +37,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //get the shared preferences file manager
-        SharedPreferences sharedPreferences = this.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
-        // check here if we already have a saved game state open
-        try {
-            gameClass = (Game) ObjectSerializer.deserialize(
-                    sharedPreferences.getString("game", ObjectSerializer.serialize(new Game())));
-        } catch (IOException | ClassNotFoundException e) {
-            //no game exists
-            gameClass = new Game();
-
-        }
+        gameClass = new Game(getApplicationContext());
         setContentView(R.layout.activity_game);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -52,7 +45,7 @@ public class GameActivity extends AppCompatActivity {
         //toolbar.setVisibility(View.GONE);
         //getSupportActionBar().hide();
         FloatingActionButton fab = findViewById(R.id.fab);
-        MutableLiveData<Double> currentMoney = gameClass.getCurrentFunds();
+        MutableLiveData<ArrayList<Double>> currentMoney = gameClass.getCurrentFunds();
         TextView spendableMoney = findViewById(R.id.spendableMoneyText);
         spendableMoney.setText("$ "+ currentMoney.getValue().toString());
 
@@ -60,17 +53,17 @@ public class GameActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                double now = currentMoney.getValue();
-                now = now + 10;
+                ArrayList<Double> now = currentMoney.getValue();
+                now.set(0, now.get(0) + 10.0);
                 currentMoney.setValue(now);
             }
         });
 
-        currentMoney.observe(this,new Observer<Double>() {
+        currentMoney.observe(this,new Observer<ArrayList<Double>>() {
             @Override
-            public void onChanged(Double changedValue) {
+            public void onChanged(ArrayList<Double> changedValue) {
                 TextView spendableMoney = findViewById(R.id.spendableMoneyText);
-                spendableMoney.setText("$ "+ changedValue.toString());
+                spendableMoney.setText("$ "+ changedValue.get(0).toString());
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -103,16 +96,9 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        SharedPreferences sharedPreferences = this.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
+        gameClass.saveAll();
 
-    try{
-        sharedPreferences.edit().putString("game",
-                ObjectSerializer.serialize(gameClass)).apply();
-        sharedPreferences.edit().commit();
-    } catch (IOException e) {
-        e.printStackTrace();
-        Log.e("SOD", "Couldn't create a file");
-    }
+
     }
 
 }

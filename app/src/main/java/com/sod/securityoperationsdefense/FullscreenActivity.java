@@ -104,6 +104,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
         Button startButton = (Button) findViewById(R.id.startButton);
+
         startButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -111,7 +112,7 @@ public class FullscreenActivity extends AppCompatActivity {
             startActivity(intent);
         }});
 
-
+        startButton.setElevation(90);
         Button settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
