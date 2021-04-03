@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class UpgradeListViewModel extends ViewModel {
+public class SecMeasuresViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public UpgradeListViewModel() {
+    public SecMeasuresViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Upgrades fragment");
+        mText.setValue("Security Measures Upgrades");
     }
 
     public LiveData<String> getText() {

@@ -121,7 +121,7 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/mobile_navigation" />
 
-        <include layout="@layout/upgrade_list" />
+        <!-- <include layout="@layout/upgrade_list" /> -->
 
 
     </LinearLayout>

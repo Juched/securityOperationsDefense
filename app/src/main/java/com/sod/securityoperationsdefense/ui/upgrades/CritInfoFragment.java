@@ -1,11 +1,9 @@
 package com.sod.securityoperationsdefense.ui.upgrades;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -16,16 +14,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.R;
-import com.sod.securityoperationsdefense.ui.gallery.GalleryViewModel;
 
-public class UpgradeListFragment extends Fragment {
-    private UpgradeListViewModel upgradeListViewModel;
+public class CritInfoFragment extends Fragment {
+    private CritInfoViewModel infoStateViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        upgradeListViewModel = new ViewModelProvider(this).get(UpgradeListViewModel.class);
+        infoStateViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
         View root = inflater.inflate(R.layout.upgrade_list, container, false);
         final TextView textView = root.findViewById(R.id.text_gallery);
-        upgradeListViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        infoStateViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
@@ -36,10 +33,10 @@ public class UpgradeListFragment extends Fragment {
 
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        upgradeListViewModel = new ViewModelProvider(this).get(UpgradeListViewModel.class);
+        infoStateViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
         View root = inflater.inflate(R.layout.upgrade_list, container, false);
         final TextView textView = root.findViewById(R.id.text_gallery);
-        upgradeListViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        infoStateViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
