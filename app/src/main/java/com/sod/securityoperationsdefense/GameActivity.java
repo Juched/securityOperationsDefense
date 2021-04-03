@@ -42,17 +42,20 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         paused = false;
         //get the shared preferences file manager
-        gameClass = new Game(getApplicationContext());
+        gameClass = new Game(getApplicationContext(), this);
         setContentView(R.layout.activity_game);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
-        //toolbar.setVisibility(View.GONE);
-        //getSupportActionBar().hide();
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        MutableLiveData<Integer> day = gameClass.getDay();
+        TextView dayText = findViewById(R.id.day);
+        dayText.setText("Day: "+ day.getValue());
+
         MutableLiveData<ArrayList<Double>> currentMoney = gameClass.getCurrentFunds();
         TextView spendableMoney = findViewById(R.id.spendableMoneyText);
         spendableMoney.setText("$ "+ currentMoney.getValue().toString());
+
+
         LinearProgressIndicator dayProgress = (LinearProgressIndicator) findViewById(R.id.dayProgress);
 
         Timer gameTimer = new Timer();
@@ -60,7 +63,14 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(!paused){
-                    dayProgress.setProgressCompat(dayProgress.getProgress() + 1,true);
+                    if(dayProgress.getProgress() < dayProgress.getMax()) {
+                        dayProgress.setProgressCompat(dayProgress.getProgress() + 1, true);
+                        gameClass.updater();
+                    }else{
+                        day.postValue(day.getValue() + 1);
+                        dayProgress.setProgressCompat(dayProgress.getMin(),true);
+                        gameClass.updater();
+                    }
                 }
 
             }
@@ -79,12 +89,18 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        day.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                dayText.setText("Day: " + integer);
+            }
+        });
 
         currentMoney.observe(this,new Observer<ArrayList<Double>>() {
             @Override
             public void onChanged(ArrayList<Double> changedValue) {
                 TextView spendableMoney = findViewById(R.id.spendableMoneyText);
-                DecimalFormat df2 = new DecimalFormat("#.00");
+                DecimalFormat df2 = new DecimalFormat("#0.00");
                 spendableMoney.setText("$ "+ df2.format(changedValue.get(0)));
             }
         });

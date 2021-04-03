@@ -61,11 +61,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="5dp"
                     android:gravity="center_horizontal"
                     android:text="@string/spendableMoneyText"
                     android:textAlignment="center"
                     android:textSize="30pt"
+                    android:textColor="@android:color/black"
+
+                    />
+
+                <TextView
+                    android:id="@+id/day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/dayText"
+                    android:textAlignment="center"
+                    android:textSize="7pt"
                     android:textColor="@android:color/black"
 
                     />
