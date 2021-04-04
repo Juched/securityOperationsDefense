@@ -16,10 +16,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sod.securityoperationsdefense.ui.upgrades.BusAdvancementsFragment;
 import com.sod.securityoperationsdefense.ui.upgrades.CritInfoFragment;
 import com.sod.securityoperationsdefense.ui.upgrades.InfoStateFragment;
+import com.sod.securityoperationsdefense.ui.upgrades.InfoStateViewModel;
 import com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresFragment;
+import com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresViewModel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -43,6 +46,7 @@ public class GameActivity extends AppCompatActivity {
     private Boolean paused;
     private AppBarConfiguration mAppBarConfiguration;
     private Game gameClass;
+    private InfoStateViewModel infoStateViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +128,11 @@ public class GameActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
 
+
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
+        infoStateViewModel.setGameClass(gameClass);
     }
 
     @Override

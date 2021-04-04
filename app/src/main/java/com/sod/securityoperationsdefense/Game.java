@@ -2,6 +2,7 @@ package com.sod.securityoperationsdefense;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -19,7 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Game implements Serializable {
+public class Game {
     private MutableLiveData<ArrayList<Double>> currentFunds;
     private MutableLiveData<Integer> payDelay;
     private MutableLiveData<Double> payRate;

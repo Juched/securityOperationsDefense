@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -19,9 +20,7 @@ import com.sod.securityoperationsdefense.R;
 public class InfoStateFragment extends Fragment {
     private InfoStateViewModel infoStateViewModel;
     private Game gameClass;
-    public void setGameClass(Game mGameClass){
-        this.gameClass = mGameClass;
-    }
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
         View root = inflater.inflate(R.layout.upgrade_list, container, false);
@@ -32,6 +31,10 @@ public class InfoStateFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        gameClass = infoStateViewModel.getGameClass();
+        TableLayout tb = container.findViewById(R.id.bus_upgrades_list);
+        tb.removeAllViewsInLayout();
+
         return root;
     }
 
