@@ -157,25 +157,26 @@ public class Game {
 
     }
 
+    // minor bug in here somewhere
     public void updater(){
-        double attackTest = Math.random();
-        if (attackTest <=  this.attackRate.getValue()) {
-            int attackType = ThreadLocalRandom.current().nextInt(0, noOfAttacks);
-
-            // check if the attack will be prevented by an upgrade, and if so, pass that to ui
-            if (isAttackPrevented(attackType)) {
-                //TODO: tell ui that attackType attack was prevented. nothing else happens
-            } else {
-                /* TODO: on a successful att, make a text box for the front end to show that
-                    includes the name of attack, short description of attack, and cost of attack.*/
-
-                // subtract money from currentFunds according to attack cost
-                int moneyIndex = this.currentFunds.getValue().size() - 1;
-                double bankAcct = this.currentFunds.getValue().get(moneyIndex);
-                double attCost = bankAcct * Double.parseDouble(attackList.get(attackType).get(2));
-                this.currentFunds.getValue().set(moneyIndex, attCost);
-            }
-        }
+//        double attackTest = Math.random();
+//        if (attackTest <=  this.attackRate.getValue()) {
+//            int attackType = ThreadLocalRandom.current().nextInt(0, noOfAttacks);
+//
+//            // check if the attack will be prevented by an upgrade, and if so, pass that to ui
+//            if (isAttackPrevented(attackType)) {
+//                //TODO: tell ui that attackType attack was prevented. nothing else happens
+//            } else {
+//                /* TODO: on a successful att, make a text box for the front end to show that
+//                    includes the name of attack, short description of attack, and cost of attack.*/
+//
+//                // subtract money from currentFunds according to attack cost
+//                int moneyIndex = this.currentFunds.getValue().size() - 1;
+//                double bankAcct = this.currentFunds.getValue().get(moneyIndex);
+//                double attCost = bankAcct * Double.parseDouble(attackList.get(attackType).get(2));
+//                this.currentFunds.getValue().set(moneyIndex, attCost);
+//            }
+//        }
 
     }
 
