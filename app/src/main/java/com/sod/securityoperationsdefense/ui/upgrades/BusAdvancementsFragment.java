@@ -111,26 +111,33 @@ public class BusAdvancementsFragment extends Fragment {
         gameClass.getBusUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
             @Override
             public void onChanged(ArrayList<CardView> cardViews) {
-                // Only four cards...
-                for(int i = 0; i < cardViews.size(); i+=2)
-                {
-                    try{
-                        TableRow newRow = new TableRow(gameClass.getGameForContext());
-
-                        newRow.addView(cardViews.get(i));
-                        newRow.addView(cardViews.get(i+1));
-
-                        upgrades.addView(newRow);
-                    } catch (Exception e) {
-
-                    }
-
-                }
-
-
+                UpdateListSelection(cardViews, upgrades);
             }
         });
         ArrayList<CardView> cardViews = gameClass.getBusUpgrades().getValue();
+        UpdateListSelection(cardViews, upgrades);
+
+        return root;
+    }
+
+    /**
+     * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * has returned, but before any saved state has been restored in to the view.
+     * This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.  The fragment's
+     * view hierarchy is not however attached to its parent at this point.
+     *
+     * @param view               The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void UpdateListSelection(ArrayList<CardView> cardViews, TableLayout upgrades)
+    {
+        // Only four cards...
         for(int i = 0; i < cardViews.size(); i+=2)
         {
             try{
@@ -143,11 +150,9 @@ public class BusAdvancementsFragment extends Fragment {
             } catch (Exception e) {
 
             }
+
         }
-
-        return root;
     }
-
     /* */
     public void changeList(@NonNull LayoutInflater inflater, ViewGroup container, @IdRes int id)
     {
