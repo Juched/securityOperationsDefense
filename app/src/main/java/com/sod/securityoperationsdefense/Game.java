@@ -65,7 +65,7 @@ public class Game {
         try {
             currFunds = (ArrayList<Double>) ObjectSerializer.deserialize(
                     sharedPreferences.getString("currFunds", ObjectSerializer.serialize(new ArrayList<Double>())));
-            if(currFunds.size() < 1){
+            if (currFunds.size() < 1) {
                 currFunds.add(0.0);
             }
             payR = (Double) ObjectSerializer.deserialize(
@@ -73,18 +73,18 @@ public class Game {
             payD = (Integer) ObjectSerializer.deserialize(
                     sharedPreferences.getString("payD", ObjectSerializer.serialize(new Integer(0))));
             tDay = sharedPreferences.getInt("day", new Integer(1));
-            if(tDay == 0){
-                tDay =1;
+            if (tDay == 0) {
+                tDay = 1;
             }
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
             currFunds = new ArrayList<Double>(1);
-            currFunds.set(0,0.0);
+            currFunds.set(0, 0.0);
             payR = 10.0;
             payD = 1;
             tDay = 1;
-
         }
+//        }
         this.currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
         this.currentFunds.setValue(currFunds);
         this.payRate = new MutableLiveData<Double>(payR);
@@ -104,7 +104,6 @@ public class Game {
         return this.payDelay;
     }
     public MutableLiveData<Integer> getDay(){return this.day;}
-
 
     public void showBusUpgrades()
     {
