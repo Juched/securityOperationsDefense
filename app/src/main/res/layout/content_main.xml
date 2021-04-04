@@ -15,7 +15,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
 
 
@@ -119,9 +119,14 @@
             android:layout_width="match_parent"
             android:layout_height="77dp"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/mobile_navigation" />
+            app:navGraph="@navigation/mobile_navigation"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+
 
         <!-- <include layout="@layout/upgrade_list" /> -->
+
 
 
     </LinearLayout>

@@ -1,16 +1,23 @@
 package com.sod.securityoperationsdefense;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TableLayout;
 
 
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.MutableLiveData;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game implements Serializable {
     private MutableLiveData<ArrayList<Double>> currentFunds;
@@ -20,15 +27,26 @@ public class Game implements Serializable {
     private MutableLiveData<Integer> day;
     private GameActivity game;
 
+    // Serializable lists of upgrades
+    private MutableLiveData<ArrayList<CardView>>  busUpgrades;
+    private MutableLiveData<ArrayList<CardView>>  critInfoUpgrades;
+    private MutableLiveData<ArrayList<CardView>>  infoStateUpgrades;
+    private MutableLiveData<ArrayList<CardView>>  secUpgrades;
+
+
 
     public Game(Context c, GameActivity game) {
         this.game = game;
         sharedPreferences = c.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
-        // check here if we already have a saved game state open
+        // check here if we already have a saved game state open; default game context
         ArrayList<Double> currFunds;
         Double payR;
         int payD;
         int tDay;
+
+        // upgrades lists
+        HashMap<String, ArrayList<CardView>> upgrades;
+
         try {
             currFunds = (ArrayList<Double>) ObjectSerializer.deserialize(
                     sharedPreferences.getString("currFunds", ObjectSerializer.serialize(new ArrayList<Double>())));
@@ -71,6 +89,13 @@ public class Game implements Serializable {
         return this.payDelay;
     }
     public MutableLiveData<Integer> getDay(){return this.day;}
+
+
+    public void showBusUpgrades()
+    {
+        //TableLayout upgradeTable = (TableLayout) findViewById(R.id.upgrades_list);
+
+    }
 
     public void updater(){
 
