@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 import kotlin.text.UStringsKt;
 
@@ -38,6 +39,14 @@ public class Game {
     private MutableLiveData<ArrayList<CardView>>  critInfoUpgrades;
     private MutableLiveData<ArrayList<CardView>>  infoStateUpgrades;
     private MutableLiveData<ArrayList<CardView>>  secUpgrades;
+
+    public MutableLiveData<Double> attackRate; // starts at 0.01
+
+    private int noOfAttacks;
+    // contains att. info. key is integer (0-5), and list contains attack title, desc, and cost
+    private HashMap<Integer, ArrayList<String>> attackList;
+    // contains att. prevention rates. values of the keys correspond to the attack in the above list
+    public MutableLiveData<HashMap<Integer, Double>> preventionRate;
 
 
 
@@ -58,10 +67,15 @@ public class Game {
         // upgrades lists
         HashMap<String, ArrayList<CardView>> upgrades;
 
+        // TODO: fill these
+        double attackR;
+        HashMap<Integer, Double> preventionRs;
+
+
         try {
             currFunds = (ArrayList<Double>) ObjectSerializer.deserialize(
                     sharedPreferences.getString("currFunds", ObjectSerializer.serialize(new ArrayList<Double>())));
-            if(currFunds.size() < 1){
+            if (currFunds.size() < 1) {
                 currFunds.add(0.0);
             }
             payR = (Double) ObjectSerializer.deserialize(
@@ -69,18 +83,18 @@ public class Game {
             payD = (Integer) ObjectSerializer.deserialize(
                     sharedPreferences.getString("payD", ObjectSerializer.serialize(new Integer(0))));
             tDay = sharedPreferences.getInt("day", new Integer(1));
-            if(tDay == 0){
-                tDay =1;
+            if (tDay == 0) {
+                tDay = 1;
             }
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
             currFunds = new ArrayList<Double>(1);
-            currFunds.set(0,0.0);
+            currFunds.set(0, 0.0);
             payR = 10.0;
             payD = 1;
             tDay = 1;
-
         }
+//        }
         this.currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
         this.currentFunds.setValue(currFunds);
         this.payRate = new MutableLiveData<Double>(payR);
@@ -144,8 +158,33 @@ public class Game {
     }
 
     public void updater(){
+        double attackTest = Math.random();
+        if (attackTest <=  this.attackRate.getValue()) {
+            int attackType = ThreadLocalRandom.current().nextInt(0, noOfAttacks);
 
+            // check if the attack will be prevented by an upgrade, and if so, pass that to ui
+            if (isAttackPrevented(attackType)) {
+                //TODO: tell ui that attackType attack was prevented. nothing else happens
+            } else {
+                /* TODO: on a successful att, make a text box for the front end to show that
+                    includes the name of attack, short description of attack, and cost of attack.*/
 
+                // subtract money from currentFunds according to attack cost
+                int moneyIndex = this.currentFunds.getValue().size() - 1;
+                double bankAcct = this.currentFunds.getValue().get(moneyIndex);
+                double attCost = bankAcct * Double.parseDouble(attackList.get(attackType).get(2));
+                this.currentFunds.getValue().set(moneyIndex, attCost);
+            }
+        }
+
+    }
+
+    private boolean isAttackPrevented(int attack) {
+        double preventionCheck = Math.random();
+        if (preventionCheck <= this.preventionRate.getValue().get(attack)){
+            return true;
+        }
+        return false;
     }
 
     public void saveAll(){
