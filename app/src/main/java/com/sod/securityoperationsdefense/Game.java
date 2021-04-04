@@ -14,11 +14,16 @@ import androidx.lifecycle.MutableLiveData;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import kotlin.text.UStringsKt;
 
 public class Game {
     private MutableLiveData<ArrayList<Double>> currentFunds;
@@ -44,6 +49,11 @@ public class Game {
         Double payR;
         int payD;
         int tDay;
+
+        this.busUpgrades = new MutableLiveData<ArrayList<CardView>>();
+        this.critInfoUpgrades = new MutableLiveData<ArrayList<CardView>>();
+        this.infoStateUpgrades = new MutableLiveData<ArrayList<CardView>>();
+        this.secUpgrades = new MutableLiveData<ArrayList<CardView>>();
 
         // upgrades lists
         HashMap<String, ArrayList<CardView>> upgrades;
@@ -77,8 +87,35 @@ public class Game {
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
 
+        this.makeUpgrades();
     }
 
+    private void makeUpgrades()
+    {
+
+        // Business upgrades
+        String[] businessUpgrades = {"Boosted Morale", "pizza party"};
+        String[] critUpgrades = {"MFA ~ 2 factor", "less ransom"};
+        String[] secUpgrades = {"training", "better CBA"};
+        String[] iStateUpgrades = {"Boosted Morale", "better CBA"};
+
+        this.busUpgrades.setValue(this.PopulateUpgradeList(businessUpgrades));
+        this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades));
+        this.secUpgrades.setValue(this.PopulateUpgradeList(secUpgrades));
+        this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades));
+
+
+    }
+
+    private ArrayList<CardView> PopulateUpgradeList(String[] names)
+    {
+        ArrayList<CardView> allUpgradesInCategory = new ArrayList<CardView>();
+        for(String name : names)
+        {
+            allUpgradesInCategory.add(new Upgrade(this.game, name, "").UpgradeCard());
+        }
+        return allUpgradesInCategory;
+    }
 
     public MutableLiveData<ArrayList<Double>> getCurrentFunds() {
         return this.currentFunds;
@@ -91,6 +128,14 @@ public class Game {
     }
     public MutableLiveData<Integer> getDay(){return this.day;}
 
+    public MutableLiveData<ArrayList<CardView>> getBusUpgrades(){return this.busUpgrades;}
+    public MutableLiveData<ArrayList<CardView>> getCritInfoUpgrades(){return this.critInfoUpgrades;}
+    public MutableLiveData<ArrayList<CardView>> getInfoStateUpgrades(){return this.infoStateUpgrades;}
+    public MutableLiveData<ArrayList<CardView>> getSecUpgrades(){return this.secUpgrades;}
+
+    public GameActivity getGameForContext() {
+        return game;
+    }
 
     public void showBusUpgrades()
     {
@@ -116,4 +161,37 @@ public class Game {
             Log.e("SOD", "Couldn't create a file");
         }
     }
+}
+
+
+class Upgrade
+{
+    private GameActivity context;
+    //private icon;
+    private String name;
+    private String description;
+
+    public Upgrade(GameActivity newContext, String theName, String descrip)
+    {
+        this.context = newContext;
+        this.name = theName;
+        this.description = descrip;
+    }
+
+//    public GameActivity getContext() { return context; }
+//    public String getName() { return name; }
+//    public String getDescription() { return description; }
+
+    // returns the CardView rep of the upgrade
+    public CardView UpgradeCard()
+    {
+        CardView upgrade = new CardView(this.context);
+
+        TextView upName = new TextView(this.context);
+        upName.setText(this.name);
+        upgrade.addView(upName);
+
+        return upgrade;
+    }
+
 }

@@ -21,11 +21,11 @@
         android:id="@+id/secMeas"
         android:name="com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresFragment"
         android:label="@string/secMeas"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_sec_measures" />
 
     <fragment
         android:id="@+id/genBusUpgrades"
         android:name="com.sod.securityoperationsdefense.ui.upgrades.BusAdvancementsFragment"
         android:label="@string/genBusUpgrades"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_bus_adv" />
 </navigation>

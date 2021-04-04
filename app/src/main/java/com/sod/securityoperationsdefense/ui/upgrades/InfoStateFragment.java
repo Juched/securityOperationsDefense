@@ -5,17 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
+
+import java.util.ArrayList;
 
 public class InfoStateFragment extends Fragment {
     private InfoStateViewModel infoStateViewModel;
@@ -31,9 +35,54 @@ public class InfoStateFragment extends Fragment {
                 textView.setText(s);
             }
         });
-        gameClass = infoStateViewModel.getGameClass();
-        TableLayout tb = container.findViewById(R.id.bus_upgrades_list);
-        tb.removeAllViewsInLayout();
+
+        while(gameClass == null)
+        {
+            gameClass = InfoStateViewModel.getGameClass();
+        }
+
+        gameClass = InfoStateViewModel.getGameClass();
+        TableLayout upgrades = container.findViewById(R.id.info_upgrades_list);
+        upgrades.removeAllViewsInLayout();
+
+        gameClass.getInfoStateUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
+            @Override
+            public void onChanged(ArrayList<CardView> cardViews) {
+                // Only four cards...
+                for(int i = 0; i < cardViews.size(); i+=2)
+                {
+                    try{
+                        TableRow newRow = new TableRow(gameClass.getGameForContext());
+
+                        newRow.addView(cardViews.get(i));
+                        newRow.addView(cardViews.get(i+1));
+
+                        upgrades.addView(newRow);
+                    } catch (Exception e) {
+
+                    }
+
+                }
+
+
+            }
+        });
+
+        ArrayList<CardView> cardViews = gameClass.getInfoStateUpgrades().getValue();
+        for(int i = 0; i < cardViews.size(); i+=2)
+        {
+            try{
+                TableRow newRow = new TableRow(gameClass.getGameForContext());
+
+                newRow.addView(cardViews.get(i));
+                newRow.addView(cardViews.get(i+1));
+
+                upgrades.addView(newRow);
+            } catch (Exception e) {
+
+            }
+        }
+        //for(int i = 0; i < gameClass.)
 
         return root;
     }

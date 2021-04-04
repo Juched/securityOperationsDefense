@@ -14,7 +14,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sod.securityoperationsdefense.ui.upgrades.BusAdvancementsFragment;
+import com.sod.securityoperationsdefense.ui.upgrades.BusAdvancementsViewModel;
 import com.sod.securityoperationsdefense.ui.upgrades.CritInfoFragment;
+import com.sod.securityoperationsdefense.ui.upgrades.CritInfoViewModel;
 import com.sod.securityoperationsdefense.ui.upgrades.InfoStateFragment;
 import com.sod.securityoperationsdefense.ui.upgrades.InfoStateViewModel;
 import com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresFragment;
@@ -47,12 +49,27 @@ public class GameActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private Game gameClass;
     private InfoStateViewModel infoStateViewModel;
+    private SecMeasuresViewModel secMeasuresViewModel;
+    private CritInfoViewModel critInfoViewModel;
+    private BusAdvancementsViewModel busAdvancementsViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paused = false;
         //get the shared preferences file manager
         gameClass = new Game(getApplicationContext(), this);
+
+        infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
+        secMeasuresViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
+        critInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
+        busAdvancementsViewModel = new ViewModelProvider(this).get(BusAdvancementsViewModel.class);
+
+        infoStateViewModel.setGameClass(gameClass);
+        secMeasuresViewModel.setGameClass(gameClass);
+        critInfoViewModel.setGameClass(gameClass);
+        busAdvancementsViewModel.setGameClass(gameClass);
+
+
         setContentView(R.layout.activity_game);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -131,8 +148,7 @@ public class GameActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
-        infoStateViewModel.setGameClass(gameClass);
+
     }
 
     @Override

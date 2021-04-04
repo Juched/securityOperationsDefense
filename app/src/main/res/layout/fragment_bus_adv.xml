@@ -15,23 +15,7 @@
 
 
 
-        <TextView
-            android:id="@+id/critInfotext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="TEST"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.643" />
 
-        <include layout="@layout/upgrade_list" />
 
         <TableView
             android:id="@+id/infoSecUpdgradeList"
@@ -44,7 +28,7 @@
 
 
         <TableLayout
-            android:id="@+id/crit_upgrades_list"
+            android:id="@+id/bus_upgrades_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
