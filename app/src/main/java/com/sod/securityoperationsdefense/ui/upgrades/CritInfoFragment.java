@@ -13,10 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
 
 public class CritInfoFragment extends Fragment {
     private CritInfoViewModel infoStateViewModel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         infoStateViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
@@ -30,7 +32,10 @@ public class CritInfoFragment extends Fragment {
         });
         return root;
     }
-
+    private Game gameClass;
+    public void setGameClass(Game mGameClass){
+        this.gameClass = mGameClass;
+    }
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         infoStateViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);

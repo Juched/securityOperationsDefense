@@ -35,7 +35,13 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        sharedPreferences.edit().remove("game");
+                        sharedPreferences.edit().remove("currFunds").apply();
+                        sharedPreferences.edit().remove("payR").apply();
+                        sharedPreferences.edit().remove("payD").apply();
+                        sharedPreferences.edit().remove("day").apply();
+                        sharedPreferences.edit().commit();
+
+
                         Intent intent = new Intent(getApplicationContext(),FullscreenActivity.class);
                         startActivity(intent);
                         break;

@@ -13,11 +13,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
 
 public class InfoStateFragment extends Fragment {
     private InfoStateViewModel infoStateViewModel;
-
+    private Game gameClass;
+    public void setGameClass(Game mGameClass){
+        this.gameClass = mGameClass;
+    }
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
         View root = inflater.inflate(R.layout.upgrade_list, container, false);

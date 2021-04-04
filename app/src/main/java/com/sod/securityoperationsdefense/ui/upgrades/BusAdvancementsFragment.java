@@ -15,13 +15,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
 
 import java.util.ArrayList;
 
 public class BusAdvancementsFragment extends Fragment {
     private BusAdvancementsViewModel upgradeListViewModel;
-
+    private Game gameClass;
+    public void setGameClass(Game mGameClass){
+        this.gameClass = mGameClass;
+    }
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         upgradeListViewModel = new ViewModelProvider(this).get(BusAdvancementsViewModel.class);
         View root = inflater.inflate(R.layout.upgrade_list, container, false);

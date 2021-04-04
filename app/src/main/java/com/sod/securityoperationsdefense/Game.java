@@ -93,7 +93,7 @@ public class Game implements Serializable {
 
     public void showBusUpgrades()
     {
-        //TableLayout upgradeTable = (TableLayout) findViewById(R.id.upgrades_list);
+       // TableLayout upgradeTable = (TableLayout) game.findViewById(R.id.upgrades_list);
 
     }
 
