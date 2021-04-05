@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import java.io.IOException;
 
 public class SettingsActivity extends AppCompatActivity {
 //    private static boolean reset = false;
+    static CheckBox music;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onBackPressed();
                 Intent intent = new Intent(v.getContext(), FullscreenActivity.class);
                 startActivity(intent);
             }
@@ -77,8 +80,22 @@ public class SettingsActivity extends AppCompatActivity {
                         .setNegativeButton("No", dialogClickListener).show();
             }
         });
+
+        music = findViewById(R.id.checkBox);
+        music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.playMusic();
+            }
+        });
+
     }
 
-
+    public void onBackPressed() {
+        CheckBox m = findViewById(R.id.checkBox);
+        if (!m.isChecked()) {
+            FullscreenActivity.backgroundMusic.pause();
+        }
+    }
 
 }

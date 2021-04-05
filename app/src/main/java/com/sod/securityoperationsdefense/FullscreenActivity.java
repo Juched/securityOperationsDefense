@@ -6,12 +6,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 /**
@@ -38,6 +40,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
+    public static MediaPlayer backgroundMusic;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -53,6 +56,8 @@ public class FullscreenActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+
         }
     };
     private View mControlsView;
@@ -65,6 +70,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 actionBar.show();
             }
             mControlsView.setVisibility(View.VISIBLE);
+
         }
     };
     private boolean mVisible;
@@ -95,6 +101,7 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +109,12 @@ public class FullscreenActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_fullscreen);
 
+        //        Music from https://freemusicarchive.org/music/Metre/surface-area/design
+        //        Song title: Design
+        //        Artist: Metre
+        //        Used under Creative Commons Non-Commercial License
+        backgroundMusic = MediaPlayer.create(getApplicationContext(), R.raw.design);
+        backgroundMusic.start();
 
         Button startButton = (Button) findViewById(R.id.startButton);
 
@@ -143,5 +156,17 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
     }
+
+    public static void playMusic() {
+        CheckBox m = SettingsActivity.music;
+        if (m.isChecked()) {
+            backgroundMusic.start();
+        } else {
+            backgroundMusic.pause();
+        }
+    }
+
+
+
 
 }
