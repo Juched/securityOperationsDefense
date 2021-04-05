@@ -19,8 +19,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
+import com.sod.securityoperationsdefense.Upgrade;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+
+import static java.lang.String.*;
 
 public class BusAdvancementsFragment extends Fragment {
 
@@ -37,6 +42,17 @@ public class BusAdvancementsFragment extends Fragment {
         {
             gameClass = BusAdvancementsViewModel.getGameClass();
         }
+
+        ArrayList<Upgrade> upgrades = gameClass.getBusUpgrades().getValue();
+
+        int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+
+        for(int i = 0; i < upgrades.size(); i++)
+        {
+            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
+        }
+
+
 
 //        TableLayout upgrades = root.findViewById(R.id.bus_upgrades_list);
 //        upgrades.removeAllViewsInLayout();
@@ -134,6 +150,8 @@ public class BusAdvancementsFragment extends Fragment {
 
         return root;
     }
+
+
 
     /* */
     public void changeList(@NonNull LayoutInflater inflater, ViewGroup container, @IdRes int id)

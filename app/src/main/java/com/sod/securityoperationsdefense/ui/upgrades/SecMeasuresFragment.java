@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
+import com.sod.securityoperationsdefense.Upgrade;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,20 @@ public class SecMeasuresFragment extends Fragment {
         secMeasViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sec_measures, container, false);
 
+        while(gameClass == null)
+        {
+            gameClass = SecMeasuresViewModel.getGameClass();
+        }
+
+        ArrayList<Upgrade> upgrades = gameClass.getSecUpgrades().getValue();
+
+        int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+
+        for(int i = 0; i < upgrades.size(); i++)
+        {
+            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
+        }
+
         return root;
     }
 
@@ -40,10 +55,13 @@ public class SecMeasuresFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_sec_measures, container, false);
 
 
-//        while(gameClass == null)
-//        {
-//            gameClass = SecMeasuresViewModel.getGameClass();
-//        }
+        while(gameClass == null)
+        {
+            gameClass = SecMeasuresViewModel.getGameClass();
+        }
+
+
+
 //
 //        gameClass = SecMeasuresViewModel.getGameClass();
 //        TableLayout upgrades = container.findViewById(R.id.sec_meas_upgrades_list);

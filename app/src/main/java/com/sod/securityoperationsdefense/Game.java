@@ -35,10 +35,10 @@ public class Game {
     private GameActivity game;
 
     // Serializable lists of upgrades
-    private MutableLiveData<ArrayList<CardView>>  busUpgrades;
-    private MutableLiveData<ArrayList<CardView>>  critInfoUpgrades;
-    private MutableLiveData<ArrayList<CardView>>  infoStateUpgrades;
-    private MutableLiveData<ArrayList<CardView>>  secUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  busUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  critInfoUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  infoStateUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  secUpgrades;
 
     public MutableLiveData<Double> attackRate; // starts at 0.01
 
@@ -59,10 +59,10 @@ public class Game {
         int payD;
         int tDay;
 
-        this.busUpgrades = new MutableLiveData<ArrayList<CardView>>();
-        this.critInfoUpgrades = new MutableLiveData<ArrayList<CardView>>();
-        this.infoStateUpgrades = new MutableLiveData<ArrayList<CardView>>();
-        this.secUpgrades = new MutableLiveData<ArrayList<CardView>>();
+        this.busUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+        this.critInfoUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+        this.infoStateUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+        this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
 
         // upgrades lists
         HashMap<String, ArrayList<CardView>> upgrades;
@@ -109,10 +109,10 @@ public class Game {
     {
 
         // Business upgrades
-        String[] businessUpgrades = {"Boosted Morale", "pizza party"};
-        String[] critUpgrades = {"MFA ~ 2 factor", "less ransom"};
-        String[] secUpgrades = {"training", "better CBA"};
-        String[] iStateUpgrades = {"Boosted Morale", "better CBA"};
+        String[] businessUpgrades = {"Boosted Morale", "pizza party", "dummy 1.0", "dumby 2"};
+        String[] critUpgrades = {"MFA ~ 2 factor", "less ransom", "dummy 1", "place holder"};
+        String[] secUpgrades = {"training", "better CBA", "exquisite jazz hands", "killer crocs"};
+        String[] iStateUpgrades = {"Boosted Morale", "better CBA", "transmitting failure", "area 51 storage"};
 
         this.busUpgrades.setValue(this.PopulateUpgradeList(businessUpgrades));
         this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades));
@@ -122,12 +122,12 @@ public class Game {
 
     }
 
-    private ArrayList<CardView> PopulateUpgradeList(String[] names)
+    private ArrayList<Upgrade> PopulateUpgradeList(String[] names)
     {
-        ArrayList<CardView> allUpgradesInCategory = new ArrayList<CardView>();
+        ArrayList<Upgrade> allUpgradesInCategory = new ArrayList<Upgrade>();
         for(String name : names)
         {
-            allUpgradesInCategory.add(new Upgrade(this.game, name, "").UpgradeCard());
+            allUpgradesInCategory.add(new Upgrade(this.game, name, ""));
         }
         return allUpgradesInCategory;
     }
@@ -143,10 +143,10 @@ public class Game {
     }
     public MutableLiveData<Integer> getDay(){return this.day;}
 
-    public MutableLiveData<ArrayList<CardView>> getBusUpgrades(){return this.busUpgrades;}
-    public MutableLiveData<ArrayList<CardView>> getCritInfoUpgrades(){return this.critInfoUpgrades;}
-    public MutableLiveData<ArrayList<CardView>> getInfoStateUpgrades(){return this.infoStateUpgrades;}
-    public MutableLiveData<ArrayList<CardView>> getSecUpgrades(){return this.secUpgrades;}
+    public MutableLiveData<ArrayList<Upgrade>> getBusUpgrades(){return this.busUpgrades;}
+    public MutableLiveData<ArrayList<Upgrade>> getCritInfoUpgrades(){return this.critInfoUpgrades;}
+    public MutableLiveData<ArrayList<Upgrade>> getInfoStateUpgrades(){return this.infoStateUpgrades;}
+    public MutableLiveData<ArrayList<Upgrade>> getSecUpgrades(){return this.secUpgrades;}
 
     public GameActivity getGameForContext() {
         return game;
@@ -204,35 +204,3 @@ public class Game {
     }
 }
 
-
-class Upgrade
-{
-    private GameActivity context;
-    //private icon;
-    private String name;
-    private String description;
-
-    public Upgrade(GameActivity newContext, String theName, String descrip)
-    {
-        this.context = newContext;
-        this.name = theName;
-        this.description = descrip;
-    }
-
-//    public GameActivity getContext() { return context; }
-//    public String getName() { return name; }
-//    public String getDescription() { return description; }
-
-    // returns the CardView rep of the upgrade
-    public CardView UpgradeCard()
-    {
-        CardView upgrade = new CardView(this.context);
-
-        TextView upName = new TextView(this.context);
-        upName.setText(this.name);
-        upgrade.addView(upName);
-
-        return upgrade;
-    }
-
-}
