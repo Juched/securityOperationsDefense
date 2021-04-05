@@ -164,8 +164,12 @@ public class GameActivity extends AppCompatActivity {
             yAxis.enableGridDashedLine(10f, 10f, 0f);
 
             // axis range
+            if(currentMoney.getValue().size()>8){
+                yAxis.setAxisMinimum((float)(double)currentMoney.getValue().get(currentMoney.getValue().size() - 8) - 20);
+            }else{
+                yAxis.setAxisMinimum(0.0f);
+            }
 
-            yAxis.setAxisMinimum(0f);
         }
 
 
@@ -174,7 +178,7 @@ public class GameActivity extends AppCompatActivity {
         int i = 0;
         ArrayList<Double> money = currentMoney.getValue();
         for(i = 0; i<money.size();i ++){
-            values.add(new Entry(i,(float)(double) money.get(i)));
+            values.add(new Entry(i+1,(float)(double) money.get(i)));
         }
 
         LineDataSet set1;
@@ -291,7 +295,7 @@ public class GameActivity extends AppCompatActivity {
                 int i = 0;
                 ArrayList<Double> money = changedValue;
                 for(i = 0; i<money.size();i ++){
-                    values.add(new Entry(i,(float)(double) money.get(i)));
+                    values.add(new Entry(i+1,(float)(double) money.get(i)));
                 }
 
                 LineDataSet set1;
@@ -317,6 +321,18 @@ public class GameActivity extends AppCompatActivity {
                     // vertical grid lines
                     xAxis.enableGridDashedLine(10f, 10f, 0f);
                 }
+                YAxis yAxis;
+                {   // // Y-Axis Style // //
+                    yAxis = chart.getAxisLeft();
+
+                    if(currentMoney.getValue().size()>8){
+                        yAxis.setAxisMinimum((float)(double)currentMoney.getValue().get(currentMoney.getValue().size() - 8) - 20);
+                    }else{
+                        yAxis.setAxisMinimum(0.0f);
+                    }
+
+                }
+
                 chart.getData().notifyDataChanged();
                 chart.notifyDataSetChanged();
 
