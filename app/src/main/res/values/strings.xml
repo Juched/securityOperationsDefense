@@ -18,9 +18,13 @@
     <string name="music">Music On</string>
     <string name="volume">Adjust Music Volume:</string>
     <string name="tutorial" />
-    <string name="newTutorial">Show Tutorial</string>
+    <string name="newTutorial">Show Instructions</string>
     <string name="reset">Reset Game Progress</string>
     <string name="spendMoneyHeader">Spendable Money</string>
     <string name="spendableMoneyText">$ 0.00</string>
     <string name="dayText">Day: 1</string>
+    <string name ="inst">Advance your business through upgrades to make the most profit, but watch out for attacks!
+    Each day, use cost-benefit analysis to determine whether it would be best to buy upgrades or increase your security defenses.</string>
+    <string name ="example">For example, would it be better to open a new location or to increase your defenses against a DDoS attack? You decide to make the best
+    decision for your business!</string>
 </resources>

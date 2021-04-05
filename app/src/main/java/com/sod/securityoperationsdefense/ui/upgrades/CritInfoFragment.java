@@ -4,49 +4,58 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
+import com.sod.securityoperationsdefense.Upgrade;
+
+import java.util.ArrayList;
 
 public class CritInfoFragment extends Fragment {
-    private CritInfoViewModel infoStateViewModel;
-
+    private CritInfoViewModel criticalInfoViewModel;
+    private Game gameClass;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        infoStateViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
-        View root = inflater.inflate(R.layout.upgrade_list, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        infoStateViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        criticalInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_crit_info_sec, container, false);
+
+
+        while(gameClass == null)
+        {
+            gameClass = SecMeasuresViewModel.getGameClass();
+        }
+
+        ArrayList<Upgrade> upgrades = gameClass.getCritInfoUpgrades().getValue();
+
+        int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+
+        for(int i = 0; i < upgrades.size(); i++)
+        {
+            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
+        }
+
         return root;
+
     }
-    private Game gameClass;
-    public void setGameClass(Game mGameClass){
-        this.gameClass = mGameClass;
-    }
+
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        infoStateViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
-        View root = inflater.inflate(R.layout.upgrade_list, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        infoStateViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        criticalInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_crit_info_sec, container, false);
+
+
+
         return root;
     }
 

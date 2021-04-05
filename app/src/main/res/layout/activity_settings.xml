@@ -26,7 +26,8 @@
                 app:cardElevation="20dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/secondary">
+                android:backgroundTint="@color/primary"
+                app:layout_constraintTop_toTopOf="parent">
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -98,7 +99,6 @@
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
                             android:layout_gravity="center_horizontal"
-                            android:checked="false"
                             android:text="@string/music"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:textColor="@color/white"

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:id="@+id/busGrid"
-    tools:context=".ui.upgrades.CritInfoFragment"
+    tools:context=".ui.upgrades.BusAdvancementsFragment"
     app:columnCount="1">
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,11 +19,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <androidx.cardview.widget.CardView
-            android:id="@+id/firstUpgrade"
+            android:id="@+id/upgradeOneCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
-            android:backgroundTint="@color/white"
             android:layout_gravity="center"
+            android:backgroundTint="@color/white"
+            android:padding="10dp"
             app:layout_column="0"
             app:layout_row="0"
             android:clickable="true"
@@ -36,6 +37,11 @@
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
                 android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeOneProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
@@ -43,6 +49,7 @@
             android:layout_weight="1" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/upgradeTwoCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:backgroundTint="@color/white"
@@ -58,32 +65,41 @@
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
                 android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeTwoProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1" />
     </LinearLayout>
+
     <Space
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_weight="1" />
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
         <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <androidx.cardview.widget.CardView
+            android:id="@+id/upgradeThreeCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:clickable="true"
             android:backgroundTint="@color/white"
             android:layout_gravity="center"
             android:padding="10dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            >
 
             <TextView
                 android:id="@+id/upgradeThreeName"
@@ -91,13 +107,19 @@
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
-                android:gravity="center" />
+                android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeThreeProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <androidx.cardview.widget.CardView
+            android:id="@+id/upgradeFourCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
@@ -112,7 +134,12 @@
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
-                android:gravity="center" />
+                android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeFourProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
@@ -124,5 +151,5 @@
 
 
 
-</androidx.gridlayout.widget.GridLayout>
+    </androidx.gridlayout.widget.GridLayout>
 

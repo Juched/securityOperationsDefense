@@ -9,18 +9,18 @@ import com.sod.securityoperationsdefense.Game;
 public class InfoStateViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private Game gameClass;
+    private static Game gameClass;
     public InfoStateViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("Information State Upgrades");
     }
     public void setGameClass(Game mgameClass){
-        this.gameClass = mgameClass;
+        InfoStateViewModel.gameClass = mgameClass;
 
     }
 
-    public Game getGameClass(){
-        return this.gameClass;
+    public static Game getGameClass(){
+        return gameClass;
     }
 
     public LiveData<String> getText() {

@@ -14,12 +14,17 @@ import androidx.lifecycle.MutableLiveData;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
+
+import kotlin.text.UStringsKt;
 
 public class Game {
     private MutableLiveData<ArrayList<Double>> currentFunds;
@@ -30,10 +35,10 @@ public class Game {
     private GameActivity game;
 
     // Serializable lists of upgrades
-    private MutableLiveData<ArrayList<CardView>>  busUpgrades;
-    private MutableLiveData<ArrayList<CardView>>  critInfoUpgrades;
-    private MutableLiveData<ArrayList<CardView>>  infoStateUpgrades;
-    private MutableLiveData<ArrayList<CardView>>  secUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  busUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  critInfoUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  infoStateUpgrades;
+    private MutableLiveData<ArrayList<Upgrade>>  secUpgrades;
 
     public MutableLiveData<Double> attackRate; // starts at 0.01
 
@@ -53,6 +58,11 @@ public class Game {
         Double payR;
         int payD;
         int tDay;
+
+        this.busUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+        this.critInfoUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+        this.infoStateUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+        this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
 
         // upgrades lists
         HashMap<String, ArrayList<CardView>> upgrades; // does not need saved
@@ -104,7 +114,7 @@ public class Game {
         try {
             currFunds = (ArrayList<Double>) ObjectSerializer.deserialize(
                     sharedPreferences.getString("currFunds", ObjectSerializer.serialize(new ArrayList<Double>())));
-            if(currFunds.size() < 1){
+            if (currFunds.size() < 1) {
                 currFunds.add(0.0);
             }
             payR = (Double) ObjectSerializer.deserialize(
@@ -112,15 +122,15 @@ public class Game {
             payD = (Integer) ObjectSerializer.deserialize(
                     sharedPreferences.getString("payD", ObjectSerializer.serialize(new Integer(0))));
             tDay = sharedPreferences.getInt("day", new Integer(1));
-            if(tDay == 0){
-                tDay =1;
+            if (tDay == 0) {
+                tDay = 1;
             }
             attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0))));
             preventionRs = (HashMap<Integer, Double>) ObjectSerializer.deserialize(sharedPreferences.getString("preventionRs", ObjectSerializer.serialize(new HashMap<Integer, Double>())));
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
             currFunds = new ArrayList<Double>(1);
-            currFunds.set(0,0.0);
+            currFunds.set(0, 0.0);
             payR = 10.0;
             payD = 1;
             tDay = 1;
@@ -139,16 +149,45 @@ public class Game {
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
+        this.attackRate = new MutableLiveData<>(attackR);
         this.attackRate = new MutableLiveData<Double>(0.01);
         this.attackList = attacks;
         this.noOfAttacks = attacks.size();
         this.attackRate = new MutableLiveData<Double>(attackR);
         this.preventionRate = new MutableLiveData<HashMap<Integer, Double>>(preventionRs);
 
+        this.makeUpgrades();
+    }
+
+    private void makeUpgrades()
+    {
+
+        // Business upgrades
+        String[] businessUpgrades = {"Boosted Morale", "pizza party", "dummy 1.0", "dumby 2"};
+        String[] critUpgrades = {"MFA ~ 2 factor", "less ransom", "dummy 1", "place holder"};
+        String[] secUpgrades = {"training", "better CBA", "exquisite jazz hands", "killer crocs"};
+        String[] iStateUpgrades = {"Boosted Morale", "better CBA", "transmitting failure", "area 51 storage"};
+
+        this.busUpgrades.setValue(this.PopulateUpgradeList(businessUpgrades));
+        this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades));
+        this.secUpgrades.setValue(this.PopulateUpgradeList(secUpgrades));
+        this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades));
+
+
+
 
 
     }
 
+    private ArrayList<Upgrade> PopulateUpgradeList(String[] names)
+    {
+        ArrayList<Upgrade> allUpgradesInCategory = new ArrayList<Upgrade>();
+        for(String name : names)
+        {
+            allUpgradesInCategory.add(new Upgrade(this.game, name, ""));
+        }
+        return allUpgradesInCategory;
+    }
 
     public MutableLiveData<ArrayList<Double>> getCurrentFunds() {
         return this.currentFunds;
@@ -161,6 +200,21 @@ public class Game {
     }
     public MutableLiveData<Integer> getDay(){return this.day;}
 
+    /* Please double check that I use the mutable types correctly */
+
+    public void setPayRate(double pay) { this.payRate.postValue(pay); }
+    public void setPayDelay(int delay) { this.payDelay.postValue(delay); }
+
+
+
+    public MutableLiveData<ArrayList<Upgrade>> getBusUpgrades(){return this.busUpgrades;}
+    public MutableLiveData<ArrayList<Upgrade>> getCritInfoUpgrades(){return this.critInfoUpgrades;}
+    public MutableLiveData<ArrayList<Upgrade>> getInfoStateUpgrades(){return this.infoStateUpgrades;}
+    public MutableLiveData<ArrayList<Upgrade>> getSecUpgrades(){return this.secUpgrades;}
+
+    public GameActivity getGameForContext() {
+        return game;
+    }
 
     public void showBusUpgrades()
     {
