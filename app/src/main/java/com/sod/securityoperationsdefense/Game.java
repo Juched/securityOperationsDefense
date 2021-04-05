@@ -55,11 +55,50 @@ public class Game {
         int tDay;
 
         // upgrades lists
-        HashMap<String, ArrayList<CardView>> upgrades;
+        HashMap<String, ArrayList<CardView>> upgrades; // does not need saved
 
-        // TODO: fill these
-        double attackR;
-        HashMap<Integer, Double> preventionRs;
+        double attackR; // needs to be saved
+        HashMap<Integer, Double> preventionRs; // needs to be saved
+
+        // create and populate the attack map
+        HashMap<Integer,ArrayList<String>> attacks = new HashMap<Integer,ArrayList<String>>(); // does not need saved
+        ArrayList<String> info = new ArrayList<String>();
+        info.add("Phishing");
+        info.add("Insert phishing def here");
+        info.add("15.0");
+        attacks.put(0, info);
+
+        info = new ArrayList<String>();
+        info.add("Brute-force");
+        info.add("Insert brute-force def here");
+        info.add("15.0");
+        attacks.put(1, info);
+
+        info = new ArrayList<String>();
+        info.add("DDoS");
+        info.add("Insert DDoS def here");
+        info.add("15.0");
+        attacks.put(2, info);
+
+        info = new ArrayList<String>();
+        info.add("Insider");
+        info.add("Insert insider attack def here");
+        info.add("15.0");
+        attacks.put(3, info);
+
+        info = new ArrayList<String>();
+        info.add("Ransomware");
+        info.add("Insert ransomeware def here");
+        info.add("15.0");
+        attacks.put(4, info);
+
+        info = new ArrayList<String>();
+        info.add("Man-in-the-Middle");
+        info.add("Insert MiM def here");
+        info.add("15.0");
+        attacks.put(5, info);
+
+
 
 
         try {
@@ -76,6 +115,8 @@ public class Game {
             if(tDay == 0){
                 tDay =1;
             }
+            attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0))));
+            preventionRs = (HashMap<Integer, Double>) ObjectSerializer.deserialize(sharedPreferences.getString("preventionRs", ObjectSerializer.serialize(new HashMap<Integer, Double>())));
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
             currFunds = new ArrayList<Double>(1);
@@ -83,6 +124,14 @@ public class Game {
             payR = 10.0;
             payD = 1;
             tDay = 1;
+            attackR = 0.01;
+            preventionRs = new HashMap<Integer, Double>();
+            preventionRs.put(0, 0.0);
+            preventionRs.put(1, 0.0);
+            preventionRs.put(2, 0.0);
+            preventionRs.put(3, 0.0);
+            preventionRs.put(4, 0.0);
+            preventionRs.put(5, 0.0);
 
         }
         this.currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
@@ -90,6 +139,13 @@ public class Game {
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
+        this.attackRate = new MutableLiveData<Double>(0.01);
+        this.attackList = attacks;
+        this.noOfAttacks = attacks.size();
+        this.attackRate = new MutableLiveData<Double>(attackR);
+        this.preventionRate = new MutableLiveData<HashMap<Integer, Double>>(preventionRs);
+
+
 
     }
 
@@ -115,19 +171,17 @@ public class Game {
     public void updater(){
         double attackTest = Math.random();
         if (attackTest <=  this.attackRate.getValue()) {
-            int attackType = ThreadLocalRandom.current().nextInt(0, noOfAttacks);
+            int attackType = ThreadLocalRandom.current().nextInt(0, this.noOfAttacks);
 
             // check if the attack will be prevented by an upgrade, and if so, pass that to ui
             if (isAttackPrevented(attackType)) {
-                //TODO: tell ui that attackType attack was prevented. nothing else happens
+                game.onPreventedAttack();
             } else {
-                /* TODO: on a successful att, make a text box for the front end to show that
-                    includes the name of attack, short description of attack, and cost of attack.*/
-
+                game.onSuccessfulAttack(this.attackList.get(attackType));
                 // subtract money from currentFunds according to attack cost
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
                 double bankAcct = this.currentFunds.getValue().get(moneyIndex);
-                double attCost = bankAcct * Double.parseDouble(attackList.get(attackType).get(2));
+                double attCost = bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2));
                 this.currentFunds.getValue().set(moneyIndex, attCost);
             }
         }
@@ -149,6 +203,8 @@ public class Game {
             sharedPreferences.edit().putString("payR", ObjectSerializer.serialize(payRate.getValue())).apply();
             sharedPreferences.edit().putString("payD", ObjectSerializer.serialize(payDelay.getValue())).apply();
             sharedPreferences.edit().putInt("day",day.getValue()).apply();
+            sharedPreferences.edit().putString("attackR",ObjectSerializer.serialize(attackRate.getValue())).apply();
+            sharedPreferences.edit().putString("preventionRs", ObjectSerializer.serialize(preventionRate.getValue())).apply();
             sharedPreferences.edit().commit();
         } catch (IOException e) {
             e.printStackTrace();

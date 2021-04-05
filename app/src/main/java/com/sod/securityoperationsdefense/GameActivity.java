@@ -1,6 +1,8 @@
 package com.sod.securityoperationsdefense;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -157,4 +159,28 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-}
+    public void onSuccessfulAttack(ArrayList<String> attackInfo) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+        alert.setMessage("Oh no! A " + attackInfo.get(0) + " was perpetrated against your" +
+                    " organization! The damages total to $" + attackInfo.get(2) + ".")
+                .setNeutralButton("Darn!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // empty for now. all it needs to do is close the alert
+                    }
+                });
+        alert.show();
+    }
+
+
+    public void onPreventedAttack() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+        alert.setMessage("One of your countermeasures prevented an attack! Great job!")
+            .setNeutralButton("Nice!", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // empty for now. all it needs to do is close the alert
+                }
+            });
+        alert.show();
+        }
+
+    }
