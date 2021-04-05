@@ -1,6 +1,7 @@
 package com.sod.securityoperationsdefense;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -265,7 +266,9 @@ public class GameActivity extends AppCompatActivity {
                 now.set(currentMoney.getValue().size() - 1, now.get(currentMoney.getValue().size() - 1) + 10.0);
                 currentMoney.setValue(now);
                 paused = !paused;
-
+                Intent intent = new Intent(view.getContext(), SettingsActivity.class);
+                startActivity(intent);
+                paused = !paused;
             }
         });
 
