@@ -109,7 +109,7 @@ public class Game {
     {
 
         // Business upgrades
-        String[] businessUpgrades = {"Boosted Morale", "pizza party", "dummy thicc", "dumby 2"};
+        String[] businessUpgrades = {"Boosted Morale", "pizza party", "dummy 1.0", "dumby 2"};
         String[] critUpgrades = {"MFA ~ 2 factor", "less ransom", "dummy 1", "place holder"};
         String[] secUpgrades = {"training", "better CBA", "exquisite jazz hands", "killer crocs"};
         String[] iStateUpgrades = {"Boosted Morale", "better CBA", "transmitting failure", "area 51 storage"};
