@@ -9,6 +9,23 @@ import android.view.Menu;
 import android.view.Window;
 import android.app.Fragment;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,6 +54,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.SharedPreferences;
 import android.widget.TextView;
+import android.graphics.*;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -84,7 +102,136 @@ public class GameActivity extends AppCompatActivity {
         TextView spendableMoney = findViewById(R.id.spendableMoneyText);
         spendableMoney.setText("$ "+ currentMoney.getValue().get(currentMoney.getValue().size()-1));
 
+       LineChart chart;
 
+        {   // // Chart Style // //
+            chart = (LineChart) findViewById(R.id.chart1);
+
+            // background color
+            chart.setBackgroundColor(Color.WHITE);
+
+            // disable description text
+            chart.getDescription().setEnabled(false);
+
+            // enable touch gestures
+            chart.setTouchEnabled(true);
+
+            // set listeners
+
+            chart.setDrawGridBackground(true);
+
+
+
+
+            // enable scaling and dragging
+            chart.setDragEnabled(true);
+            chart.setScaleEnabled(true);
+            // chart.setScaleXEnabled(true);
+            // chart.setScaleYEnabled(true);
+
+            // force pinch zoom along both axis
+            chart.setPinchZoom(true);
+        }
+
+        XAxis xAxis;
+        {   // // X-Axis Style // //
+            xAxis = chart.getXAxis();
+            xAxis.setGranularity(1.0f);
+
+            int min = currentMoney.getValue().size()-8;
+            int max = currentMoney.getValue().size()-1;
+
+            if(min < 0){
+                min = 0;
+            }
+
+            xAxis.setAxisMinimum(min);
+            xAxis.setAxisMaximum(max);
+
+            // vertical grid lines
+            xAxis.enableGridDashedLine(10f, 10f, 0f);
+        }
+
+        YAxis yAxis;
+        {   // // Y-Axis Style // //
+            yAxis = chart.getAxisLeft();
+
+            // disable dual axis (only use LEFT axis)
+            chart.getAxisRight().setEnabled(false);
+
+            // horizontal grid lines
+            yAxis.enableGridDashedLine(10f, 10f, 0f);
+
+            // axis range
+
+            yAxis.setAxisMinimum(0f);
+        }
+
+
+
+        ArrayList<Entry> values = new ArrayList<>();
+        int i = 0;
+        ArrayList<Double> money = currentMoney.getValue();
+        for(i = 0; i<money.size();i ++){
+            values.add(new Entry(i,(float)(double) money.get(i)));
+        }
+
+        LineDataSet set1;
+
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            set1.notifyDataSetChanged();
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(values, "DataSet 1");
+
+            set1.setDrawIcons(false);
+
+            // draw dashed line
+            set1.enableDashedLine(10f, 5f, 0f);
+
+            // black lines and points
+            set1.setColor(Color.BLACK);
+            set1.setCircleColor(Color.BLACK);
+
+            // line thickness and point size
+            set1.setLineWidth(1f);
+            set1.setCircleRadius(3f);
+
+            // draw points as solid circles
+            set1.setDrawCircleHole(false);
+
+            // customize legend entry
+            set1.setFormLineWidth(1f);
+            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            set1.setFormSize(15.f);
+
+            // text size of values
+            set1.setValueTextSize(9f);
+
+            // draw selection line as dashed
+            set1.enableDashedHighlightLine(10f, 5f, 0f);
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1); // add the data sets
+
+            // create a data object with the data sets
+            LineData data = new LineData(dataSets);
+
+            // set data
+            chart.setData(data);
+        }
+        // draw points over time
+        chart.animateX(300);
+
+
+        // get the legend (only possible after setting data)
+        Legend l = chart.getLegend();
+        l.setEnabled(false);
 
 
         LinearProgressIndicator dayProgress = (LinearProgressIndicator) findViewById(R.id.dayProgress);
@@ -100,7 +247,9 @@ public class GameActivity extends AppCompatActivity {
                     }else{
                         day.postValue(day.getValue() + 1);
                         dayProgress.setProgressCompat(dayProgress.getMin(),true);
-                        gameClass.updater();
+                        ArrayList<Double> money = currentMoney.getValue();
+                        money.add(currentMoney.getValue().get(currentMoney.getValue().size() - 1));
+                        currentMoney.postValue(money);
                     }
                 }
 
@@ -113,7 +262,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ArrayList<Double> now = currentMoney.getValue();
-                now.set(0, now.get(0) + 10.0);
+                now.set(currentMoney.getValue().size() - 1, now.get(currentMoney.getValue().size() - 1) + 10.0);
                 currentMoney.setValue(now);
                 paused = !paused;
 
@@ -134,11 +283,42 @@ public class GameActivity extends AppCompatActivity {
                 DecimalFormat df2 = new DecimalFormat("#0.00");
                 spendableMoney.setText("$ "+ df2.format(changedValue.get(changedValue.size() - 1)));
 
+                ArrayList<Entry> values = new ArrayList<>();
 
+                int i = 0;
+                ArrayList<Double> money = changedValue;
+                for(i = 0; i<money.size();i ++){
+                    values.add(new Entry(i,(float)(double) money.get(i)));
+                }
 
+                LineDataSet set1;
 
+                set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+                set1.setValues(values);
+                set1.notifyDataSetChanged();
 
+                XAxis xAxis;
+                {   // // X-Axis Style // //
+                    xAxis = chart.getXAxis();
 
+                    int min = changedValue.size()-8;
+                    int max = changedValue.size()-1;
+
+                    if(min < 0){
+                        min = 0;
+                    }
+
+                    xAxis.setAxisMinimum(min);
+                    xAxis.setAxisMaximum(max);
+
+                    // vertical grid lines
+                    xAxis.enableGridDashedLine(10f, 10f, 0f);
+                }
+                chart.getData().notifyDataChanged();
+                chart.notifyDataSetChanged();
+
+                // draw points over time
+                chart.animateX(200);
             }
         });
 
