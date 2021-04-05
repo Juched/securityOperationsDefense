@@ -68,7 +68,7 @@ public class Game {
         HashMap<String, ArrayList<CardView>> upgrades;
 
         // TODO: fill these
-        double attackR;
+        double attackR = 1;
         HashMap<Integer, Double> preventionRs;
 
 
@@ -100,6 +100,7 @@ public class Game {
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
+        this.attackRate = new MutableLiveData<>(attackR);
 
         this.makeUpgrades();
     }

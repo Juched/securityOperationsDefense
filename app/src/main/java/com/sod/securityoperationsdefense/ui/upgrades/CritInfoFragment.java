@@ -27,76 +27,61 @@ public class CritInfoFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         criticalInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
-        View root = inflater.inflate(R.layout.upgrade_list, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        criticalInfoViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_crit_info_sec, container, false);
 
-        while(gameClass == null)
-        {
-            gameClass = CritInfoViewModel.getGameClass();
-        }
 
-        gameClass = CritInfoViewModel.getGameClass();
-        TableLayout upgrades = container.findViewById(R.id.crit_upgrades_list);
-        upgrades.removeAllViewsInLayout();
-
-        gameClass.getCritInfoUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
-            @Override
-            public void onChanged(ArrayList<CardView> cardViews) {
-                // Only four cards...
-                for(int i = 0; i < cardViews.size(); i+=2)
-                {
-                    try{
-                        TableRow newRow = new TableRow(gameClass.getGameForContext());
-
-                        newRow.addView(cardViews.get(i));
-                        newRow.addView(cardViews.get(i+1));
-
-                        upgrades.addView(newRow);
-                    } catch (Exception e) {
-
-                    }
-                }
-            }
-        });
-
-        ArrayList<CardView> cardViews = gameClass.getCritInfoUpgrades().getValue();
-        for(int i = 0; i < cardViews.size(); i+=2)
-        {
-            try{
-                TableRow newRow = new TableRow(gameClass.getGameForContext());
-
-                newRow.addView(cardViews.get(i));
-                newRow.addView(cardViews.get(i+1));
-
-                upgrades.addView(newRow);
-            } catch (Exception e) {
-
-            }
-        }
+//        while(gameClass == null)
+//        {
+//            gameClass = CritInfoViewModel.getGameClass();
+//        }
+//
+//        gameClass = CritInfoViewModel.getGameClass();
+//        TableLayout upgrades = container.findViewById(R.id.crit_upgrades_list);
+//        upgrades.removeAllViewsInLayout();
+//
+//        gameClass.getCritInfoUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
+//            @Override
+//            public void onChanged(ArrayList<CardView> cardViews) {
+//                // Only four cards...
+//                for(int i = 0; i < cardViews.size(); i+=2)
+//                {
+//                    try{
+//                        TableRow newRow = new TableRow(gameClass.getGameForContext());
+//
+//                        newRow.addView(cardViews.get(i));
+//                        newRow.addView(cardViews.get(i+1));
+//
+//                        upgrades.addView(newRow);
+//                    } catch (Exception e) {
+//
+//                    }
+//                }
+//            }
+//        });
+//
+//        ArrayList<CardView> cardViews = gameClass.getCritInfoUpgrades().getValue();
+//        for(int i = 0; i < cardViews.size(); i+=2)
+//        {
+//            try{
+//                TableRow newRow = new TableRow(gameClass.getGameForContext());
+//
+//                newRow.addView(cardViews.get(i));
+//                newRow.addView(cardViews.get(i+1));
+//
+//                upgrades.addView(newRow);
+//            } catch (Exception e) {
+//
+//            }
+//        }
 
         return root;
     }
-    private Game gameClass;
-    public void setGameClass(Game mGameClass){
-        this.gameClass = mGameClass;
-    }
+
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         criticalInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
-        View root = inflater.inflate(R.layout.upgrade_list, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        criticalInfoViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_crit_info_sec, container, false);
+
 
 
         return root;

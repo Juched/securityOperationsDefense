@@ -1,6 +1,7 @@
 package com.sod.securityoperationsdefense;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
+
 import com.sod.securityoperationsdefense.ui.upgrades.BusAdvancementsFragment;
 import com.sod.securityoperationsdefense.ui.upgrades.BusAdvancementsViewModel;
 import com.sod.securityoperationsdefense.ui.upgrades.CritInfoFragment;
@@ -80,7 +82,9 @@ public class GameActivity extends AppCompatActivity {
 
         MutableLiveData<ArrayList<Double>> currentMoney = gameClass.getCurrentFunds();
         TextView spendableMoney = findViewById(R.id.spendableMoneyText);
-        spendableMoney.setText("$ "+ currentMoney.getValue().toString());
+        spendableMoney.setText("$ "+ currentMoney.getValue().get(currentMoney.getValue().size()-1));
+
+
 
 
         LinearProgressIndicator dayProgress = (LinearProgressIndicator) findViewById(R.id.dayProgress);
@@ -128,7 +132,13 @@ public class GameActivity extends AppCompatActivity {
             public void onChanged(ArrayList<Double> changedValue) {
                 TextView spendableMoney = findViewById(R.id.spendableMoneyText);
                 DecimalFormat df2 = new DecimalFormat("#0.00");
-                spendableMoney.setText("$ "+ df2.format(changedValue.get(0)));
+                spendableMoney.setText("$ "+ df2.format(changedValue.get(changedValue.size() - 1)));
+
+
+
+
+
+
             }
         });
 
