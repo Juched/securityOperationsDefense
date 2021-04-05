@@ -360,6 +360,17 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    public static void updateUpgrades(View root, ArrayList<Upgrade> upgrades, int [] pBars, int upCount)
+    {
+        Upgrade u = upgrades.get(upCount);
+
+        u.levelUp(); // should call the observer to change the logic for
+
+        LinearProgressIndicator upgradeProgress = (LinearProgressIndicator) root.findViewById(pBars[upCount]);
+        upgradeProgress.setProgressCompat(upgrades.get(upCount).getLevel(), true);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

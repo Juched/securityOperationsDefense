@@ -13,6 +13,8 @@ public class Upgrade
     private int level;
     private int costs = 15;
 
+    public static final int MAX_LEVEL = 3;
+
     public Upgrade(GameActivity newContext, String theName, String descrip)
     {
         this.context = newContext;

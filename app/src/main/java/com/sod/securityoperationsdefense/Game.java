@@ -143,6 +143,13 @@ public class Game {
     }
     public MutableLiveData<Integer> getDay(){return this.day;}
 
+    /* Please double check that I use the mutable types correctly */
+
+    public void setPayRate(double pay) { this.payRate.postValue(pay); }
+    public void setPayDelay(int delay) { this.payDelay.postValue(delay); }
+
+
+
     public MutableLiveData<ArrayList<Upgrade>> getBusUpgrades(){return this.busUpgrades;}
     public MutableLiveData<ArrayList<Upgrade>> getCritInfoUpgrades(){return this.critInfoUpgrades;}
     public MutableLiveData<ArrayList<Upgrade>> getInfoStateUpgrades(){return this.infoStateUpgrades;}
