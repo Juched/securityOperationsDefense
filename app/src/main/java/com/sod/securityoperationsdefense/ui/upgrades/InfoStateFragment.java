@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
+import com.sod.securityoperationsdefense.Upgrade;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,19 @@ public class InfoStateFragment extends Fragment {
         infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
         View root = inflater.inflate(R.layout.fragment_info_state, container, false);
 
+        while(gameClass == null)
+        {
+            gameClass = BusAdvancementsViewModel.getGameClass();
+        }
+
+        ArrayList<Upgrade> upgrades = gameClass.getInfoStateUpgrades().getValue();
+
+        int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+
+        for(int i = 0; i < upgrades.size(); i++)
+        {
+            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
+        }
 
 //        while(gameClass == null)
 //        {

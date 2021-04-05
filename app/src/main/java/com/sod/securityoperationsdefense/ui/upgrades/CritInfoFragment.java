@@ -18,63 +18,35 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.R;
+import com.sod.securityoperationsdefense.Upgrade;
 
 import java.util.ArrayList;
 
 public class CritInfoFragment extends Fragment {
     private CritInfoViewModel criticalInfoViewModel;
-
+    private Game gameClass;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         criticalInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_crit_info_sec, container, false);
 
 
-//        while(gameClass == null)
-//        {
-//            gameClass = CritInfoViewModel.getGameClass();
-//        }
-//
-//        gameClass = CritInfoViewModel.getGameClass();
-//        TableLayout upgrades = container.findViewById(R.id.crit_upgrades_list);
-//        upgrades.removeAllViewsInLayout();
-//
-//        gameClass.getCritInfoUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
-//            @Override
-//            public void onChanged(ArrayList<CardView> cardViews) {
-//                // Only four cards...
-//                for(int i = 0; i < cardViews.size(); i+=2)
-//                {
-//                    try{
-//                        TableRow newRow = new TableRow(gameClass.getGameForContext());
-//
-//                        newRow.addView(cardViews.get(i));
-//                        newRow.addView(cardViews.get(i+1));
-//
-//                        upgrades.addView(newRow);
-//                    } catch (Exception e) {
-//
-//                    }
-//                }
-//            }
-//        });
-//
-//        ArrayList<CardView> cardViews = gameClass.getCritInfoUpgrades().getValue();
-//        for(int i = 0; i < cardViews.size(); i+=2)
-//        {
-//            try{
-//                TableRow newRow = new TableRow(gameClass.getGameForContext());
-//
-//                newRow.addView(cardViews.get(i));
-//                newRow.addView(cardViews.get(i+1));
-//
-//                upgrades.addView(newRow);
-//            } catch (Exception e) {
-//
-//            }
-//        }
+        while(gameClass == null)
+        {
+            gameClass = SecMeasuresViewModel.getGameClass();
+        }
+
+        ArrayList<Upgrade> upgrades = gameClass.getCritInfoUpgrades().getValue();
+
+        int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+
+        for(int i = 0; i < upgrades.size(); i++)
+        {
+            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
+        }
 
         return root;
+
     }
 
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

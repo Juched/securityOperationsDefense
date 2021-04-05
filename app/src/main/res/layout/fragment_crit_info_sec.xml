@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <androidx.cardview.widget.CardView
+            android:id="@+id/firstUpgrade"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             app:layout_column="0"
@@ -26,6 +27,7 @@
             android:clickable="true">
 
             <TextView
+                android:id="@+id/upgradeOneName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale" />
@@ -41,6 +43,7 @@
             android:clickable="true">
 
             <TextView
+                android:id="@+id/upgradeTwoName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale" />
@@ -64,6 +67,7 @@
             android:clickable="true">
 
             <TextView
+                android:id="@+id/upgradeThreeName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale" />
@@ -78,6 +82,7 @@
             android:clickable="true">
 
             <TextView
+                android:id="@+id/upgradeFourName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale" />
