@@ -29,75 +29,63 @@ public class SecMeasuresFragment extends Fragment {
     }
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         secMeasViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
-        View root = inflater.inflate(R.layout.upgrade_list, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        secMeasViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_sec_measures, container, false);
+
         return root;
     }
 
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         secMeasViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
-        View root = inflater.inflate(R.layout.upgrade_list, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        secMeasViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
-        while(gameClass == null)
-        {
-            gameClass = SecMeasuresViewModel.getGameClass();
-        }
-
-        gameClass = SecMeasuresViewModel.getGameClass();
-        TableLayout upgrades = container.findViewById(R.id.sec_meas_upgrades_list);
-        upgrades.removeAllViewsInLayout();
-
-        gameClass.getSecUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
-            @Override
-            public void onChanged(ArrayList<CardView> cardViews) {
-                // Only four cards...
-                for(int i = 0; i < cardViews.size(); i+=2)
-                {
-                    try{
-                        TableRow newRow = new TableRow(gameClass.getGameForContext());
-
-                        newRow.addView(cardViews.get(i));
-                        newRow.addView(cardViews.get(i+1));
-
-                        upgrades.addView(newRow);
-                    } catch (Exception e) {
-
-                    }
-
-                }
+        View root = inflater.inflate(R.layout.fragment_sec_measures, container, false);
 
 
-            }
-        });
-
-        ArrayList<CardView> cardViews = gameClass.getSecUpgrades().getValue();
-        for(int i = 0; i < cardViews.size(); i+=2)
-        {
-            try{
-                TableRow newRow = new TableRow(gameClass.getGameForContext());
-
-                newRow.addView(cardViews.get(i));
-                newRow.addView(cardViews.get(i+1));
-
-                upgrades.addView(newRow);
-            } catch (Exception e) {
-
-            }
-        }
+//        while(gameClass == null)
+//        {
+//            gameClass = SecMeasuresViewModel.getGameClass();
+//        }
+//
+//        gameClass = SecMeasuresViewModel.getGameClass();
+//        TableLayout upgrades = container.findViewById(R.id.sec_meas_upgrades_list);
+//        upgrades.removeAllViewsInLayout();
+//
+//        gameClass.getSecUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
+//            @Override
+//            public void onChanged(ArrayList<CardView> cardViews) {
+//                // Only four cards...
+//                for(int i = 0; i < cardViews.size(); i+=2)
+//                {
+//                    try{
+//                        TableRow newRow = new TableRow(gameClass.getGameForContext());
+//
+//                        newRow.addView(cardViews.get(i));
+//                        newRow.addView(cardViews.get(i+1));
+//
+//                        upgrades.addView(newRow);
+//                    } catch (Exception e) {
+//
+//                    }
+//
+//                }
+//
+//
+//            }
+//        });
+//
+//        ArrayList<CardView> cardViews = gameClass.getSecUpgrades().getValue();
+//        for(int i = 0; i < cardViews.size(); i+=2)
+//        {
+//            try{
+//                TableRow newRow = new TableRow(gameClass.getGameForContext());
+//
+//                newRow.addView(cardViews.get(i));
+//                newRow.addView(cardViews.get(i+1));
+//
+//                upgrades.addView(newRow);
+//            } catch (Exception e) {
+//
+//            }
+//        }
 
         return root;
     }

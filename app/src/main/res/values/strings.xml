@@ -25,6 +25,6 @@
     <string name="dayText">Day: 1</string>
     <string name ="inst">Advance your business through upgrades to make the most profit, but watch out for attacks!
     Each day, use cost-benefit analysis to determine whether it would be best to buy upgrades or increase your security defenses.</string>
-    <string name ="example">For example, would it be better to __________________ or to ____________________? You decide to make the best
+    <string name ="example">For example, would it be better to open a new location or to increase your defenses against a DDoS attack? You decide to make the best
     decision for your business!</string>
 </resources>
