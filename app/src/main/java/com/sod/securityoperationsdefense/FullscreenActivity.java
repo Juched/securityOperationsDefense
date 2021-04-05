@@ -4,16 +4,21 @@ import android.annotation.SuppressLint;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.media.AudioAttributesCompat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 /**
@@ -113,8 +118,10 @@ public class FullscreenActivity extends AppCompatActivity {
         //        Song title: Design
         //        Artist: Metre
         //        Used under Creative Commons Non-Commercial License
+        //        Help with Audio seek bar from https://stackoverflow.com/questions/10134338/using-seekbar-to-control-volume-in-android
         backgroundMusic = MediaPlayer.create(getApplicationContext(), R.raw.design);
-        backgroundMusic.start();
+        playMusic(SettingsActivity.musicOn);
+//        seekBar = SettingsActivity.getSeekBar();
 
         Button startButton = (Button) findViewById(R.id.startButton);
 
@@ -157,9 +164,10 @@ public class FullscreenActivity extends AppCompatActivity {
 
     }
 
-    public static void playMusic() {
+    public static void playMusic(boolean musicOn) {
         CheckBox m = SettingsActivity.music;
-        if (m.isChecked()) {
+        if (musicOn) {
+//            m.setChecked((musicOn));
             backgroundMusic.start();
         } else {
             backgroundMusic.pause();

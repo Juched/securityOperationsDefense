@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -21,6 +23,9 @@ import java.io.IOException;
 public class SettingsActivity extends AppCompatActivity {
 //    private static boolean reset = false;
     static CheckBox music;
+    static boolean musicOn = true;
+    static SeekBar seekbar = null;
+    private AudioManager manager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +36,6 @@ public class SettingsActivity extends AppCompatActivity {
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
                 Intent intent = new Intent(v.getContext(), FullscreenActivity.class);
                 startActivity(intent);
             }
@@ -82,20 +86,49 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         music = findViewById(R.id.checkBox);
+        music.setChecked(musicOn);
         music.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.playMusic();
+                if (music.isChecked()) {
+                    musicOn = true;
+                } else {
+                    musicOn = false;
+                }
+                FullscreenActivity.playMusic(musicOn);
+            }
+        });
+
+        seekbar = findViewById(R.id.seekBar);
+        manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+        seekbar.setMax(manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        seekbar.setProgress(manager.getStreamVolume(AudioManager.STREAM_MUSIC));
+
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                manager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
     }
 
-    public void onBackPressed() {
-        CheckBox m = findViewById(R.id.checkBox);
-        if (!m.isChecked()) {
-            FullscreenActivity.backgroundMusic.pause();
+    public static SeekBar getSeekBar() {
+        if (seekbar != null) {
+            return seekbar;
         }
+        return null;
     }
 
 }
