@@ -22,16 +22,19 @@
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
+            android:backgroundTint="@color/white"
             android:padding="10dp"
             app:layout_column="0"
             app:layout_row="0"
-            android:clickable="true">
+            android:clickable="true"
+            app:cardElevation="8dp">
 
             <TextView
                 android:id="@+id/upgradeOneName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
+                android:textColor="@color/black"
                 android:gravity="center"/>
         </androidx.cardview.widget.CardView>
         <Space
@@ -42,15 +45,18 @@
         <androidx.cardview.widget.CardView
             android:layout_width="140dp"
             android:layout_height="70dp"
+            android:backgroundTint="@color/white"
             android:clickable="true"
             android:layout_gravity="center"
-            android:padding="10dp">
+            android:padding="10dp"
+            app:cardElevation="8dp">
 
             <TextView
                 android:id="@+id/upgradeTwoName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
+                android:textColor="@color/black"
                 android:gravity="center"/>
         </androidx.cardview.widget.CardView>
         <Space
@@ -76,6 +82,7 @@
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:clickable="true"
+            android:backgroundTint="@color/white"
             android:layout_gravity="center"
             android:padding="10dp"
             >
@@ -85,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
+                android:textColor="@color/black"
                 android:gravity="center"/>
         </androidx.cardview.widget.CardView>
         <Space
@@ -95,6 +103,7 @@
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
+            android:backgroundTint="@color/white"
             android:clickable="true"
             android:padding="10dp">
 
@@ -103,6 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
+                android:textColor="@color/black"
                 android:gravity="center"/>
         </androidx.cardview.widget.CardView>
         <Space
