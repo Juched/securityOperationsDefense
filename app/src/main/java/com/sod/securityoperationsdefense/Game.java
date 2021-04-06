@@ -245,7 +245,7 @@ public class Game {
 
                         case "Cost Benefit Analysis":
                             // upgrade cost -5%
-
+                            // Upgrade reduceAllCosts(0.05);
                             break;
 
                         case "Cut Employee Salaries":
@@ -287,7 +287,6 @@ public class Game {
 //                    String desc = card.getDescription();
 //                    int level = card.getLevel();
                     int cost = card.getCost();
-
 
 
                     switch (cardName) {
@@ -411,6 +410,9 @@ public class Game {
 
                         case "More Processing Power":
                             // payRate +5%
+                            Double payR = payRate.getValue();
+                            payR += 5.0;
+                            payRate.postValue(payR);
                             break;
 
                         case "place holder":
