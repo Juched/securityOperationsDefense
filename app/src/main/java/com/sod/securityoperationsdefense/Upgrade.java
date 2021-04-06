@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Upgrade implements Serializable
 {
@@ -14,7 +15,7 @@ public class Upgrade implements Serializable
     private String name;
     private String description;
     private int level;
-    private int costs = 15;
+    private int costs;
     private boolean update = false;
 
     public static final int MAX_LEVEL = 3;
@@ -28,6 +29,10 @@ public class Upgrade implements Serializable
         this.description = descrip;
         this.level = 0;
 
+        Random rando = new Random();
+
+        this.costs = (rando.nextInt()%16) + 8;
+
         allUpgrades.add(this);
     }
 
@@ -37,16 +42,34 @@ public class Upgrade implements Serializable
     public String getName() { return name; }
     public String getDescription() { return description; }
     public int getLevel() { return level; }
-    public void levelUp() { level++; }
+    public void levelUp()
+    {
+        level++;
+
+
+        costs *= Math.pow(15, level);
+
+        Random rando = new Random();
+        costs += (rando.nextInt()%15) + 7 - (rando.nextInt()%20);
+    }
     public int getCost() { return costs; }
     public boolean isUpdated() { return update; }
 
 
-
+    private void reduceCost(double reductionPercentage)
+    {
+        // 15 % reduction ==> 1 -> .85 and some extra flavor
+        // Base cost is NOT affected
+        this.costs *= Math.pow(1-reductionPercentage, this.level);
+    }
 
     public static void reduceAllCosts(double reductionPercentage)
     {
 
+        for(int i = 0; i< allUpgrades.size(); i++)
+        {
+            allUpgrades.get(i).reduceCost(reductionPercentage);
+        }
     }
 
 
