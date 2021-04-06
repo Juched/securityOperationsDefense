@@ -55,6 +55,10 @@ public class SettingsActivity extends AppCompatActivity {
                         sharedPreferences.edit().remove("day").apply();
                         sharedPreferences.edit().remove("attackR").apply();
                         sharedPreferences.edit().remove("preventionRs").apply();
+                        sharedPreferences.edit().remove("busUpgrades").apply();
+                        sharedPreferences.edit().remove("critUpgrades").apply();
+                        sharedPreferences.edit().remove("secUpgrades").apply();
+                        sharedPreferences.edit().remove("infoUpgrades").apply();
                         sharedPreferences.edit().commit();
 
 
