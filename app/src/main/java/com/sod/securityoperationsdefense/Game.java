@@ -127,6 +127,14 @@ public class Game {
             }
             attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0))));
             preventionRs = (HashMap<Integer, Double>) ObjectSerializer.deserialize(sharedPreferences.getString("preventionRs", ObjectSerializer.serialize(new HashMap<Integer, Double>())));
+            if(preventionRs.size() == 0){
+                preventionRs.put(0, 0.0);
+                preventionRs.put(1, 0.0);
+                preventionRs.put(2, 0.0);
+                preventionRs.put(3, 0.0);
+                preventionRs.put(4, 0.0);
+                preventionRs.put(5, 0.0);
+            }
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
             currFunds = new ArrayList<Double>(1);
@@ -180,7 +188,7 @@ public class Game {
     }
 
     private void doBusinessUpgrade() {
-        this.busUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+        this.busUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
                 for (Upgrade card: upgrades) {
@@ -220,7 +228,7 @@ public class Game {
     }
 
     private void doCritUpgrade() {
-        this.critInfoUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+        this.critInfoUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
                 for (Upgrade card: upgrades) {
@@ -260,7 +268,7 @@ public class Game {
     }
 
     private void doSecUpgrade() {
-        this.secUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+        this.secUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
                 for (Upgrade card: upgrades) {
@@ -303,7 +311,7 @@ public class Game {
     }
 
     private void doiStateUpgrade() {
-        this.infoStateUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+        this.infoStateUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
                 for (Upgrade card: upgrades) {
@@ -423,6 +431,7 @@ public class Game {
             sharedPreferences.edit().putString("attackR",ObjectSerializer.serialize(attackRate.getValue())).apply();
             sharedPreferences.edit().putString("preventionRs", ObjectSerializer.serialize(preventionRate.getValue())).apply();
             sharedPreferences.edit().commit();
+
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("SOD", "Couldn't create a file");
