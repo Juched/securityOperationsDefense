@@ -16,6 +16,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 
@@ -99,7 +100,7 @@ public class Game {
 
         info = new ArrayList<String>();
         info.add("Ransomware");
-        info.add("Insert ransomeware def here");
+        info.add("Insert ransomware def here");
         info.add("15.00");
         attacks.put(4, info);
 
@@ -216,10 +217,10 @@ public class Game {
     {
 
         // Business upgrades ~ and all upgrades
-        String[] businessUpgrades = {"Boosted Morale", "pizza party", "dummy 1.0", "dumby 2"};
-        String[] critUpgrades = {"MFA ~ 2 factor", "less ransom", "dummy 1", "place holder"};
-        String[] secUpgrades = {"training", "better CBA", "exquisite jazz hands", "killer crocs"};
-        String[] iStateUpgrades = {"Boosted Morale", "better CBA", "transmitting failure", "area 51 storage"};
+        String[] businessUpgrades = {"Open New Location", "Cost Benefit Analysis", "Cut Employee Salaries", "Pizza Party"};
+        String[] critUpgrades = {"2-Factor Authentication", "Get Latest Software", "Ransomware Prevention", "Data Integrity Validation"};
+        String[] secUpgrades = {"Phishing Awareness Training", "Monitoring and Logging", "Firewalls", "Hire More Security Personnel"};
+        String[] iStateUpgrades = {"Data Excryption", "More Data Storage", "More Processing Power", "More Secure Transmission"};
 
         this.busUpgrades.setValue(this.PopulateUpgradeList(businessUpgrades));
         this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades));
@@ -236,30 +237,19 @@ public class Game {
         this.busUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
-
                 for (Upgrade card: upgrades) {
                     String cardName = card.getName();
-                    int level = card.getLevel();
                     int cost = card.getCost();
-
-
-
                     switch (cardName) {
                         case "Open New Location":
-//                            if (level == 1) {
+                            // pay rate +5%, attack rate +5%
                             Double payR = payRate.getValue();
                             payR += 5.0;
                             payRate.postValue(payR);
+
                             Double att = attackRate.getValue();
                             att += 0.005;
                             attackRate.postValue(att);
-//                            } else if (level == 2) {
-//                                payRate.postValue(10.0);
-//                                attackRate.postValue(0.04);
-//                            } else {
-//                                payRate.postValue(15.0);
-//                                attackRate.postValue(0.06);
-//                            }
                             break;
 
                         case "Cost Benefit Analysis":
@@ -303,11 +293,7 @@ public class Game {
             public void onChanged(ArrayList<Upgrade> upgrades) {
                 for (Upgrade card: upgrades) {
                     String cardName = card.getName();
-//                    String desc = card.getDescription();
-//                    int level = card.getLevel();
                     int cost = card.getCost();
-
-
                     switch (cardName) {
                         case "2-Factor Authentication":
                             // brute force PR +5%
@@ -334,7 +320,15 @@ public class Game {
                             preventionRate.postValue(pr);
                             break;
 
-                        case "place holder":
+                        case "Data Integrity Validation":
+                            // pay rate -4%, attack rate -5%
+                            Double payR = payRate.getValue();
+                            payR -= 4.0;
+                            payRate.postValue(payR);
+
+                            Double a = attackRate.getValue();
+                            a -= 0.005;
+                            attackRate.postValue(a);
                             break;
                     }
                 }
@@ -348,12 +342,7 @@ public class Game {
             public void onChanged(ArrayList<Upgrade> upgrades) {
                 for (Upgrade card: upgrades) {
                     String cardName = card.getName();
-//                    String desc = card.getDescription();
-//                    int level = card.getLevel();
                     int cost = card.getCost();
-
-
-
                     switch (cardName) {
                         case "Phishing Awareness Training":
                             // phishing PR +5%
@@ -365,7 +354,7 @@ public class Game {
                             break;
 
                         case "Monitoring and Logging":
-                            // attack cost -10%
+                            // attack rate -10%
                             Double att = attackRate.getValue();
                             att -= 0.01;
                             attackRate.postValue(att);
@@ -383,7 +372,7 @@ public class Game {
                         case "Hire More Security Personnel":
                             // pay rate -4%, attack rate -5%
                             Double payR = payRate.getValue();
-                            payR += 5.0;
+                            payR -= 4.0;
                             payRate.postValue(payR);
 
                             Double a = attackRate.getValue();
@@ -402,29 +391,24 @@ public class Game {
             public void onChanged(ArrayList<Upgrade> upgrades) {
                 for (Upgrade card: upgrades) {
                     String cardName = card.getName();
-//                    String desc = card.getDescription();
-//                    int level = card.getLevel();
                     int cost = card.getCost();
-
-
-//                    ArrayList<Double> curr = currentFunds.getValue();
-//                    Double lastVal = curr.get(curr.size() - 1);
-//                    Double newVal = lastVal - (double) cost;
-//                    curr.add(newVal);
-//                    currentFunds.postValue(curr);
-
                     switch (cardName) {
                         case "Data Excryption":
-                            // man in midde PR +5%
-                            payRate.postValue(5.0);
+                            // man in middle PR +5%
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(5);
+                            d += 5.0;
+                            pr.replace(5, d);
+                            preventionRate.postValue(pr);
                             break;
 
                         case "More Data Storage":
-                            HashMap<Integer, Double> pr = preventionRate.getValue();
-                            Double d = pr.get(2);
-                            d += 5.0;
-                            pr.replace(2, d);
-                            preventionRate.postValue(pr);
+                            // brute force PR +5%
+                            HashMap<Integer, Double> prev = preventionRate.getValue();
+                            Double rate = prev.get(1);
+                            rate += 5.0;
+                            prev.replace(1, rate);
+                            preventionRate.postValue(prev);
                             break;
 
                         case "More Processing Power":
@@ -434,7 +418,17 @@ public class Game {
                             payRate.postValue(payR);
                             break;
 
-                        case "place holder":
+                        case "More Secure Transmission":
+                            // man in middle PR +5%, pay rate -5%
+                            HashMap<Integer, Double> p = preventionRate.getValue();
+                            Double r = p.get(5);
+                            r += 5.0;
+                            p.replace(5, r);
+                            preventionRate.postValue(p);
+
+                            Double pay = payRate.getValue();
+                            pay -= 5.0;
+                            payRate.postValue(pay);
                             break;
                     }
                 }
