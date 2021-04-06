@@ -10,6 +10,7 @@ import android.widget.TableLayout;
 
 
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+import androidx.lifecycle.Observer;
 import kotlin.text.UStringsKt;
 
 public class Game {
@@ -47,8 +49,6 @@ public class Game {
     private HashMap<Integer, ArrayList<String>> attackList;
     // contains att. prevention rates. values of the keys correspond to the attack in the above list
     public MutableLiveData<HashMap<Integer, Double>> preventionRate;
-
-
 
     public Game(Context c, GameActivity game) {
         this.game = game;
@@ -157,11 +157,16 @@ public class Game {
         this.preventionRate = new MutableLiveData<HashMap<Integer, Double>>(preventionRs);
 
         this.makeUpgrades();
+
+        // observer methods for upgrades
+        this.doBusinessUpgrade();
+        this.doCritUpgrade();
+        this.doSecUpgrade();
+        this.doiStateUpgrade();
     }
 
     private void makeUpgrades()
     {
-
         // Business upgrades
         String[] businessUpgrades = {"Boosted Morale", "pizza party", "dummy 1.0", "dumby 2"};
         String[] critUpgrades = {"MFA ~ 2 factor", "less ransom", "dummy 1", "place holder"};
@@ -172,11 +177,169 @@ public class Game {
         this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades));
         this.secUpgrades.setValue(this.PopulateUpgradeList(secUpgrades));
         this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades));
+    }
+
+    private void doBusinessUpgrade() {
+        this.busUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
+
+                    ArrayList<Double> curr = currentFunds.getValue();
+                    Double lastVal = curr.get(curr.size() - 1);
+                    Double newVal = lastVal - (double) cost;
+                    curr.add(newVal);
+                    currentFunds.postValue(curr);
+
+                    switch (cardName) {
+                        case "Boosted Morale":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "pizza party":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
+
+                        case "dummy 1.0":
+                            break;
+
+                        case "dumby 2":
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void doCritUpgrade() {
+        this.critInfoUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
+
+                    ArrayList<Double> curr = currentFunds.getValue();
+                    Double lastVal = curr.get(curr.size() - 1);
+                    Double newVal = lastVal - (double) cost;
+                    curr.add(newVal);
+                    currentFunds.postValue(curr);
+
+                    switch (cardName) {
+                        case "MFA ~ 2 factor":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "less ransom":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
+
+                        case "dummy 1":
+                            break;
+
+                        case "place holder":
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void doSecUpgrade() {
+        this.secUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
+
+                    ArrayList<Double> curr = currentFunds.getValue();
+                    Double lastVal = curr.get(curr.size() - 1);
+                    Double newVal = lastVal - (double) cost;
+                    curr.add(newVal);
+                    currentFunds.postValue(curr);
+
+                    switch (cardName) {
+                        case "training":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "better CBA":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
 
 
 
 
+                        case "exquisite jazz hands":
+                            break;
 
+                        case "killer crocs":
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void doiStateUpgrade() {
+        this.infoStateUpgrades.observe((LifecycleOwner) this, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
+
+                    ArrayList<Double> curr = currentFunds.getValue();
+                    Double lastVal = curr.get(curr.size() - 1);
+                    Double newVal = lastVal - (double) cost;
+                    curr.add(newVal);
+                    currentFunds.postValue(curr);
+
+                    switch (cardName) {
+                        case "Boosted Morale":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "better CBA":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
+
+                        case "transmitting failure":
+                            break;
+
+                        case "area 51 storage":
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     private ArrayList<Upgrade> PopulateUpgradeList(String[] names)
