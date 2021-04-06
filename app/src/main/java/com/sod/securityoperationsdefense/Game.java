@@ -148,7 +148,7 @@ public class Game {
             payR = 10.0;
             payD = 1;
             tDay = 1;
-            attackR = 0.005;
+            attackR = 0.01;
             preventionRs = new HashMap<Integer, Double>();
             preventionRs.put(0, 0.0);
             preventionRs.put(1, 0.0);
@@ -243,13 +243,13 @@ public class Game {
                     int cost = card.getCost();
                     switch (cardName) {
                         case "Open New Location":
-                            // pay rate +5%, attack rate +5%
+                            // pay rate *2, attack rate +10%
                             Double payR = payRate.getValue();
-                            payR += 5.0;
+                            payR *= 2.0;
                             payRate.postValue(payR);
 
                             Double att = attackRate.getValue();
-                            att += 0.005;
+                            att = att * 1.1;
                             attackRate.postValue(att);
                             break;
 
@@ -259,21 +259,27 @@ public class Game {
                             break;
 
                         case "Cut Employee Salaries":
-                            // money +5%, insider attack PR +5%
+                            // money +5%, insider attack PR -10%
                             HashMap<Integer, Double> pr = preventionRate.getValue();
                             Double d = pr.get(3);
-                            d += 5.0;
+                            d -= 0.10;
+                            if (d < 0.0) {
+                                d = 0.0;
+                            }
                             pr.replace(3, d);
                             preventionRate.postValue(pr);
 
-                            spendMoney(-5.0);
+                            Double pR = payRate.getValue();
+                            pR += 5.0;
+                            payRate.postValue(pR);
+
                             break;
 
                         case "Pizza Party":
-                            // insider attack PR +5%
+                            // insider attack PR +10%
                             HashMap<Integer, Double> prev = preventionRate.getValue();
                             Double rate = prev.get(3);
-                            rate += 5.0;
+                            rate += 0.1;
                             prev.replace(3, rate);
                             preventionRate.postValue(prev);
                             break;
@@ -293,38 +299,38 @@ public class Game {
                     int cost = card.getCost();
                     switch (cardName) {
                         case "2-Factor Authentication":
-                            // brute force PR +5%
+                            // brute force PR +10%
                             HashMap<Integer, Double> prev = preventionRate.getValue();
                             Double rate = prev.get(1);
-                            rate += 5.0;
+                            rate += 0.1;
                             prev.replace(1, rate);
                             preventionRate.postValue(prev);
                             break;
 
                         case "Get Latest Software":
-                            // attack rate -4%
+                            // attack rate -3%
                             Double att = attackRate.getValue();
-                            att -= 0.004;
+                            att = att * 0.97;
                             attackRate.postValue(att);
                             break;
 
                         case "Ransomware Prevention":
-                            // ransomware PR +5%
+                            // ransomware PR +20%
                             HashMap<Integer, Double> pr = preventionRate.getValue();
                             Double r = pr.get(4);
-                            r += 5.0;
+                            r += 0.2;
                             pr.replace(4, r);
                             preventionRate.postValue(pr);
                             break;
 
                         case "Data Integrity Validation":
-                            // pay rate -4%, attack rate -5%
+                            // pay rate -5%, attack rate -5%
                             Double payR = payRate.getValue();
-                            payR -= 4.0;
+                            payR = payR * 0.95;
                             payRate.postValue(payR);
 
                             Double a = attackRate.getValue();
-                            a -= 0.005;
+                            a = a * 0.95;
                             attackRate.postValue(a);
                             break;
                     }
@@ -343,10 +349,10 @@ public class Game {
                     int cost = card.getCost();
                     switch (cardName) {
                         case "Phishing Awareness Training":
-                            // phishing PR +5%
+                            // phishing PR +20%
                             HashMap<Integer, Double> pr = preventionRate.getValue();
                             Double r = pr.get(0);
-                            r += 5.0;
+                            r += 0.2;
                             pr.replace(0, r);
                             preventionRate.postValue(pr);
                             break;
@@ -354,27 +360,27 @@ public class Game {
                         case "Monitoring and Logging":
                             // attack rate -10%
                             Double att = attackRate.getValue();
-                            att -= 0.01;
+                            att = att * 0.90;
                             attackRate.postValue(att);
                             break;
 
                         case "Firewalls":
-                            // DDoS PR +5%
+                            // DDoS PR +20%
                             HashMap<Integer, Double> prev = preventionRate.getValue();
                             Double rate = prev.get(2);
-                            rate += 5.0;
+                            rate += 0.2;
                             prev.replace(2, rate);
                             preventionRate.postValue(prev);
                             break;
 
                         case "Hire More Security Personnel":
-                            // money -4%, attack rate -5%
+                            // money -6%, attack rate -5%
                             Double payR = payRate.getValue();
-                            payR -= 4.0;
+                            payR = payR * 0.94;
                             payRate.postValue(payR);
 
                             Double a = attackRate.getValue();
-                            a -= 0.005;
+                            a = a * 0.95;
                             attackRate.postValue(a);
                             break;
                     }
@@ -393,25 +399,25 @@ public class Game {
                     int cost = card.getCost();
                     switch (cardName) {
                         case "Data Excryption":
-                            // man in middle PR +5%
+                            // man in middle PR +10%
                             HashMap<Integer, Double> pr = preventionRate.getValue();
                             Double d = pr.get(5);
-                            d += 5.0;
+                            d += 0.1;
                             pr.replace(5, d);
                             preventionRate.postValue(pr);
                             break;
 
                         case "More Data Storage":
-                            // brute force PR +5%
+                            // brute force PR +10%
                             HashMap<Integer, Double> prev = preventionRate.getValue();
                             Double rate = prev.get(1);
-                            rate += 5.0;
+                            rate += 0.1;
                             prev.replace(1, rate);
                             preventionRate.postValue(prev);
                             break;
 
                         case "More Processing Power":
-                            // payRate +5%
+                            // payRate +$5
                             Double payR = payRate.getValue();
                             payR += 5.0;
                             payRate.postValue(payR);
@@ -421,12 +427,12 @@ public class Game {
                             // man in middle PR +5%, pay rate -5%
                             HashMap<Integer, Double> p = preventionRate.getValue();
                             Double r = p.get(5);
-                            r += 5.0;
+                            r += 0.1;
                             p.replace(5, r);
                             preventionRate.postValue(p);
 
                             Double pay = payRate.getValue();
-                            pay -= 5.0;
+                            pay *= 0.95;
                             payRate.postValue(pay);
                             break;
                     }
