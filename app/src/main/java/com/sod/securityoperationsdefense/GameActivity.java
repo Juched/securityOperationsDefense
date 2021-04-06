@@ -415,8 +415,10 @@ public class GameActivity extends AppCompatActivity {
                         .setNeutralButton("Darn!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // empty for now. all it needs to do is close the alert
+                                paused = !paused;
                             }
                         });
+                paused = !paused;
                 alert.show();
             }
         });

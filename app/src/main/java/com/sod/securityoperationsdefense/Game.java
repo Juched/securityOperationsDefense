@@ -75,13 +75,13 @@ public class Game {
         ArrayList<String> info = new ArrayList<String>();
         info.add("Phishing");
         info.add("Insert phishing def here");
-        info.add("15.0");
+        info.add("15.00");
         attacks.put(0, info);
 
         info = new ArrayList<String>();
         info.add("Brute-force");
         info.add("Insert brute-force def here");
-        info.add("15.0");
+        info.add("15.00");
         attacks.put(1, info);
 
         info = new ArrayList<String>();
@@ -93,19 +93,19 @@ public class Game {
         info = new ArrayList<String>();
         info.add("Insider");
         info.add("Insert insider attack def here");
-        info.add("15.0");
+        info.add("15.00");
         attacks.put(3, info);
 
         info = new ArrayList<String>();
         info.add("Ransomware");
         info.add("Insert ransomeware def here");
-        info.add("15.0");
+        info.add("15.00");
         attacks.put(4, info);
 
         info = new ArrayList<String>();
         info.add("Man-in-the-Middle");
         info.add("Insert MiM def here");
-        info.add("15.0");
+        info.add("15.00");
         attacks.put(5, info);
 
 
@@ -118,7 +118,7 @@ public class Game {
                 currFunds.add(0.0);
             }
             payR = (Double) ObjectSerializer.deserialize(
-                    sharedPreferences.getString("payR", ObjectSerializer.serialize(new Double(0))));
+                    sharedPreferences.getString("payR", ObjectSerializer.serialize(new Double(20))));
             payD = (Integer) ObjectSerializer.deserialize(
                     sharedPreferences.getString("payD", ObjectSerializer.serialize(new Integer(0))));
             tDay = sharedPreferences.getInt("day", new Integer(1));
@@ -171,6 +171,21 @@ public class Game {
         this.doCritUpgrade();
         this.doSecUpgrade();
         this.doiStateUpgrade();
+
+        this.day.observe(this.game,new Observer<Integer>(){
+
+            /**
+             * Called when the data is changed.
+             *
+             * @param integer The new data
+             */
+            @Override
+            public void onChanged(Integer integer) {
+                ArrayList<Double> money = currentFunds.getValue();
+                money.set(money.size()-1,money.get(money.size()-1) + payRate.getValue());
+                currentFunds.postValue(money);
+            }
+        });
     }
 
     private void makeUpgrades()
@@ -191,6 +206,7 @@ public class Game {
         this.busUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
+
                 for (Upgrade card: upgrades) {
                     String cardName = card.getName();
 //                    String desc = card.getDescription();
@@ -390,7 +406,7 @@ public class Game {
                 // subtract money from currentFunds according to attack cost
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
                 double bankAcct = this.currentFunds.getValue().get(moneyIndex);
-                double attCost = bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2));
+                double attCost = bankAcct - Double.parseDouble(this.attackList.get(attackType).get(2));
 
                 ArrayList<Double> money = this.currentFunds.getValue();
                 money.set(moneyIndex, attCost);
@@ -399,6 +415,8 @@ public class Game {
         }
 
     }
+
+
 
     private boolean isAttackPrevented(int attack) {
         double preventionCheck = Math.random();
