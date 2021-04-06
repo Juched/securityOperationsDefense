@@ -54,6 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
                         sharedPreferences.edit().remove("payD").apply();
                         sharedPreferences.edit().remove("day").apply();
                         sharedPreferences.edit().remove("attackR").apply();
+                        sharedPreferences.edit().remove("preventionRs").apply();
                         sharedPreferences.edit().commit();
 
 
