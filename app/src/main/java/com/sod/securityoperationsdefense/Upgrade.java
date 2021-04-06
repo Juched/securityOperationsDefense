@@ -4,9 +4,12 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
-public class Upgrade
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Upgrade implements Serializable
 {
-    private GameActivity context;
+    //private static GameActivity context;
     //private icon;
     private String name;
     private String description;
@@ -16,17 +19,21 @@ public class Upgrade
 
     public static final int MAX_LEVEL = 3;
 
+    private static final ArrayList<Upgrade> allUpgrades = new ArrayList<Upgrade>();
+
     public Upgrade(GameActivity newContext, String theName, String descrip)
     {
-        this.context = newContext;
+        //Upgrade.context = newContext;
         this.name = theName;
         this.description = descrip;
         this.level = 0;
+
+        allUpgrades.add(this);
     }
 
 
 
-    public GameActivity getContext() { return context; }
+    //public GameActivity getContext() { return Upgrade.context; }
     public String getName() { return name; }
     public String getDescription() { return description; }
     public int getLevel() { return level; }
@@ -34,18 +41,13 @@ public class Upgrade
     public int getCost() { return costs; }
     public boolean isUpdated() { return update; }
 
-    // returns the CardView rep of the upgrade
-    public CardView UpgradeCard()
+
+
+
+    public static void reduceAllCosts(double reductionPercentage)
     {
-        CardView upgrade = new CardView(this.context);
 
-        TextView upName = new TextView(this.context);
-        upName.setText(this.name + " Level " + this.level);
-        upgrade.addView(upName);
-
-        return upgrade;
     }
-
 
 
 }

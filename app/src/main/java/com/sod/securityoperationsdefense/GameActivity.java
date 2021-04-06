@@ -380,36 +380,36 @@ public class GameActivity extends AppCompatActivity {
 
         }
 
-        CardView buyUpgrade = root.findViewById(uCards[0]);
+        CardView upgradeListener = root.findViewById(uCards[0]);
 
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+        upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GameActivity.buyUpgrade(root, upgrades, pBars, 0);
             }
         });
 
-        buyUpgrade = root.findViewById(uCards[1]);
+        upgradeListener = root.findViewById(uCards[1]);
 
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+        upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GameActivity.buyUpgrade(root, upgrades, pBars, 1);
             }
         });
 
-        buyUpgrade = root.findViewById(uCards[2]);
+        upgradeListener = root.findViewById(uCards[2]);
 
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+        upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GameActivity.buyUpgrade(root, upgrades, pBars, 2);
             }
         });
 
-        buyUpgrade = root.findViewById(uCards[3]);
+        upgradeListener = root.findViewById(uCards[3]);
 
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+        upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GameActivity.buyUpgrade(root, upgrades, pBars, 3);
