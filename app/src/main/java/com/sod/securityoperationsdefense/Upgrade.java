@@ -12,6 +12,7 @@ public class Upgrade
     private String description;
     private int level;
     private int costs = 15;
+    private boolean update = false;
 
     public static final int MAX_LEVEL = 3;
 
@@ -31,6 +32,7 @@ public class Upgrade
     public int getLevel() { return level; }
     public void levelUp() { level++; }
     public int getCost() { return costs; }
+    public boolean isUpdated() { return update; }
 
     // returns the CardView rep of the upgrade
     public CardView UpgradeCard()
@@ -43,5 +45,7 @@ public class Upgrade
 
         return upgrade;
     }
+
+
 
 }
