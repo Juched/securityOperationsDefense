@@ -125,7 +125,7 @@ public class Game {
             if (tDay == 0) {
                 tDay = 1;
             }
-            attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0.5))));
+            attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0.005))));
             preventionRs = (HashMap<Integer, Double>) ObjectSerializer.deserialize(sharedPreferences.getString("preventionRs", ObjectSerializer.serialize(new HashMap<Integer, Double>())));
             if(preventionRs.size() == 0){
                 preventionRs.put(0, 0.0);
@@ -142,7 +142,7 @@ public class Game {
             payR = 10.0;
             payD = 1;
             tDay = 1;
-            attackR = 0.05;
+            attackR = 0.005;
             preventionRs = new HashMap<Integer, Double>();
             preventionRs.put(0, 0.0);
             preventionRs.put(1, 0.0);

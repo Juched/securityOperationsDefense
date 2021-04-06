@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -76,10 +77,12 @@ public class GameActivity extends AppCompatActivity {
     private SecMeasuresViewModel secMeasuresViewModel;
     private CritInfoViewModel critInfoViewModel;
     private BusAdvancementsViewModel busAdvancementsViewModel;
+    public Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paused = false;
+        mHandler = new Handler();
         //get the shared preferences file manager
         gameClass = new Game(getApplicationContext(), this);
 
@@ -403,10 +406,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onSuccessfulAttack(ArrayList<String> attackInfo) {
-        runOnUiThread(new Runnable() {
+        mHandler.post(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
                 alert.setMessage("Oh no! A " + attackInfo.get(0) + " was perpetrated against your" +
                         " organization! The damages total to $" + attackInfo.get(2) + ".")
                         .setNeutralButton("Darn!", new DialogInterface.OnClickListener() {
@@ -421,10 +424,10 @@ public class GameActivity extends AppCompatActivity {
 
 
     public void onPreventedAttack() {
-        runOnUiThread(new Runnable() {
+        mHandler.post(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
                 alert.setMessage("One of your countermeasures prevented an attack! Great job!")
                         .setNeutralButton("Nice!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
