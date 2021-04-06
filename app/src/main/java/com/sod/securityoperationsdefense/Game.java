@@ -77,37 +77,37 @@ public class Game {
         ArrayList<String> info = new ArrayList<String>();
         info.add("Phishing");
         info.add("Insert phishing def here");
-        info.add("15.00");
+        info.add("0.30");
         attacks.put(0, info);
 
         info = new ArrayList<String>();
         info.add("Brute-force");
         info.add("Insert brute-force def here");
-        info.add("15.00");
+        info.add("0.45");
         attacks.put(1, info);
 
         info = new ArrayList<String>();
         info.add("DDoS");
         info.add("Insert DDoS def here");
-        info.add("15.00");
+        info.add("0.70");
         attacks.put(2, info);
 
         info = new ArrayList<String>();
         info.add("Insider");
         info.add("Insert insider attack def here");
-        info.add("15.00");
+        info.add("0.90");
         attacks.put(3, info);
 
         info = new ArrayList<String>();
         info.add("Ransomware");
         info.add("Insert ransomware def here");
-        info.add("15.00");
+        info.add("0.40");
         attacks.put(4, info);
 
         info = new ArrayList<String>();
         info.add("Man-in-the-Middle");
         info.add("Insert MiM def here");
-        info.add("15.00");
+        info.add("0.20");
         attacks.put(5, info);
 
 
@@ -503,7 +503,13 @@ public class Game {
                 // subtract money from currentFunds according to attack cost
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
                 double bankAcct = this.currentFunds.getValue().get(moneyIndex);
-                double attCost = bankAcct - Double.parseDouble(this.attackList.get(attackType).get(2));
+                double attCost;
+                if(bankAcct < 20){
+                    attCost = bankAcct - 15;
+                }else{
+                    attCost = bankAcct - (bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2)));
+                }
+
 
                 ArrayList<Double> money = this.currentFunds.getValue();
                 money.set(moneyIndex, attCost);
