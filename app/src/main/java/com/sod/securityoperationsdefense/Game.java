@@ -27,7 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import kotlin.text.UStringsKt;
 
 public class Game {
-    private MutableLiveData<ArrayList<Double>> currentFunds;
+    private static MutableLiveData<ArrayList<Double>> currentFunds;
     private MutableLiveData<Integer> payDelay;
     private MutableLiveData<Double> payRate;
     private SharedPreferences sharedPreferences;
@@ -94,9 +94,11 @@ public class Game {
             payD = 1;
             tDay = 1;
         }
-//        }
-        this.currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
-        this.currentFunds.setValue(currFunds);
+
+
+
+        currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
+        currentFunds.setValue(currFunds);
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
@@ -105,10 +107,11 @@ public class Game {
         this.makeUpgrades();
     }
 
+    /* creates */
     private void makeUpgrades()
     {
 
-        // Business upgrades
+        // Business upgrades ~ and all upgrades
         String[] businessUpgrades = {"Boosted Morale", "pizza party", "dummy 1.0", "dumby 2"};
         String[] critUpgrades = {"MFA ~ 2 factor", "less ransom", "dummy 1", "place holder"};
         String[] secUpgrades = {"training", "better CBA", "exquisite jazz hands", "killer crocs"};
@@ -132,9 +135,25 @@ public class Game {
         return allUpgradesInCategory;
     }
 
-    public MutableLiveData<ArrayList<Double>> getCurrentFunds() {
-        return this.currentFunds;
+    public static double getTheCurrentFunds()
+    {
+        ArrayList<Double> money = Game.currentFunds.getValue();
+        return money.get(money.size() - 1);
     }
+
+    public static void spendMoney(double cost)
+    {
+        ArrayList<Double> money = Game.currentFunds.getValue();
+        money.set(money.size() - 1, money.get(money.size() - 1) - cost);
+        Game.currentFunds.setValue(money);
+
+        /* Can add logic here for - $ and if it hits BANKRUPTCY */
+    }
+
+    public MutableLiveData<ArrayList<Double>> getCurrentFunds() {
+        return Game.currentFunds;
+    }
+
     public MutableLiveData<Double> getPayRate() {
         return this.payRate;
     }
@@ -157,12 +176,6 @@ public class Game {
 
     public GameActivity getGameForContext() {
         return game;
-    }
-
-    public void showBusUpgrades()
-    {
-       // TableLayout upgradeTable = (TableLayout) game.findViewById(R.id.upgrades_list);
-
     }
 
     // minor bug in here somewhere
@@ -199,7 +212,7 @@ public class Game {
     public void saveAll(){
         try{
             sharedPreferences.edit().putString("currFunds",
-                    ObjectSerializer.serialize(currentFunds.getValue())).apply();
+                    ObjectSerializer.serialize(Game.currentFunds.getValue())).apply();
             sharedPreferences.edit().putString("payR", ObjectSerializer.serialize(payRate.getValue())).apply();
             sharedPreferences.edit().putString("payD", ObjectSerializer.serialize(payDelay.getValue())).apply();
             sharedPreferences.edit().putInt("day",day.getValue()).apply();

@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
+import com.sod.securityoperationsdefense.GameActivity;
 import com.sod.securityoperationsdefense.R;
 import com.sod.securityoperationsdefense.Upgrade;
 
@@ -32,19 +33,19 @@ public class SecMeasuresFragment extends Fragment {
         secMeasViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sec_measures, container, false);
 
+
         while(gameClass == null)
         {
-            gameClass = SecMeasuresViewModel.getGameClass();
+            gameClass = BusAdvancementsViewModel.getGameClass();
         }
 
         ArrayList<Upgrade> upgrades = gameClass.getSecUpgrades().getValue();
 
         int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+        int[] pBars = new int[]{R.id.upgradeOneProgress, R.id.upgradeTwoProgress, R.id.upgradeThreeProgress, R.id.upgradeFourProgress};
+        int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeTwoCard, R.id.upgradeThreeCard, R.id.upgradeFourCard};
 
-        for(int i = 0; i < upgrades.size(); i++)
-        {
-            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
-        }
+        GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
 
         return root;
     }

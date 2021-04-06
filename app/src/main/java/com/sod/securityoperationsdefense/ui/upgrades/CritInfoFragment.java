@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
+import com.sod.securityoperationsdefense.GameActivity;
 import com.sod.securityoperationsdefense.R;
 import com.sod.securityoperationsdefense.Upgrade;
 
@@ -33,20 +34,18 @@ public class CritInfoFragment extends Fragment {
 
         while(gameClass == null)
         {
-            gameClass = SecMeasuresViewModel.getGameClass();
+            gameClass = BusAdvancementsViewModel.getGameClass();
         }
 
         ArrayList<Upgrade> upgrades = gameClass.getCritInfoUpgrades().getValue();
 
         int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+        int[] pBars = new int[]{R.id.upgradeOneProgress, R.id.upgradeTwoProgress, R.id.upgradeThreeProgress, R.id.upgradeFourProgress};
+        int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeTwoCard, R.id.upgradeThreeCard, R.id.upgradeFourCard};
 
-        for(int i = 0; i < upgrades.size(); i++)
-        {
-            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
-        }
+        GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
 
         return root;
-
     }
 
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -59,18 +58,6 @@ public class CritInfoFragment extends Fragment {
         return root;
     }
 
-    /* */
-    public void changeList(@NonNull LayoutInflater inflater, ViewGroup container, @IdRes int id)
-    {
-        /** /
-        FrameLayout rootLayout = (FrameLayout)findViewById(android.R.id.content);
-        rootLayout.removeViewAt(rootLayout.getChildCount()-1);
-        View.inflate(this, R.layout.overlay_layout, rootLayout);
-        /** /
-        View insertPoint =(View) inflater.inflate(R.layout.upgrade_list, container, false).findViewById(id); // edited.
-        insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-        /**/
-    }
-    /**/
+
 
 }

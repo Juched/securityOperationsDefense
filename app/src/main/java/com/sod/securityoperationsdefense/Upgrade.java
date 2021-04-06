@@ -20,7 +20,7 @@ public class Upgrade
         this.context = newContext;
         this.name = theName;
         this.description = descrip;
-        this.level = 1;
+        this.level = 0;
     }
 
 

@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <androidx.cardview.widget.CardView
+            android:id="@+id/upgradeOneCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
@@ -35,7 +36,12 @@
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
-                android:gravity="center" />
+                android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeOneProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
@@ -43,6 +49,7 @@
             android:layout_weight="1" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/upgradeTwoCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:backgroundTint="@color/white"
@@ -57,7 +64,12 @@
                 android:layout_height="match_parent"
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
-                android:gravity="center" />
+                android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeTwoProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
@@ -79,13 +91,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <androidx.cardview.widget.CardView
+            android:id="@+id/upgradeThreeCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:clickable="true"
             android:backgroundTint="@color/white"
             android:layout_gravity="center"
             android:padding="10dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            >
 
             <TextView
                 android:id="@+id/upgradeThreeName"
@@ -94,12 +108,18 @@
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
                 android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeThreeProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <androidx.cardview.widget.CardView
+            android:id="@+id/upgradeFourCard"
             android:layout_width="140dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
@@ -115,6 +135,11 @@
                 android:text="Boost employee morale"
                 android:textColor="@color/black"
                 android:gravity="center"/>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/upgradeFourProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
         </androidx.cardview.widget.CardView>
         <Space
             android:layout_width="wrap_content"
@@ -123,7 +148,8 @@
 
     </LinearLayout>
 
-   
+
+
 
 </androidx.gridlayout.widget.GridLayout>
 

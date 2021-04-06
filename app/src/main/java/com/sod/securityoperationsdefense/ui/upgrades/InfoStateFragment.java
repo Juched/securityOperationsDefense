@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.sod.securityoperationsdefense.Game;
+import com.sod.securityoperationsdefense.GameActivity;
 import com.sod.securityoperationsdefense.R;
 import com.sod.securityoperationsdefense.Upgrade;
 
@@ -38,59 +39,10 @@ public class InfoStateFragment extends Fragment {
         ArrayList<Upgrade> upgrades = gameClass.getInfoStateUpgrades().getValue();
 
         int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
+        int[] pBars = new int[]{R.id.upgradeOneProgress, R.id.upgradeTwoProgress, R.id.upgradeThreeProgress, R.id.upgradeFourProgress};
+        int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeTwoCard, R.id.upgradeThreeCard, R.id.upgradeFourCard};
 
-        for(int i = 0; i < upgrades.size(); i++)
-        {
-            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
-        }
-
-//        while(gameClass == null)
-//        {
-//            gameClass = InfoStateViewModel.getGameClass();
-//        }
-//
-//        gameClass = InfoStateViewModel.getGameClass();
-//        TableLayout upgrades = container.findViewById(R.id.info_upgrades_list);
-//        upgrades.removeAllViewsInLayout();
-//
-//        gameClass.getInfoStateUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
-//            @Override
-//            public void onChanged(ArrayList<CardView> cardViews) {
-//                // Only four cards...
-//                for(int i = 0; i < cardViews.size(); i+=2)
-//                {
-//                    try{
-//                        TableRow newRow = new TableRow(gameClass.getGameForContext());
-//
-//                        newRow.addView(cardViews.get(i));
-//                        newRow.addView(cardViews.get(i+1));
-//
-//                        upgrades.addView(newRow);
-//                    } catch (Exception e) {
-//
-//                    }
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//        ArrayList<CardView> cardViews = gameClass.getInfoStateUpgrades().getValue();
-//        for(int i = 0; i < cardViews.size(); i+=2)
-//        {
-//            try{
-//                TableRow newRow = new TableRow(gameClass.getGameForContext());
-//
-//                newRow.addView(cardViews.get(i));
-//                newRow.addView(cardViews.get(i+1));
-//
-//                upgrades.addView(newRow);
-//            } catch (Exception e) {
-//
-//            }
-//        }
-//        //for(int i = 0; i < gameClass.)
+        GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
 
         return root;
     }

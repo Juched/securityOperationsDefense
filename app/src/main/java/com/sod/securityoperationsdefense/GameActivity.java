@@ -42,6 +42,7 @@ import com.sod.securityoperationsdefense.ui.upgrades.InfoStateViewModel;
 import com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresFragment;
 import com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresViewModel;
 
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -360,14 +361,69 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public static void updateUpgrades(View root, ArrayList<Upgrade> upgrades, int [] pBars, int upCount)
+    public static void manageUpgrades(View root, ArrayList<Upgrade> upgrades, int[] ids, int[] pBars, int[] uCards)
+    {
+        for(int i = 0; i < upgrades.size(); i++)
+        {
+            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
+            LinearProgressIndicator upgradeProgress = (LinearProgressIndicator) root.findViewById(pBars[i]);
+            upgradeProgress.setMax(Upgrade.MAX_LEVEL);
+            upgradeProgress.setMin(0);
+            upgradeProgress.setProgressCompat(upgrades.get(i).getLevel(), true);
+
+        }
+
+        CardView buyUpgrade = root.findViewById(uCards[0]);
+
+        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameActivity.buyUpgrade(root, upgrades, pBars, 0);
+            }
+        });
+
+        buyUpgrade = root.findViewById(uCards[1]);
+
+        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameActivity.buyUpgrade(root, upgrades, pBars, 1);
+            }
+        });
+
+        buyUpgrade = root.findViewById(uCards[2]);
+
+        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameActivity.buyUpgrade(root, upgrades, pBars, 2);
+            }
+        });
+
+        buyUpgrade = root.findViewById(uCards[3]);
+
+        buyUpgrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameActivity.buyUpgrade(root, upgrades, pBars, 3);
+            }
+        });
+    }
+
+    public static void buyUpgrade(View root, ArrayList<Upgrade> upgrades, int [] pBars, int upCount)
     {
         Upgrade u = upgrades.get(upCount);
 
-        u.levelUp(); // should call the observer to change the logic for
+        if(Game.getTheCurrentFunds() >= u.getCost() && u.getLevel() < Upgrade.MAX_LEVEL)
+        {
+            Game.spendMoney(u.getCost()); // spend the money
+            u.levelUp(); // should call the observer to change the logic for
 
-        LinearProgressIndicator upgradeProgress = (LinearProgressIndicator) root.findViewById(pBars[upCount]);
-        upgradeProgress.setProgressCompat(upgrades.get(upCount).getLevel(), true);
+            LinearProgressIndicator upgradeProgress = (LinearProgressIndicator) root.findViewById(pBars[upCount]);
+            upgradeProgress.setProgressCompat(upgrades.get(upCount).getLevel(), true);
+        }
+
+
     }
 
 

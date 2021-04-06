@@ -51,53 +51,9 @@ public class BusAdvancementsFragment extends Fragment {
 
         int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
         int[] pBars = new int[]{R.id.upgradeOneProgress, R.id.upgradeTwoProgress, R.id.upgradeThreeProgress, R.id.upgradeFourProgress};
-        int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeOneCard, R.id.upgradeOneCard, R.id.upgradeOneCard};
+        int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeTwoCard, R.id.upgradeThreeCard, R.id.upgradeFourCard};
 
-        for(int i = 0; i < upgrades.size(); i++)
-        {
-            ((TextView) root.findViewById(ids[i])).setText(String.format("%s\nCost: $%d", upgrades.get(i).getName(), upgrades.get(i).getCost()));
-            LinearProgressIndicator upgradeProgress = (LinearProgressIndicator) root.findViewById(pBars[i]);
-            upgradeProgress.setMax(Upgrade.MAX_LEVEL);
-            upgradeProgress.setMin(0);
-            upgradeProgress.setProgressCompat(upgrades.get(i).getLevel(), true);
-
-        }
-
-        CardView buyUpgrade = root.findViewById(R.id.upgradeOneCard);
-
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameActivity.updateUpgrades(root, upgrades, pBars, 0);
-            }
-        });
-
-        buyUpgrade = root.findViewById(R.id.upgradeTwoCard);
-
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameActivity.updateUpgrades(root, upgrades, pBars, 1);
-            }
-        });
-
-        buyUpgrade = root.findViewById(R.id.upgradeThreeCard);
-
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameActivity.updateUpgrades(root, upgrades, pBars, 2);
-            }
-        });
-
-        buyUpgrade = root.findViewById(R.id.upgradeFourCard);
-
-        buyUpgrade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameActivity.updateUpgrades(root, upgrades, pBars, 3);
-            }
-        });
+        GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
 
         return root;
     }
