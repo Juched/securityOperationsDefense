@@ -212,20 +212,40 @@ public class Game {
             }
         });
     }
+
     /* creates */
-    private void makeUpgrades()
+    public void makeUpgrades()
     {
 
         // All possible upgrades
         String[] businessUpgrades = {"Open New Location", "Cost Benefit Analysis", "Cut Employee Salaries", "Pizza Party"};
         String[] critUpgrades = {"2-Factor Authentication", "Get Latest Software", "Ransomware Prevention", "Data Integrity Validation"};
         String[] secUpgrades = {"Phishing Awareness Training", "Monitoring and Logging", "Firewalls", "Hire More Security Personnel"};
-        String[] iStateUpgrades = {"Data Excryption", "More Data Storage", "More Processing Power", "More Secure Transmission"};
+        String[] iStateUpgrades = {"Data Ecryption", "More Data Storage", "More Processing Power", "More Secure Transmission"};
 
-        this.busUpgrades.setValue(this.PopulateUpgradeList(businessUpgrades));
-        this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades));
-        this.secUpgrades.setValue(this.PopulateUpgradeList(secUpgrades));
-        this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades));
+        String[] busDescrip = {"Open a new Location, should increase revenue, but might increase the risk attacks",
+                "Conduct your very own Cost-Benefit-Analysis that improves your analysis of attacks, decrease costs of other upgrades, and allows you to pass your security certification exams.",
+                "Reduce the salary of all of your employees. While might make costs less per day (and increase revenue), disgruntled employees are more prone to falling for attacks!",
+                "Boost Employee morale with a Pizza Party ® at no cost to them, only to you. Reduces the chance that an internal employee sells their soul to espionage."};
+        String[] critDescrip = {"Makes it harder for nasty coworkers to steal your company's assets. Purchase for top of the line MFA!",
+                "Computers running slow? Update your anti-virus software for better detection and prevention of Trojans and other malicious code... Which will of course make your computers run faster... Trust us, we're the experts!",
+                "Better protection against Ransomware attack by storing secure backups of your data, only accessible to high level admins of the firm.",
+                "Ensures that business if booming "};
+        String[] secDescrip = {"Are your employees still falling for pHiShInG threats? Buy this protection for better training against phishing... WHAT?! No THIS isn't a scam...",
+                "Upgrade this to increase pattern recognition on the Network. I always wondered what ",
+                "Increase Network protection by adding firewalls, updating firewall tables, and making you DMZ Beefier",
+                "Hire More Security Personnel"};
+        String[] iStateDescrip = {"It's simple, encrypt where you can. Upgrade this to use better encryption on more of your assets. Decreases success rates of attacks.",
+                "More Data Storage",
+                "More Processing Power",
+                "Add even MORE c"};
+
+
+
+        this.busUpgrades.setValue(this.PopulateUpgradeList(businessUpgrades, busDescrip));
+        this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades, critDescrip));
+        this.secUpgrades.setValue(this.PopulateUpgradeList(secUpgrades, secDescrip));
+        this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades, iStateDescrip));
     }
 
     /*
@@ -441,12 +461,12 @@ public class Game {
         });
     }
 
-    private ArrayList<Upgrade> PopulateUpgradeList(String[] names)
+    private ArrayList<Upgrade> PopulateUpgradeList(String[] names, String[] descriptions)
     {
         ArrayList<Upgrade> allUpgradesInCategory = new ArrayList<Upgrade>();
-        for(String name : names)
+        for(int i = 0; i<names.length && i<descriptions.length; i++)
         {
-            allUpgradesInCategory.add(new Upgrade(this.game, name, ""));
+            allUpgradesInCategory.add(new Upgrade(this.game, names[i], descriptions[i]));
         }
         return allUpgradesInCategory;
     }
@@ -498,6 +518,8 @@ public class Game {
     public void updater(){
         double attackTest = Math.random();
         if (attackTest <=  this.attackRate.getValue()) {
+
+            /* TODO: should be changed for relative attack rates (prolly classes ~ attacks) */
             int attackType = ThreadLocalRandom.current().nextInt(0, this.noOfAttacks);
 
             // check if the attack will be prevented by an upgrade, and if so, pass that to ui

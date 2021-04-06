@@ -61,13 +61,16 @@ public class BusAdvancementsFragment extends Fragment {
              */
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
-                GameActivity.displayUpgrades(root, upgrades, ids, pBars);
+                gameClass.getGameForContext().displayUpgrades(root, upgrades, ids, pBars);
             }
         });
 
 
 
-        GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
+        gameClass.getGameForContext().manageUpgrades(root,upgrades,ids,pBars,uCards);
+        //((TextView) root.findViewById(R.id.upgrade_description)).setVisibility(View.GONE);
+
+        this.gameClass.getGameForContext().hideDescription();
 
         return root;
     }

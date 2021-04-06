@@ -29,9 +29,11 @@ public class Upgrade implements Serializable
         this.description = descrip;
         this.level = 0;
 
+        int localStart = 37;
+
         Random rando = new Random();
 
-        this.costs = Math.abs(rando.nextInt()%16) + 8;
+        this.costs = Math.abs(rando.nextInt()%localStart) + (localStart/2);
 
         allUpgrades.add(this);
     }
@@ -47,7 +49,7 @@ public class Upgrade implements Serializable
         level++;
 
 
-        costs *= Math.pow(15, level);
+        costs += Math.pow(15, level + 1);
 
         Random rando = new Random();
         costs += (rando.nextInt()%15) + 7 - (rando.nextInt()%20);
