@@ -216,7 +216,7 @@ public class Game {
     private void makeUpgrades()
     {
 
-        // Business upgrades ~ and all upgrades
+        // All possible upgrades
         String[] businessUpgrades = {"Open New Location", "Cost Benefit Analysis", "Cut Employee Salaries", "Pizza Party"};
         String[] critUpgrades = {"2-Factor Authentication", "Get Latest Software", "Ransomware Prevention", "Data Integrity Validation"};
         String[] secUpgrades = {"Phishing Awareness Training", "Monitoring and Logging", "Firewalls", "Hire More Security Personnel"};
@@ -234,6 +234,7 @@ public class Game {
     *    2. compare cards to determine which cards have changed
     */
     private void doBusinessUpgrade() {
+        // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.busUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
@@ -258,19 +259,14 @@ public class Game {
                             break;
 
                         case "Cut Employee Salaries":
-                            // money +5%
-                            // insider attack PR +5%
+                            // money +5%, insider attack PR +5%
                             HashMap<Integer, Double> pr = preventionRate.getValue();
                             Double d = pr.get(3);
                             d += 5.0;
                             pr.replace(3, d);
                             preventionRate.postValue(pr);
 
-                            ArrayList<Double> curr = currentFunds.getValue();
-                            Double lastVal = curr.get(curr.size() - 1);
-                            Double newVal = lastVal + lastVal*0.05;
-                            curr.set(curr.size()-1, newVal);
-                            currentFunds.postValue(curr);
+                            spendMoney(-5.0);
                             break;
 
                         case "Pizza Party":
@@ -288,6 +284,7 @@ public class Game {
     }
 
     private void doCritUpgrade() {
+        // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.critInfoUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
@@ -337,6 +334,7 @@ public class Game {
     }
 
     private void doSecUpgrade() {
+        // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.secUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
@@ -370,7 +368,7 @@ public class Game {
                             break;
 
                         case "Hire More Security Personnel":
-                            // pay rate -4%, attack rate -5%
+                            // money -4%, attack rate -5%
                             Double payR = payRate.getValue();
                             payR -= 4.0;
                             payRate.postValue(payR);
@@ -386,6 +384,7 @@ public class Game {
     }
 
     private void doiStateUpgrade() {
+        // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.infoStateUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {

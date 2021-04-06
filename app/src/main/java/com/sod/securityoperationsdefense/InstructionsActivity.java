@@ -17,11 +17,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class InstructionsActivity extends AppCompatActivity {
     @Override
+    // define what happens when the instruction screen is loaded into view
     protected void onCreate(Bundle savedInstanceState) {
+        // display the correct layout and load all of the saved state info
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = this.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_instructions);
 
+        // define what happens when the arrow is clicked - return to the settings
+        // main page (since the instructions can only be accessed from settings)
         ImageView arrow = findViewById(R.id.instArrow);
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
