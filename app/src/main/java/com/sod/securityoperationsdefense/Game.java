@@ -125,7 +125,7 @@ public class Game {
             if (tDay == 0) {
                 tDay = 1;
             }
-            attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0))));
+            attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0.5))));
             preventionRs = (HashMap<Integer, Double>) ObjectSerializer.deserialize(sharedPreferences.getString("preventionRs", ObjectSerializer.serialize(new HashMap<Integer, Double>())));
             if(preventionRs.size() == 0){
                 preventionRs.put(0, 0.0);
@@ -142,7 +142,7 @@ public class Game {
             payR = 10.0;
             payD = 1;
             tDay = 1;
-            attackR = 0.01;
+            attackR = 0.05;
             preventionRs = new HashMap<Integer, Double>();
             preventionRs.put(0, 0.0);
             preventionRs.put(1, 0.0);
@@ -157,11 +157,11 @@ public class Game {
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
-        this.attackRate = new MutableLiveData<>(attackR);
-        this.attackRate = new MutableLiveData<Double>(0.01);
+        this.attackRate = new MutableLiveData<Double>(attackR);
+
         this.attackList = attacks;
         this.noOfAttacks = attacks.size();
-        this.attackRate = new MutableLiveData<Double>(attackR);
+
         this.preventionRate = new MutableLiveData<HashMap<Integer, Double>>(preventionRs);
 
         this.makeUpgrades();
@@ -197,11 +197,7 @@ public class Game {
 //                    int level = card.getLevel();
                     int cost = card.getCost();
 
-                    ArrayList<Double> curr = currentFunds.getValue();
-                    Double lastVal = curr.get(curr.size() - 1);
-                    Double newVal = lastVal - (double) cost;
-                    curr.add(newVal);
-                    currentFunds.postValue(curr);
+
 
                     switch (cardName) {
                         case "Boosted Morale":
@@ -237,11 +233,7 @@ public class Game {
 //                    int level = card.getLevel();
                     int cost = card.getCost();
 
-                    ArrayList<Double> curr = currentFunds.getValue();
-                    Double lastVal = curr.get(curr.size() - 1);
-                    Double newVal = lastVal - (double) cost;
-                    curr.add(newVal);
-                    currentFunds.postValue(curr);
+
 
                     switch (cardName) {
                         case "MFA ~ 2 factor":
@@ -277,11 +269,7 @@ public class Game {
 //                    int level = card.getLevel();
                     int cost = card.getCost();
 
-                    ArrayList<Double> curr = currentFunds.getValue();
-                    Double lastVal = curr.get(curr.size() - 1);
-                    Double newVal = lastVal - (double) cost;
-                    curr.add(newVal);
-                    currentFunds.postValue(curr);
+
 
                     switch (cardName) {
                         case "training":
@@ -320,11 +308,7 @@ public class Game {
 //                    int level = card.getLevel();
                     int cost = card.getCost();
 
-                    ArrayList<Double> curr = currentFunds.getValue();
-                    Double lastVal = curr.get(curr.size() - 1);
-                    Double newVal = lastVal - (double) cost;
-                    curr.add(newVal);
-                    currentFunds.postValue(curr);
+
 
                     switch (cardName) {
                         case "Boosted Morale":
@@ -407,7 +391,10 @@ public class Game {
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
                 double bankAcct = this.currentFunds.getValue().get(moneyIndex);
                 double attCost = bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2));
-                this.currentFunds.getValue().set(moneyIndex, attCost);
+
+                ArrayList<Double> money = this.currentFunds.getValue();
+                money.set(moneyIndex, attCost);
+                this.currentFunds.postValue(money);
             }
         }
 
