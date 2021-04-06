@@ -31,7 +31,7 @@ public class Upgrade implements Serializable
 
         Random rando = new Random();
 
-        this.costs = (rando.nextInt()%16) + 8;
+        this.costs = Math.abs(rando.nextInt()%16) + 8;
 
         allUpgrades.add(this);
     }
@@ -59,8 +59,7 @@ public class Upgrade implements Serializable
     private void reduceCost(double reductionPercentage)
     {
         // 15 % reduction ==> 1 -> .85 and some extra flavor
-        // Base cost is NOT affected
-        this.costs *= Math.pow(1-reductionPercentage, this.level);
+        this.costs *= Math.pow(1-reductionPercentage, this.level + 1);
     }
 
     public static void reduceAllCosts(double reductionPercentage)

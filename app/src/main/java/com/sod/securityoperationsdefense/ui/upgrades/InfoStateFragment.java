@@ -13,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.sod.securityoperationsdefense.Game;
 import com.sod.securityoperationsdefense.GameActivity;
 import com.sod.securityoperationsdefense.R;
@@ -36,11 +38,24 @@ public class InfoStateFragment extends Fragment {
             gameClass = BusAdvancementsViewModel.getGameClass();
         }
 
-        ArrayList<Upgrade> upgrades = gameClass.getInfoStateUpgrades().getValue();
+        MutableLiveData<ArrayList<Upgrade>> upgrades = gameClass.getInfoStateUpgrades();
 
         int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
         int[] pBars = new int[]{R.id.upgradeOneProgress, R.id.upgradeTwoProgress, R.id.upgradeThreeProgress, R.id.upgradeFourProgress};
         int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeTwoCard, R.id.upgradeThreeCard, R.id.upgradeFourCard};
+
+        upgrades.observe(this.gameClass.getGameForContext(),new Observer<ArrayList<Upgrade>>() {
+            /**
+             * Called when the data is changed.
+             *
+             * @param upgrades The new data
+             */
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                GameActivity.displayUpgrades(root, upgrades, ids, pBars);
+
+            }
+        });
 
         GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
 

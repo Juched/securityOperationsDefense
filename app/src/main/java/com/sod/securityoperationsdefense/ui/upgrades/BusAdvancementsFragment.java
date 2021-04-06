@@ -47,11 +47,25 @@ public class BusAdvancementsFragment extends Fragment {
             gameClass = BusAdvancementsViewModel.getGameClass();
         }
 
-        ArrayList<Upgrade> upgrades = gameClass.getBusUpgrades().getValue();
+        MutableLiveData<ArrayList<Upgrade>> upgrades = gameClass.getBusUpgrades();
 
         int[] ids = new int[]{R.id.upgradeOneName, R.id.upgradeTwoName, R.id.upgradeThreeName, R.id.upgradeFourName};
         int[] pBars = new int[]{R.id.upgradeOneProgress, R.id.upgradeTwoProgress, R.id.upgradeThreeProgress, R.id.upgradeFourProgress};
         int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeTwoCard, R.id.upgradeThreeCard, R.id.upgradeFourCard};
+
+        gameClass.getBusUpgrades().observe(this.gameClass.getGameForContext(),new Observer<ArrayList<Upgrade>>() {
+            /**
+             * Called when the data is changed.
+             *
+             * @param upgrades The new data
+             */
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                GameActivity.displayUpgrades(root, upgrades, ids, pBars);
+            }
+        });
+
+
 
         GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
 
@@ -66,7 +80,6 @@ public class BusAdvancementsFragment extends Fragment {
         busAdvViewModel = new ViewModelProvider(this).get(BusAdvancementsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bus_adv, container, false);
 
-//
         return root;
     }
 

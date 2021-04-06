@@ -245,7 +245,7 @@ public class Game {
 
                         case "Cost Benefit Analysis":
                             // upgrade cost -5%
-                            // Upgrade reduceAllCosts(0.05);
+                            Upgrade.reduceAllCosts(0.05);
                             break;
 
                         case "Cut Employee Salaries":
@@ -443,7 +443,7 @@ public class Game {
     {
         ArrayList<Double> money = Game.currentFunds.getValue();
         money.set(money.size() - 1, money.get(money.size() - 1) - cost);
-        Game.currentFunds.setValue(money);
+        Game.currentFunds.postValue(money);
 
         /* Can add logic here for - $ and if it hits BANKRUPTCY */
     }

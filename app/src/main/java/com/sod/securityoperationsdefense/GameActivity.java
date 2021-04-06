@@ -368,7 +368,8 @@ public class GameActivity extends AppCompatActivity {
         infoStateViewModel.setGameClass(gameClass);
     }
 
-    public static void manageUpgrades(View root, ArrayList<Upgrade> upgrades, int[] ids, int[] pBars, int[] uCards)
+
+    public static void displayUpgrades(View root, ArrayList<Upgrade> upgrades, int[] ids, int[] pBars)
     {
         for(int i = 0; i < upgrades.size(); i++)
         {
@@ -379,13 +380,20 @@ public class GameActivity extends AppCompatActivity {
             upgradeProgress.setProgressCompat(upgrades.get(i).getLevel(), true);
 
         }
+    }
+
+    public static void manageUpgrades(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int[] ids, int[] pBars, int[] uCards)
+    {
+        ArrayList<Upgrade> upgrades = upgradeList.getValue();
+
+        displayUpgrades(root, upgrades, ids, pBars);
 
         CardView upgradeListener = root.findViewById(uCards[0]);
 
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgrades, pBars, 0);
+                GameActivity.buyUpgrade(root, upgradeList, pBars, 0);
             }
         });
 
@@ -394,7 +402,7 @@ public class GameActivity extends AppCompatActivity {
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgrades, pBars, 1);
+                GameActivity.buyUpgrade(root, upgradeList, pBars, 1);
             }
         });
 
@@ -403,7 +411,7 @@ public class GameActivity extends AppCompatActivity {
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgrades, pBars, 2);
+                GameActivity.buyUpgrade(root, upgradeList, pBars, 2);
             }
         });
 
@@ -412,19 +420,21 @@ public class GameActivity extends AppCompatActivity {
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgrades, pBars, 3);
+                GameActivity.buyUpgrade(root, upgradeList, pBars, 3);
             }
         });
     }
 
-    public static void buyUpgrade(View root, ArrayList<Upgrade> upgrades, int [] pBars, int upCount)
+    public static void buyUpgrade(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int [] pBars, int upCount)
     {
+        ArrayList<Upgrade> upgrades = upgradeList.getValue();
         Upgrade u = upgrades.get(upCount);
 
         if(Game.getTheCurrentFunds() >= u.getCost() && u.getLevel() < Upgrade.MAX_LEVEL)
         {
             Game.spendMoney(u.getCost()); // spend the money
             u.levelUp(); // should call the observer to change the logic for
+            upgradeList.postValue(upgrades);
 
             LinearProgressIndicator upgradeProgress = (LinearProgressIndicator) root.findViewById(pBars[upCount]);
             upgradeProgress.setProgressCompat(upgrades.get(upCount).getLevel(), true);
