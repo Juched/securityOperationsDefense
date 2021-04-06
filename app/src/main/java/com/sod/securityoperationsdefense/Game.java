@@ -59,10 +59,11 @@ public class Game {
         int payD;
         int tDay;
 
-        this.busUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
-        this.critInfoUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
-        this.infoStateUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
-        this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+        ArrayList<Upgrade> mbusUpgrades;
+        ArrayList<Upgrade> mcritUpgrades;
+        ArrayList<Upgrade> minfoUpgrades;
+        ArrayList<Upgrade> msecUpgrades;
+
 
         // upgrades lists
         HashMap<String, ArrayList<CardView>> upgrades; // does not need saved
@@ -87,7 +88,7 @@ public class Game {
         info = new ArrayList<String>();
         info.add("DDoS");
         info.add("Insert DDoS def here");
-        info.add("15.0");
+        info.add("15.00");
         attacks.put(2, info);
 
         info = new ArrayList<String>();
@@ -135,6 +136,10 @@ public class Game {
                 preventionRs.put(4, 0.0);
                 preventionRs.put(5, 0.0);
             }
+            mbusUpgrades = (ArrayList<Upgrade>) ObjectSerializer.deserialize(sharedPreferences.getString("busUpgrades", ObjectSerializer.serialize(new ArrayList<Upgrade>())));
+            mcritUpgrades = (ArrayList<Upgrade>) ObjectSerializer.deserialize(sharedPreferences.getString("critUpgrades", ObjectSerializer.serialize(new ArrayList<Upgrade>())));
+            minfoUpgrades = (ArrayList<Upgrade>) ObjectSerializer.deserialize(sharedPreferences.getString("infoUpgrades", ObjectSerializer.serialize(new ArrayList<Upgrade>())));
+            msecUpgrades = (ArrayList<Upgrade>) ObjectSerializer.deserialize(sharedPreferences.getString("secUpgrades", ObjectSerializer.serialize(new ArrayList<Upgrade>())));
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
             currFunds = new ArrayList<Double>(1);
@@ -150,10 +155,25 @@ public class Game {
             preventionRs.put(3, 0.0);
             preventionRs.put(4, 0.0);
             preventionRs.put(5, 0.0);
+            mbusUpgrades = new ArrayList<Upgrade>();
+            minfoUpgrades = new ArrayList<Upgrade>();
+            mcritUpgrades = new ArrayList<Upgrade>();
+            msecUpgrades = new ArrayList<Upgrade>();
 
         }
 
-
+        if(mbusUpgrades.size() == 0){
+            this.busUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+            this.critInfoUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+            this.infoStateUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+            this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
+            this.makeUpgrades();
+        }else {
+            this.busUpgrades = new MutableLiveData<ArrayList<Upgrade>>(mbusUpgrades);
+            this.critInfoUpgrades = new MutableLiveData<ArrayList<Upgrade>>(mcritUpgrades);
+            this.infoStateUpgrades = new MutableLiveData<ArrayList<Upgrade>>(minfoUpgrades);
+            this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>(msecUpgrades);
+        }
 
         currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
         currentFunds.setValue(currFunds);
@@ -169,7 +189,6 @@ public class Game {
 
         this.preventionRate = new MutableLiveData<HashMap<Integer, Double>>(preventionRs);
 
-        this.makeUpgrades();
 
         // observer methods for upgrades
         this.doBusinessUpgrade();
@@ -517,6 +536,10 @@ public class Game {
             sharedPreferences.edit().putInt("day",day.getValue()).apply();
             sharedPreferences.edit().putString("attackR",ObjectSerializer.serialize(attackRate.getValue())).apply();
             sharedPreferences.edit().putString("preventionRs", ObjectSerializer.serialize(preventionRate.getValue())).apply();
+            sharedPreferences.edit().putString("busUpgrades", ObjectSerializer.serialize(busUpgrades.getValue())).apply();
+            sharedPreferences.edit().putString("critUpgrades", ObjectSerializer.serialize(critInfoUpgrades.getValue())).apply();
+            sharedPreferences.edit().putString("secUpgrades", ObjectSerializer.serialize(secUpgrades.getValue())).apply();
+            sharedPreferences.edit().putString("infoUpgrades", ObjectSerializer.serialize(infoStateUpgrades.getValue())).apply();
             sharedPreferences.edit().commit();
 
         } catch (IOException e) {
