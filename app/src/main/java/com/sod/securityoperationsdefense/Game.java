@@ -10,6 +10,7 @@ import android.widget.TableLayout;
 
 
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+import androidx.lifecycle.Observer;
 import kotlin.text.UStringsKt;
 
 public class Game {
@@ -48,8 +50,6 @@ public class Game {
     // contains att. prevention rates. values of the keys correspond to the attack in the above list
     public MutableLiveData<HashMap<Integer, Double>> preventionRate;
 
-
-
     public Game(Context c, GameActivity game) {
         this.game = game;
         sharedPreferences = c.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
@@ -65,11 +65,50 @@ public class Game {
         this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
 
         // upgrades lists
-        HashMap<String, ArrayList<CardView>> upgrades;
+        HashMap<String, ArrayList<CardView>> upgrades; // does not need saved
 
-        // TODO: fill these
-        double attackR = 1;
-        HashMap<Integer, Double> preventionRs;
+        double attackR; // needs to be saved
+        HashMap<Integer, Double> preventionRs; // needs to be saved
+
+        // create and populate the attack map
+        HashMap<Integer,ArrayList<String>> attacks = new HashMap<Integer,ArrayList<String>>(); // does not need saved
+        ArrayList<String> info = new ArrayList<String>();
+        info.add("Phishing");
+        info.add("Insert phishing def here");
+        info.add("15.00");
+        attacks.put(0, info);
+
+        info = new ArrayList<String>();
+        info.add("Brute-force");
+        info.add("Insert brute-force def here");
+        info.add("15.00");
+        attacks.put(1, info);
+
+        info = new ArrayList<String>();
+        info.add("DDoS");
+        info.add("Insert DDoS def here");
+        info.add("15.0");
+        attacks.put(2, info);
+
+        info = new ArrayList<String>();
+        info.add("Insider");
+        info.add("Insert insider attack def here");
+        info.add("15.00");
+        attacks.put(3, info);
+
+        info = new ArrayList<String>();
+        info.add("Ransomware");
+        info.add("Insert ransomeware def here");
+        info.add("15.00");
+        attacks.put(4, info);
+
+        info = new ArrayList<String>();
+        info.add("Man-in-the-Middle");
+        info.add("Insert MiM def here");
+        info.add("15.00");
+        attacks.put(5, info);
+
+
 
 
         try {
@@ -79,12 +118,22 @@ public class Game {
                 currFunds.add(0.0);
             }
             payR = (Double) ObjectSerializer.deserialize(
-                    sharedPreferences.getString("payR", ObjectSerializer.serialize(new Double(0))));
+                    sharedPreferences.getString("payR", ObjectSerializer.serialize(new Double(20))));
             payD = (Integer) ObjectSerializer.deserialize(
                     sharedPreferences.getString("payD", ObjectSerializer.serialize(new Integer(0))));
             tDay = sharedPreferences.getInt("day", new Integer(1));
             if (tDay == 0) {
                 tDay = 1;
+            }
+            attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0.005))));
+            preventionRs = (HashMap<Integer, Double>) ObjectSerializer.deserialize(sharedPreferences.getString("preventionRs", ObjectSerializer.serialize(new HashMap<Integer, Double>())));
+            if(preventionRs.size() == 0){
+                preventionRs.put(0, 0.0);
+                preventionRs.put(1, 0.0);
+                preventionRs.put(2, 0.0);
+                preventionRs.put(3, 0.0);
+                preventionRs.put(4, 0.0);
+                preventionRs.put(5, 0.0);
             }
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
@@ -93,20 +142,56 @@ public class Game {
             payR = 10.0;
             payD = 1;
             tDay = 1;
+            attackR = 0.005;
+            preventionRs = new HashMap<Integer, Double>();
+            preventionRs.put(0, 0.0);
+            preventionRs.put(1, 0.0);
+            preventionRs.put(2, 0.0);
+            preventionRs.put(3, 0.0);
+            preventionRs.put(4, 0.0);
+            preventionRs.put(5, 0.0);
+
         }
 
 
 
         currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
         currentFunds.setValue(currFunds);
+        this.currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
+        this.currentFunds.setValue(currFunds);
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
-        this.attackRate = new MutableLiveData<>(attackR);
+        this.attackRate = new MutableLiveData<Double>(attackR);
+
+        this.attackList = attacks;
+        this.noOfAttacks = attacks.size();
+
+        this.preventionRate = new MutableLiveData<HashMap<Integer, Double>>(preventionRs);
 
         this.makeUpgrades();
-    }
 
+        // observer methods for upgrades
+        this.doBusinessUpgrade();
+        this.doCritUpgrade();
+        this.doSecUpgrade();
+        this.doiStateUpgrade();
+
+        this.day.observe(this.game,new Observer<Integer>(){
+
+            /**
+             * Called when the data is changed.
+             *
+             * @param integer The new data
+             */
+            @Override
+            public void onChanged(Integer integer) {
+                ArrayList<Double> money = currentFunds.getValue();
+                money.set(money.size()-1,money.get(money.size()-1) + payRate.getValue());
+                currentFunds.postValue(money);
+            }
+        });
+    }
     /* creates */
     private void makeUpgrades()
     {
@@ -121,8 +206,154 @@ public class Game {
         this.critInfoUpgrades.setValue(this.PopulateUpgradeList(critUpgrades));
         this.secUpgrades.setValue(this.PopulateUpgradeList(secUpgrades));
         this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades));
+    }
+
+    private void doBusinessUpgrade() {
+        this.busUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
 
 
+
+                    switch (cardName) {
+                        case "Boosted Morale":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "pizza party":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
+
+                        case "dummy 1.0":
+                            break;
+
+                        case "dumby 2":
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void doCritUpgrade() {
+        this.critInfoUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
+
+
+
+                    switch (cardName) {
+                        case "MFA ~ 2 factor":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "less ransom":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
+
+                        case "dummy 1":
+                            break;
+
+                        case "place holder":
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void doSecUpgrade() {
+        this.secUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
+
+
+
+                    switch (cardName) {
+                        case "training":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "better CBA":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
+
+
+
+
+                        case "exquisite jazz hands":
+                            break;
+
+                        case "killer crocs":
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void doiStateUpgrade() {
+        this.infoStateUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
+            @Override
+            public void onChanged(ArrayList<Upgrade> upgrades) {
+                for (Upgrade card: upgrades) {
+                    String cardName = card.getName();
+//                    String desc = card.getDescription();
+//                    int level = card.getLevel();
+                    int cost = card.getCost();
+
+
+
+                    switch (cardName) {
+                        case "Boosted Morale":
+                            payRate.postValue(5.0);
+                            break;
+
+                        case "better CBA":
+                            HashMap<Integer, Double> pr = preventionRate.getValue();
+                            Double d = pr.get(2);
+                            d += 5.0;
+                            pr.replace(2, d);
+                            preventionRate.postValue(pr);
+                            break;
+
+                        case "transmitting failure":
+                            break;
+
+                        case "area 51 storage":
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     private ArrayList<Upgrade> PopulateUpgradeList(String[] names)
@@ -180,26 +411,29 @@ public class Game {
 
     // minor bug in here somewhere
     public void updater(){
-//        double attackTest = Math.random();
-//        if (attackTest <=  this.attackRate.getValue()) {
-//            int attackType = ThreadLocalRandom.current().nextInt(0, noOfAttacks);
-//
-//            // check if the attack will be prevented by an upgrade, and if so, pass that to ui
-//            if (isAttackPrevented(attackType)) {
-//                //TODO: tell ui that attackType attack was prevented. nothing else happens
-//            } else {
-//                /* TODO: on a successful att, make a text box for the front end to show that
-//                    includes the name of attack, short description of attack, and cost of attack.*/
-//
-//                // subtract money from currentFunds according to attack cost
-//                int moneyIndex = this.currentFunds.getValue().size() - 1;
-//                double bankAcct = this.currentFunds.getValue().get(moneyIndex);
-//                double attCost = bankAcct * Double.parseDouble(attackList.get(attackType).get(2));
-//                this.currentFunds.getValue().set(moneyIndex, attCost);
-//            }
-//        }
+        double attackTest = Math.random();
+        if (attackTest <=  this.attackRate.getValue()) {
+            int attackType = ThreadLocalRandom.current().nextInt(0, this.noOfAttacks);
+
+            // check if the attack will be prevented by an upgrade, and if so, pass that to ui
+            if (isAttackPrevented(attackType)) {
+                game.onPreventedAttack();
+            } else {
+                game.onSuccessfulAttack(this.attackList.get(attackType));
+                // subtract money from currentFunds according to attack cost
+                int moneyIndex = this.currentFunds.getValue().size() - 1;
+                double bankAcct = this.currentFunds.getValue().get(moneyIndex);
+                double attCost = bankAcct - Double.parseDouble(this.attackList.get(attackType).get(2));
+
+                ArrayList<Double> money = this.currentFunds.getValue();
+                money.set(moneyIndex, attCost);
+                this.currentFunds.postValue(money);
+            }
+        }
 
     }
+
+
 
     private boolean isAttackPrevented(int attack) {
         double preventionCheck = Math.random();
@@ -216,11 +450,13 @@ public class Game {
             sharedPreferences.edit().putString("payR", ObjectSerializer.serialize(payRate.getValue())).apply();
             sharedPreferences.edit().putString("payD", ObjectSerializer.serialize(payDelay.getValue())).apply();
             sharedPreferences.edit().putInt("day",day.getValue()).apply();
+            sharedPreferences.edit().putString("attackR",ObjectSerializer.serialize(attackRate.getValue())).apply();
+            sharedPreferences.edit().putString("preventionRs", ObjectSerializer.serialize(preventionRate.getValue())).apply();
             sharedPreferences.edit().commit();
+
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("SOD", "Couldn't create a file");
         }
     }
 }
-

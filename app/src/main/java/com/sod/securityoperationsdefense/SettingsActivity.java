@@ -14,14 +14,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.IOException;
 
 public class SettingsActivity extends AppCompatActivity {
-//    private static boolean reset = false;
     static CheckBox music;
     static boolean musicOn = true;
     static SeekBar seekbar = null;
@@ -59,6 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
                         sharedPreferences.edit().remove("payR").apply();
                         sharedPreferences.edit().remove("payD").apply();
                         sharedPreferences.edit().remove("day").apply();
+                        sharedPreferences.edit().remove("attackR").apply();
+                        sharedPreferences.edit().remove("preventionRs").apply();
                         sharedPreferences.edit().commit();
 
 
@@ -121,13 +117,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public static SeekBar getSeekBar() {
-        if (seekbar != null) {
-            return seekbar;
-        }
-        return null;
     }
 
 }
