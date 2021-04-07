@@ -536,13 +536,10 @@ public class GameActivity extends AppCompatActivity {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                double test = cost;
-                if (test < 20) {
-                    test = 15.0;
-                }
+
                 AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
                 alert.setMessage("Oh no! A " + attackInfo.get(0) + " was perpetrated against your" +
-                        " organization! The damages total to $" + test + ".")
+                        " organization! The damages total to $" + cost + ".")
                         .setNeutralButton("Darn!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // empty for now. all it needs to do is close the alert

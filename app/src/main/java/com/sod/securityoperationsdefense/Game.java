@@ -528,16 +528,19 @@ public class Game {
             } else {
 
                 // subtract money from currentFunds according to attack cost
+                double costToPrint;
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
-                double bankAcct = this.currentFunds.getValue().get(moneyIndex);
+                double bankAcct = this.currentFunds.getValue().get(moneyIndex); //curr funds
                 double attCost;
                 if(bankAcct < 20){
                     attCost = bankAcct - 15;
+                    costToPrint = 15;
                 }else{
-                    attCost = bankAcct - (bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2)));
+                    costToPrint = (bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2)));
+                    attCost = bankAcct - costToPrint;
                 }
 
-                game.onSuccessfulAttack(this.attackList.get(attackType), attCost);
+                game.onSuccessfulAttack(this.attackList.get(attackType), costToPrint);
 
                 ArrayList<Double> money = this.currentFunds.getValue();
                 money.set(moneyIndex, attCost);
