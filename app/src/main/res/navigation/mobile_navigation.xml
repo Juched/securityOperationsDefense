@@ -28,4 +28,10 @@
         android:name="com.sod.securityoperationsdefense.ui.upgrades.BusAdvancementsFragment"
         android:label="@string/genBusUpgrades"
         tools:layout="@layout/fragment_bus_adv" />
+
+    <fragment
+        android:id="@+id/statsFrag"
+        android:name="com.sod.securityoperationsdefense.ui.upgrades.StatsFragment"
+        android:label="Stats Fragment"
+        tools:layout="@layout/fragment_stats" />
 </navigation>

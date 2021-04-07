@@ -45,6 +45,7 @@ import com.sod.securityoperationsdefense.ui.upgrades.InfoStateFragment;
 import com.sod.securityoperationsdefense.ui.upgrades.InfoStateViewModel;
 import com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresFragment;
 import com.sod.securityoperationsdefense.ui.upgrades.SecMeasuresViewModel;
+import com.sod.securityoperationsdefense.ui.upgrades.StatsViewModel;
 
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.MutableLiveData;
@@ -80,42 +81,49 @@ public class GameActivity extends AppCompatActivity {
     private SecMeasuresViewModel secMeasuresViewModel;
     private CritInfoViewModel critInfoViewModel;
     private BusAdvancementsViewModel busAdvancementsViewModel;
+    private StatsViewModel statsViewModel;
     public Handler mHandler;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //call the super class
         super.onCreate(savedInstanceState);
+        //set the paused flag
         paused = false;
+        //declare a handler to force UI thread when needed
         mHandler = new Handler();
-        //get the shared preferences file manager
+        //Start the game object
         gameClass = new Game(getApplicationContext(), this);
 
+        //initialize all the viewmodels which provide the game object to our fragments
         infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
         secMeasuresViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
         critInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
         busAdvancementsViewModel = new ViewModelProvider(this).get(BusAdvancementsViewModel.class);
-
+        statsViewModel = new ViewModelProvider(this).get(StatsViewModel.class);
+        //give them the game class
         infoStateViewModel.setGameClass(gameClass);
         secMeasuresViewModel.setGameClass(gameClass);
         critInfoViewModel.setGameClass(gameClass);
         busAdvancementsViewModel.setGameClass(gameClass);
-
-
-
-
+        statsViewModel.setGameClass(gameClass);
+        //set the basic layout
         setContentView(R.layout.activity_game);
-
+        //declare the pause button
         FloatingActionButton fab = findViewById(R.id.fab);
-
+        //set the day
         MutableLiveData<Integer> day = gameClass.getDay();
         TextView dayText = findViewById(R.id.day);
         dayText.setText("Day: "+ day.getValue());
 
+        //set the initial money
         MutableLiveData<ArrayList<Double>> currentMoney = gameClass.getCurrentFunds();
         TextView spendableMoney = findViewById(R.id.spendableMoneyText);
         spendableMoney.setText("$ "+ currentMoney.getValue().get(currentMoney.getValue().size()-1));
 
+
+        //setup the chart
        LineChart chart;
 
         {   // // Chart Style // //
@@ -185,8 +193,7 @@ public class GameActivity extends AppCompatActivity {
 
         }
 
-
-
+        //populate the array of datapoints for the chart
         ArrayList<Entry> values = new ArrayList<>();
         int i = 0;
         ArrayList<Double> money = currentMoney.getValue();
@@ -195,7 +202,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         LineDataSet set1;
-
+        //update the dataset
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
@@ -247,25 +254,30 @@ public class GameActivity extends AppCompatActivity {
         chart.animateX(300);
 
 
-        // get the legend (only possible after setting data)
+        // get the legend (only possible after setting data) and DISABLE IT
         Legend l = chart.getLegend();
         l.setEnabled(false);
 
-
+        //setup the day progress indicator
         LinearProgressIndicator dayProgress = (LinearProgressIndicator) findViewById(R.id.dayProgress);
 
+        //Loop the game!
         Timer gameTimer = new Timer();
         TimerTask gameUpdate = new TimerTask() {
             @Override
             public void run() {
+                //check if paused
                 if(!paused){
+                    //tick every 200ms and send an update to the game thread
                     if(dayProgress.getProgress() < dayProgress.getMax()) {
-                        dayProgress.setProgressCompat(dayProgress.getProgress() + 1, true);
+                        dayProgress.setProgressCompat(dayProgress.getProgress() + 2, true);
                         gameClass.updater();
                     }else{
+                        //every new day we update all new values like day and add money
                         day.postValue(day.getValue() + 1);
                         dayProgress.setProgressCompat(dayProgress.getMin(),true);
                         ArrayList<Double> money = currentMoney.getValue();
+                        //update the amount of money to the next day
                         money.add(currentMoney.getValue().get(currentMoney.getValue().size() - 1));
                         currentMoney.postValue(money);
                     }
@@ -275,13 +287,10 @@ public class GameActivity extends AppCompatActivity {
         };
         gameTimer.scheduleAtFixedRate(gameUpdate,0,200);
 
-
+        //setup the pause button
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<Double> now = currentMoney.getValue();
-                now.set(currentMoney.getValue().size() - 1, now.get(currentMoney.getValue().size() - 1) + 10.0);
-                currentMoney.setValue(now);
                 paused = !paused;
                 Intent intent = new Intent(view.getContext(), SettingsActivity.class);
                 startActivity(intent);
@@ -289,6 +298,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        //on change of day, set the day text
         day.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -296,13 +306,16 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        //all the stuff that happens when the money updates
         currentMoney.observe(this,new Observer<ArrayList<Double>>() {
             @Override
             public void onChanged(ArrayList<Double> changedValue) {
+                //change spendable money
                 TextView spendableMoney = findViewById(R.id.spendableMoneyText);
                 DecimalFormat df2 = new DecimalFormat("#0.00");
                 spendableMoney.setText("$ "+ df2.format(changedValue.get(changedValue.size() - 1)));
 
+                //logic for chart changing
                 ArrayList<Entry> values = new ArrayList<>();
 
                 int i = 0;
@@ -311,6 +324,7 @@ public class GameActivity extends AppCompatActivity {
                     values.add(new Entry(i+1,(float)(double) money.get(i)));
                 }
 
+                //readd all data to a dataset
                 LineDataSet set1;
 
                 set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
@@ -355,8 +369,9 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
-
+        //add the drawer
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        //add the navigation logic
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -370,8 +385,7 @@ public class GameActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        infoStateViewModel = new ViewModelProvider(this).get(InfoStateViewModel.class);
-        infoStateViewModel.setGameClass(gameClass);
+
     }
 
     public void hideDescription()
@@ -536,8 +550,7 @@ public class GameActivity extends AppCompatActivity {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
+                AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
                 alert.setMessage("Oh no! A " + attackInfo.get(0) + " was perpetrated against your" +
                         " organization! The damages total to $" + cost + ".")
                         .setNeutralButton("Darn!", new DialogInterface.OnClickListener() {
@@ -558,7 +571,7 @@ public class GameActivity extends AppCompatActivity {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
+                AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
                 alert.setMessage("One of your countermeasures prevented an attack! Great job!")
                         .setNeutralButton("Nice!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

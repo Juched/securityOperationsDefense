@@ -36,6 +36,7 @@ public class Game {
     private SharedPreferences sharedPreferences;
     private MutableLiveData<Integer> day;
     private GameActivity game;
+    private Boolean isStart;
 
     // Serializable lists of upgrades
     private MutableLiveData<ArrayList<Upgrade>>  busUpgrades;
@@ -52,6 +53,7 @@ public class Game {
     public MutableLiveData<HashMap<Integer, Double>> preventionRate;
 
     public Game(Context c, GameActivity game) {
+
         this.game = game;
         sharedPreferences = c.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
         // check here if we already have a saved game state open; default game context
@@ -176,10 +178,8 @@ public class Game {
             this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>(msecUpgrades);
         }
 
-        currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
-        currentFunds.setValue(currFunds);
+
         this.currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
-        this.currentFunds.setValue(currFunds);
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
         this.day = new MutableLiveData<Integer>(tDay);
@@ -190,12 +190,14 @@ public class Game {
 
         this.preventionRate = new MutableLiveData<HashMap<Integer, Double>>(preventionRs);
 
-
+        isStart = true;
         // observer methods for upgrades
         this.doBusinessUpgrade();
         this.doCritUpgrade();
         this.doSecUpgrade();
         this.doiStateUpgrade();
+
+
 
         this.day.observe(this.game,new Observer<Integer>(){
 
@@ -206,11 +208,14 @@ public class Game {
              */
             @Override
             public void onChanged(Integer integer) {
-                ArrayList<Double> money = currentFunds.getValue();
-                money.set(money.size()-1,money.get(money.size()-1) + payRate.getValue());
-                currentFunds.postValue(money);
+                if(!isStart) {
+                    ArrayList<Double> money = currentFunds.getValue();
+                    money.set(money.size() - 1, money.get(money.size() - 1) + payRate.getValue());
+                    currentFunds.postValue(money);
+                }
             }
         });
+        isStart = false;
     }
 
     /* creates */
