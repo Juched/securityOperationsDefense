@@ -504,7 +504,7 @@ public class Game {
             if (isAttackPrevented(attackType)) {
                 game.onPreventedAttack();
             } else {
-                game.onSuccessfulAttack(this.attackList.get(attackType));
+
                 // subtract money from currentFunds according to attack cost
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
                 double bankAcct = this.currentFunds.getValue().get(moneyIndex);
@@ -515,6 +515,7 @@ public class Game {
                     attCost = bankAcct - (bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2)));
                 }
 
+                game.onSuccessfulAttack(this.attackList.get(attackType), attCost);
 
                 ArrayList<Double> money = this.currentFunds.getValue();
                 money.set(moneyIndex, attCost);
