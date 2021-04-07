@@ -6,19 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/critInfo"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/baseline_new_releases_24"
             android:title="@string/critInfo" />
         <item
             android:id="@+id/infoState"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/baseline_swap_horiz_24"
             android:title="@string/infoState" />
         <item
             android:id="@+id/secMeas"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_lock_24"
             android:title="@string/secMeas" />
         <item
             android:id="@+id/genBusUpgrades"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/baseline_work_24"
             android:title="@string/genBusUpgrades" />
         <item
             android:id="@+id/statsFrag"
