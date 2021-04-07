@@ -50,9 +50,6 @@ public class Game {
     private HashMap<Integer, ArrayList<String>> attackList;
     // contains att. prevention rates. values of the keys correspond to the attack in the above list
     public MutableLiveData<HashMap<Integer, Double>> preventionRate;
-    // for upgrades: distinction of whether the game is being created (resulting in updates) or
-    // if the updates are a result of the user playing the game;
-    public boolean createPhase;
 
     public Game(Context c, GameActivity game) {
         this.game = game;
