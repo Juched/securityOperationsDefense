@@ -528,40 +528,49 @@ public class Game {
         /* Can add logic here for - $ and if it hits BANKRUPTCY */
     }
 
+    /* Returns how much money you have currently */
     public MutableLiveData<ArrayList<Double>> getCurrentFunds() {
         return Game.currentFunds;
     }
 
+    /* Returns current pay rate */
     public MutableLiveData<Double> getPayRate() {
         return this.payRate;
     }
+
+    /* Returns current delay in payments */
     public MutableLiveData<Integer> getPayDelay() {
         return this.payDelay;
     }
+
+    /* Returns current day */
     public MutableLiveData<Integer> getDay(){return this.day;}
 
-    /* Please double check that I use the mutable types correctly */
 
+    /* Sets the pay rate and delay time */
     public void setPayRate(double pay) { this.payRate.postValue(pay); }
     public void setPayDelay(int delay) { this.payDelay.postValue(delay); }
 
 
 
+    /* Returns the upgrades in each category of the McCumber Cube and Business upgrades */
     public MutableLiveData<ArrayList<Upgrade>> getBusUpgrades(){return this.busUpgrades;}
     public MutableLiveData<ArrayList<Upgrade>> getCritInfoUpgrades(){return this.critInfoUpgrades;}
     public MutableLiveData<ArrayList<Upgrade>> getInfoStateUpgrades(){return this.infoStateUpgrades;}
     public MutableLiveData<ArrayList<Upgrade>> getSecUpgrades(){return this.secUpgrades;}
 
+    /* Returns context needed in other classes */
     public GameActivity getGameForContext() {
         return game;
     }
 
-    // minor bug in here somewhere
+    /* Updates the main page when an event happens. Controls flow and logic depending on state */
     public void updater(){
         double attackTest = Math.random();
         if (attackTest <=  this.attackRate.getValue()) {
 
-            /* TODO: should be changed for relative attack rates (prolly classes ~ attacks) */
+            /* TODO: should be changed for relative attack rates (prolly classes ~ attacks)
+            *   furture work! */
             int attackType = ThreadLocalRandom.current().nextInt(0, this.noOfAttacks);
 
             // check if the attack will be prevented by an upgrade, and if so, pass that to ui
@@ -593,7 +602,7 @@ public class Game {
     }
 
 
-
+    /* Determines if an attack is prevented */
     private boolean isAttackPrevented(int attack) {
         double preventionCheck = Math.random();
         if (preventionCheck <= this.preventionRate.getValue().get(attack)){
@@ -602,6 +611,7 @@ public class Game {
         return false;
     }
 
+    /* Serializes all data needed for future play */
     public void saveAll(){
         try{
             sharedPreferences.edit().putString("currFunds",
