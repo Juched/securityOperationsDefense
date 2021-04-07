@@ -16,7 +16,7 @@ public class Upgrade implements Serializable
     private String description;
     private int level;
     private int costs;
-    private boolean update = false;
+    private boolean update;
 
     public static final int MAX_LEVEL = 3;
 
@@ -28,6 +28,7 @@ public class Upgrade implements Serializable
         this.name = theName;
         this.description = descrip;
         this.level = 0;
+        this.update = false;
 
         int localStart = 37;
 
@@ -47,7 +48,7 @@ public class Upgrade implements Serializable
     public void levelUp()
     {
         level++;
-
+        this.update = true;
 
         costs += Math.pow(15, level + 1);
 
@@ -56,7 +57,7 @@ public class Upgrade implements Serializable
     }
     public int getCost() { return costs; }
     public boolean isUpdated() { return update; }
-
+    public void toggleUpdate() { update = false; }
 
     private void reduceCost(double reductionPercentage)
     {

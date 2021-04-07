@@ -50,6 +50,9 @@ public class Game {
     private HashMap<Integer, ArrayList<String>> attackList;
     // contains att. prevention rates. values of the keys correspond to the attack in the above list
     public MutableLiveData<HashMap<Integer, Double>> preventionRate;
+    // for upgrades: distinction of whether the game is being created (resulting in updates) or
+    // if the updates are a result of the user playing the game;
+    public boolean createPhase;
 
     public Game(Context c, GameActivity game) {
         this.game = game;
@@ -248,17 +251,18 @@ public class Game {
         this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades, iStateDescrip));
     }
 
-    /*
-    *   TODO:
-    *    1. add a flag to determine whether we are in the creation part or not
-    *    2. compare cards to determine which cards have changed
-    */
     private void doBusinessUpgrade() {
         // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.busUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
+                ArrayList<Upgrade> changed = new ArrayList<>();
                 for (Upgrade card: upgrades) {
+                    if (card.isUpdated()) {
+                        changed.add(card);
+                    }
+                }
+                for (Upgrade card: changed) {
                     String cardName = card.getName();
                     int cost = card.getCost();
                     switch (cardName) {
@@ -279,7 +283,7 @@ public class Game {
                             break;
 
                         case "Cut Employee Salaries":
-                            // money +5%, insider attack PR -10%
+                            // pay rate +5%, insider attack PR -10%
                             HashMap<Integer, Double> pr = preventionRate.getValue();
                             Double d = pr.get(3);
                             d -= 0.10;
@@ -304,6 +308,7 @@ public class Game {
                             preventionRate.postValue(prev);
                             break;
                     }
+                    card.toggleUpdate();
                 }
             }
         });
@@ -314,7 +319,13 @@ public class Game {
         this.critInfoUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
+                ArrayList<Upgrade> changed = new ArrayList<>();
                 for (Upgrade card: upgrades) {
+                    if (card.isUpdated()) {
+                        changed.add(card);
+                    }
+                }
+                for (Upgrade card: changed) {
                     String cardName = card.getName();
                     int cost = card.getCost();
                     switch (cardName) {
@@ -364,7 +375,13 @@ public class Game {
         this.secUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
+                ArrayList<Upgrade> changed = new ArrayList<>();
                 for (Upgrade card: upgrades) {
+                    if (card.isUpdated()) {
+                        changed.add(card);
+                    }
+                }
+                for (Upgrade card: changed) {
                     String cardName = card.getName();
                     int cost = card.getCost();
                     switch (cardName) {
@@ -414,7 +431,13 @@ public class Game {
         this.infoStateUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
+                ArrayList<Upgrade> changed = new ArrayList<>();
                 for (Upgrade card: upgrades) {
+                    if (card.isUpdated()) {
+                        changed.add(card);
+                    }
+                }
+                for (Upgrade card: changed) {
                     String cardName = card.getName();
                     int cost = card.getCost();
                     switch (cardName) {
