@@ -148,6 +148,7 @@
                     android:layout_gravity="bottom"
                     android:textAlignment="center"
                     android:visibility="gone"
+                    android:textColor="@color/black"
                     />
             </androidx.core.widget.NestedScrollView>
     </com.google.android.material.card.MaterialCardView>

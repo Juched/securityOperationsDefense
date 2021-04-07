@@ -498,8 +498,8 @@ public class GameActivity extends AppCompatActivity {
 
                 TextView uDescrip = (TextView) findViewById(R.id.upgrade_description);
 
-                uDescrip.setText(u.getDescription());
                 uDescrip.setVisibility(View.VISIBLE);
+                uDescrip.setText(u.getDescription());
             }
         });
     }
