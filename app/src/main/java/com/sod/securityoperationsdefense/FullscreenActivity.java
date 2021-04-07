@@ -1,3 +1,4 @@
+//Parth Parekh
 package com.sod.securityoperationsdefense;
 
 import android.annotation.SuppressLint;
@@ -17,7 +18,7 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
+ * A full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class FullscreenActivity extends AppCompatActivity {
@@ -137,14 +138,6 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         });
 
-
-        Button statsButton = (Button) findViewById(R.id.statsButton);
-        statsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Stats Button", Toast.LENGTH_SHORT).show();//display the text of button1
-            }
-        });
 
 
         mVisible = true;
