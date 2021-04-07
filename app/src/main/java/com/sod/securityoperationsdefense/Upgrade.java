@@ -43,7 +43,7 @@ public class Upgrade implements Serializable
 
     //public GameActivity getContext() { return Upgrade.context; }
     public String getName() { return name; }
-    public String getDescription() { return String.format("%s (Level %s): \n %s",name, this.getLevel(), description); }
+    public String getDescription() { return String.format("%s (Level %s): \n%s",name, this.getLevel(), description); }
     public int getLevel() { return Math.min(level, Upgrade.MAX_LEVEL); }
     public void levelUp()
     {

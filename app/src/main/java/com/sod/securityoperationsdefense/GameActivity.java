@@ -167,6 +167,7 @@ public class GameActivity extends AppCompatActivity {
                 min = 0;
             }
 
+
             xAxis.setAxisMinimum(min);
             xAxis.setAxisMaximum(max);
 
@@ -185,11 +186,21 @@ public class GameActivity extends AppCompatActivity {
             yAxis.enableGridDashedLine(10f, 10f, 0f);
 
             // axis range
-            if(currentMoney.getValue().size()>8){
-                yAxis.setAxisMinimum((float)(double)currentMoney.getValue().get(currentMoney.getValue().size() - 8) - 20);
-            }else{
-                yAxis.setAxisMinimum(0.0f);
+            // finds the min of the possible values
+
+            int localMinIndex = currentMoney.getValue().size() - 8;
+            double min = currentMoney.getValue().get(currentMoney.getValue().size()-1);
+            for(int i = currentMoney.getValue().size() - 1; i>=0 && i >= localMinIndex; i-- )
+            {
+                double current = currentMoney.getValue().get(i);
+
+                if (current < min)
+                {
+                    min = current;
+                }
             }
+
+            yAxis.setAxisMinimum((float)(double)min);
 
         }
 
@@ -353,11 +364,19 @@ public class GameActivity extends AppCompatActivity {
                 {   // // Y-Axis Style // //
                     yAxis = chart.getAxisLeft();
 
-                    if(currentMoney.getValue().size()>8){
-                        yAxis.setAxisMinimum((float)(double)currentMoney.getValue().get(currentMoney.getValue().size() - 8) - 20);
-                    }else{
-                        yAxis.setAxisMinimum(0.0f);
+                    int localMinIndex = currentMoney.getValue().size() - 8;
+                    double min = currentMoney.getValue().get(currentMoney.getValue().size()-1);
+                    for(int k = currentMoney.getValue().size() - 1; k>=0 && k >= localMinIndex; k-- )
+                    {
+                        double current = currentMoney.getValue().get(k);
+
+                        if (current < min)
+                        {
+                            min = current;
+                        }
                     }
+
+                    yAxis.setAxisMinimum((float)(double)min);
 
                 }
 
@@ -389,6 +408,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    /* Hides the Upgrade description box */
     public void hideDescription()
     {
         mHandler.post(new Runnable() {
@@ -399,6 +419,7 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    /* Displays the Upgrades on a page */
     public void displayUpgrades(View root, ArrayList<Upgrade> upgrades, int[] ids, int[] pBars)
     {
         for(int i = 0; i < upgrades.size(); i++)
@@ -412,6 +433,8 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /* Called on the start of each page, displays the Upgrades, and sets listeners on the Upgrade buttons
+    *  for the upgrades themselves, and the description on long clicks */
     public void manageUpgrades(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int[] ids, int[] pBars, int[] uCards)
     {
         ArrayList<Upgrade> upgrades = upgradeList.getValue();
@@ -487,11 +510,13 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    /* Action performed when an Upgrade is bought */
     public void buyUpgrade(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int [] pBars, int upCount)
     {
         ArrayList<Upgrade> upgrades = upgradeList.getValue();
         Upgrade u = upgrades.get(upCount);
 
+        // you need enough $ to buy, and the level needs to be under the max level of an upgrade
         if(Game.getTheCurrentFunds() >= u.getCost() && u.getLevel() < Upgrade.MAX_LEVEL)
         {
             Game.spendMoney(u.getCost()); // spend the money
@@ -503,6 +528,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /* Shows the description for the current selected Upgrade */
     public void showDescription(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int upCount)
     {
         mHandler.post(new Runnable() {
@@ -553,7 +579,7 @@ public class GameActivity extends AppCompatActivity {
             public void run() {
                 AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
                 alert.setMessage("Oh no! A " + attackInfo.get(0) + " was perpetrated against your" +
-                        " organization! The damages total to $" + cost + ".")
+                        " organization! The damages total $" + cost + ". Ouch!")
                         .setNeutralButton("Darn!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // empty for now. all it needs to do is close the alert

@@ -149,6 +149,7 @@ public class Game {
         } catch (IOException | ClassNotFoundException e) {
             //no game exists
             currFunds = new ArrayList<Double>(1);
+            currFunds.add(0.0);
             currFunds.set(0, 0.0);
             payR = 10.0;
             payD = 1;
@@ -226,7 +227,7 @@ public class Game {
         isStart = false;
     }
 
-    /* creates */
+    /* Stores the data for the base level upgrades, and calls populate for each type available */
     public void makeUpgrades()
     {
 
@@ -236,22 +237,22 @@ public class Game {
         String[] secUpgrades = {"Phishing Awareness Training", "Monitoring and Logging", "Firewalls", "Hire More Security Personnel"};
         String[] iStateUpgrades = {"Data Ecryption", "More Data Storage", "More Processing Power", "More Secure Transmission"};
 
-        String[] busDescrip = {"Open a new Location, should increase revenue, but might increase the risk attacks",
-                "Conduct your very own Cost-Benefit-Analysis that improves your analysis of attacks, decrease costs of other upgrades, and allows you to pass your security certification exams.",
-                "Reduce the salary of all of your employees. While might make costs less per day (and increase revenue), disgruntled employees are more prone to falling for attacks!",
-                "Boost Employee morale with a Pizza Party ® at no cost to them, only to you. Reduces the chance that an internal employee sells their soul to espionage."};
+        String[] busDescrip = {"Your reach is expanding! This should increase revenue, but might increase the risk attacks if you aren't careful...",
+                "Cost-Benefit-Analysis improves your analysis of attacks, decrease costs of other upgrades, and allows you to pass your professional security certification exams.",
+                "Reduce the salary of all of your employees. While might make costs less per day (and increase revenue), disgruntled employees are more prone to falling for attacks or espionage!",
+                "Boost Employee morale with a Pizza Party® at no cost to them, only to you. Reduces the chance that an internal employee sells their soul to espionage."};
         String[] critDescrip = {"Makes it harder for nasty coworkers to steal your company's assets. Purchase for top of the line MFA!",
-                "Computers running slow? Update your anti-virus software for better detection and prevention of Trojans and other malicious code... Which will of course make your computers run faster... Trust us, we're the experts!",
+                "Computers running slow? Update your anti-virus software for better detection and prevention of Trojans and other malicious code... \n\nWhich will of course make your computers run faster... Trust us, we're the experts!",
                 "Better protection against Ransomware attack by storing secure backups of your data, only accessible to high level admins of the firm.",
-                "Ensures that business if booming "};
-        String[] secDescrip = {"Are your employees still falling for pHiShInG threats? Buy this protection for better training against phishing... WHAT?! No THIS isn't a scam...",
-                "Upgrade this to increase pattern recognition on the Network. I always wondered what ",
+                "Makes sure assets do NOT get corrupted over time... Buffs prevention against hardware corruption, however, Internal Espionage is unaffected."};
+        String[] secDescrip = {"Are your employees still falling for pHiShInG threats? Buy this protection for better training against phishing... \n\nWHAT?! No THIS isn't a scam...",
+                "Upgrade this to increase pattern recognition on the Network. Pattern recognition is used to identify and mitigate unwanted network traffic. \n\nI always wondered what normal looked like",
                 "Increase Network protection by adding firewalls, updating firewall tables, and making you DMZ Beefier",
-                "Hire More Security Personnel"};
-        String[] iStateDescrip = {"It's simple, encrypt where you can. Upgrade this to use better encryption on more of your assets. Decreases success rates of attacks.",
-                "More Data Storage",
-                "More Processing Power",
-                "Add even MORE c"};
+                "Hire more Guards for Physical Security. \n\n\"Our building is secure enough\" ~ famous last words"};
+        String[] iStateDescrip = {"It's simple, encrypt where you can. Upgrade this to use better encryption on more of your assets. Decreases success rates of attacks. \n\nWho installed BitLocker on my computer??",
+                "Downloads more RAM. No but really, more storage includes more disk space, RAM, and other useful storage features. This makes Brute Force and Memory Scanner attacks less efficient.",
+                "Increases processing speed and reduces time to find Trojans (reducing success rate). Will also increase profit margins slightly.",
+                "Reduces success rate of Man in the Middle attacks, but also slows down the firm's communication. \n\nWhoever said the Business needs to talk with the costumer?"};
 
 
 
@@ -261,6 +262,7 @@ public class Game {
         this.infoStateUpgrades.setValue(this.PopulateUpgradeList(iStateUpgrades, iStateDescrip));
     }
 
+    /* Performs the Business Upgrade actions */
     private void doBusinessUpgrade() {
         // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.busUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
@@ -279,11 +281,11 @@ public class Game {
                         case "Open New Location":
                             // pay rate *2, attack rate +10%
                             Double payR = payRate.getValue();
-                            payR *= 2.0;
+                            payR *= Math.pow(2.0, card.getLevel());
                             payRate.postValue(payR);
 
                             Double att = attackRate.getValue();
-                            att = att * 1.1;
+                            att = att * 1.2;
                             attackRate.postValue(att);
                             break;
 
@@ -296,7 +298,7 @@ public class Game {
                             // pay rate +5%, insider attack PR -10%
                             HashMap<Integer, Double> pr = preventionRate.getValue();
                             Double d = pr.get(3);
-                            d -= 0.10;
+                            d -= 0.15;
                             if (d < 0.0) {
                                 d = 0.0;
                             }
@@ -304,7 +306,7 @@ public class Game {
                             preventionRate.postValue(pr);
 
                             Double pR = payRate.getValue();
-                            pR += 5.0;
+                            pR += Math.pow(15.0, card.getLevel());
                             payRate.postValue(pR);
 
                             break;
@@ -324,6 +326,7 @@ public class Game {
         });
     }
 
+    /* Performs the Critical Info Upgrade actions */
     private void doCritUpgrade() {
         // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.critInfoUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
@@ -380,6 +383,7 @@ public class Game {
         });
     }
 
+    /* Performs the Sec Meas Upgrade actions */
     private void doSecUpgrade() {
         // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.secUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
@@ -436,6 +440,7 @@ public class Game {
         });
     }
 
+    /* Performs the Info States Upgrade actions */
     private void doiStateUpgrade() {
         // whenever a value in the upgrade list changes, implement the effect specific to that upgrade
         this.infoStateUpgrades.observe(game, new Observer<ArrayList<Upgrade>>() {
@@ -494,6 +499,7 @@ public class Game {
         });
     }
 
+    /* When there is not a saved game, creates the base level Upgrades for the firm */
     private ArrayList<Upgrade> PopulateUpgradeList(String[] names, String[] descriptions)
     {
         ArrayList<Upgrade> allUpgradesInCategory = new ArrayList<Upgrade>();
@@ -504,12 +510,15 @@ public class Game {
         return allUpgradesInCategory;
     }
 
+    /* Returns how much money you have currently */
     public static double getTheCurrentFunds()
     {
         ArrayList<Double> money = Game.currentFunds.getValue();
         return money.get(money.size() - 1);
     }
 
+    /* Reduces the current funds value by a cost amount
+    *  passed in. Can go negative */
     public static void spendMoney(double cost)
     {
         ArrayList<Double> money = Game.currentFunds.getValue();
