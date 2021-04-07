@@ -539,12 +539,10 @@ public class Game {
         return game;
     }
 
-    // minor bug in here somewhere
     public void updater(){
         double attackTest = Math.random();
         if (attackTest <=  this.attackRate.getValue()) {
 
-            /* TODO: should be changed for relative attack rates (prolly classes ~ attacks) */
             int attackType = ThreadLocalRandom.current().nextInt(0, this.noOfAttacks);
 
             // check if the attack will be prevented by an upgrade, and if so, pass that to ui
@@ -557,16 +555,20 @@ public class Game {
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
                 double bankAcct = this.currentFunds.getValue().get(moneyIndex); //curr funds
                 double attCost;
+
+                // if money is <20, set attack cost to 15
                 if(bankAcct < 20){
                     attCost = bankAcct - 15;
                     costToPrint = 15;
                 }else{
+                    // otherwise use attack cost info to calc % of money lost
                     costToPrint = (bankAcct * Double.parseDouble(this.attackList.get(attackType).get(2)));
                     attCost = bankAcct - costToPrint;
                 }
 
                 game.onSuccessfulAttack(this.attackList.get(attackType), costToPrint);
 
+                // change money value
                 ArrayList<Double> money = this.currentFunds.getValue();
                 money.set(moneyIndex, attCost);
                 this.currentFunds.postValue(money);
@@ -574,7 +576,6 @@ public class Game {
         }
 
     }
-
 
 
     private boolean isAttackPrevented(int attack) {
@@ -587,6 +588,7 @@ public class Game {
 
     public void saveAll(){
         try{
+            // save each var that needs to stay between play sessions
             sharedPreferences.edit().putString("currFunds",
                     ObjectSerializer.serialize(Game.currentFunds.getValue())).apply();
             sharedPreferences.edit().putString("payR", ObjectSerializer.serialize(payRate.getValue())).apply();

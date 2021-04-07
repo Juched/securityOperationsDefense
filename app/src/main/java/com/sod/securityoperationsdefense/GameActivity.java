@@ -576,7 +576,7 @@ public class GameActivity extends AppCompatActivity {
                         .setNeutralButton("Nice!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // empty for now. all it needs to do is close the alert
-
+                                
                             }
                         });
                 paused = !paused;
