@@ -31,6 +31,8 @@ public class SecMeasuresFragment extends Fragment {
     public void setGameClass(Game mGameClass){
         this.gameClass = mGameClass;
     }
+
+    /* view created for sec meas upgrades */
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         secMeasViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sec_measures, container, false);
@@ -67,6 +69,7 @@ public class SecMeasuresFragment extends Fragment {
         return root;
     }
 
+    /* view updated for sec meas upgrades */
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         secMeasViewModel = new ViewModelProvider(this).get(SecMeasuresViewModel.class);
@@ -81,63 +84,10 @@ public class SecMeasuresFragment extends Fragment {
 
 
 //
-//        gameClass = SecMeasuresViewModel.getGameClass();
-//        TableLayout upgrades = container.findViewById(R.id.sec_meas_upgrades_list);
-//        upgrades.removeAllViewsInLayout();
 //
-//        gameClass.getSecUpgrades().observe(getViewLifecycleOwner(), new Observer<ArrayList<CardView>>() {
-//            @Override
-//            public void onChanged(ArrayList<CardView> cardViews) {
-//                // Only four cards...
-//                for(int i = 0; i < cardViews.size(); i+=2)
-//                {
-//                    try{
-//                        TableRow newRow = new TableRow(gameClass.getGameForContext());
-//
-//                        newRow.addView(cardViews.get(i));
-//                        newRow.addView(cardViews.get(i+1));
-//
-//                        upgrades.addView(newRow);
-//                    } catch (Exception e) {
-//
-//                    }
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//        ArrayList<CardView> cardViews = gameClass.getSecUpgrades().getValue();
-//        for(int i = 0; i < cardViews.size(); i+=2)
-//        {
-//            try{
-//                TableRow newRow = new TableRow(gameClass.getGameForContext());
-//
-//                newRow.addView(cardViews.get(i));
-//                newRow.addView(cardViews.get(i+1));
-//
-//                upgrades.addView(newRow);
-//            } catch (Exception e) {
-//
-//            }
-//        }
-
         return root;
     }
 
-    /* */
-    public void changeList(@NonNull LayoutInflater inflater, ViewGroup container, @IdRes int id)
-    {
-        /** /
-        FrameLayout rootLayout = (FrameLayout)findViewById(android.R.id.content);
-        rootLayout.removeViewAt(rootLayout.getChildCount()-1);
-        View.inflate(this, R.layout.overlay_layout, rootLayout);
-        /** /
-        View insertPoint =(View) inflater.inflate(R.layout.upgrade_list, container, false).findViewById(id); // edited.
-        insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-        /**/
-    }
-    /**/
+
 
 }
