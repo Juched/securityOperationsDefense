@@ -112,7 +112,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         //declare the pause button
         FloatingActionButton fab = findViewById(R.id.fab);
-        //set the day
+        //get the day
         MutableLiveData<Integer> day = gameClass.getDay();
         TextView dayText = findViewById(R.id.day);
         dayText.setText("Day: "+ day.getValue());
@@ -260,6 +260,7 @@ public class GameActivity extends AppCompatActivity {
 
         //setup the day progress indicator
         LinearProgressIndicator dayProgress = (LinearProgressIndicator) findViewById(R.id.dayProgress);
+        dayProgress.setProgressCompat(dayProgress.getMin(),true);
 
         //Loop the game!
         Timer gameTimer = new Timer();
@@ -376,7 +377,7 @@ public class GameActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.critInfo, R.id.infoState, R.id.secMeas, R.id.genBusUpgrades)
+                R.id.critInfo, R.id.infoState, R.id.secMeas, R.id.genBusUpgrades,R.id.statsFrag)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -550,7 +551,7 @@ public class GameActivity extends AppCompatActivity {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
                 alert.setMessage("Oh no! A " + attackInfo.get(0) + " was perpetrated against your" +
                         " organization! The damages total to $" + cost + ".")
                         .setNeutralButton("Darn!", new DialogInterface.OnClickListener() {
@@ -571,7 +572,7 @@ public class GameActivity extends AppCompatActivity {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder alert = new AlertDialog.Builder(GameActivity.this);
                 alert.setMessage("One of your countermeasures prevented an attack! Great job!")
                         .setNeutralButton("Nice!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

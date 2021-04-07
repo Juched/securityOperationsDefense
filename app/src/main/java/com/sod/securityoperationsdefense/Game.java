@@ -43,6 +43,7 @@ public class Game {
     private MutableLiveData<ArrayList<Upgrade>>  critInfoUpgrades;
     private MutableLiveData<ArrayList<Upgrade>>  infoStateUpgrades;
     private MutableLiveData<ArrayList<Upgrade>>  secUpgrades;
+    private int prevDay;
 
     public MutableLiveData<Double> attackRate; // starts at 0.01
 
@@ -53,10 +54,13 @@ public class Game {
     public MutableLiveData<HashMap<Integer, Double>> preventionRate;
 
     public Game(Context c, GameActivity game) {
+        //creation of the game object.
 
+        //keep the gameactivity class stored
         this.game = game;
+        //grab shared preferences from the lifecycle class
         sharedPreferences = c.getSharedPreferences("SOD.Gamefile", Context.MODE_PRIVATE);
-        // check here if we already have a saved game state open; default game context
+        //initialize all of our variables
         ArrayList<Double> currFunds;
         Double payR;
         int payD;
@@ -115,6 +119,7 @@ public class Game {
 
 
 
+        //try to grab the variables from our saved files. if not we have defaults for a "new game"
         try {
             currFunds = (ArrayList<Double>) ObjectSerializer.deserialize(
                     sharedPreferences.getString("currFunds", ObjectSerializer.serialize(new ArrayList<Double>())));
@@ -126,9 +131,7 @@ public class Game {
             payD = (Integer) ObjectSerializer.deserialize(
                     sharedPreferences.getString("payD", ObjectSerializer.serialize(new Integer(0))));
             tDay = sharedPreferences.getInt("day", new Integer(1));
-            if (tDay == 0) {
-                tDay = 1;
-            }
+
             attackR = (Double) ObjectSerializer.deserialize(sharedPreferences.getString("attackR", ObjectSerializer.serialize(new Double(0.005))));
             preventionRs = (HashMap<Integer, Double>) ObjectSerializer.deserialize(sharedPreferences.getString("preventionRs", ObjectSerializer.serialize(new HashMap<Integer, Double>())));
             if(preventionRs.size() == 0){
@@ -165,6 +168,7 @@ public class Game {
 
         }
 
+        //set defaults
         if(mbusUpgrades.size() == 0){
             this.busUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
             this.critInfoUpgrades = new MutableLiveData<ArrayList<Upgrade>>();
@@ -177,8 +181,8 @@ public class Game {
             this.infoStateUpgrades = new MutableLiveData<ArrayList<Upgrade>>(minfoUpgrades);
             this.secUpgrades = new MutableLiveData<ArrayList<Upgrade>>(msecUpgrades);
         }
-
-
+        prevDay = tDay;
+        //set the data for the game
         this.currentFunds = new MutableLiveData<ArrayList<Double>>(currFunds);
         this.payRate = new MutableLiveData<Double>(payR);
         this.payDelay = new MutableLiveData<Integer>(payD); // one second
@@ -198,7 +202,7 @@ public class Game {
         this.doiStateUpgrade();
 
 
-
+        //set the listeners for the day variable. Every time the day variable changes, we add money to it
         this.day.observe(this.game,new Observer<Integer>(){
 
             /**
@@ -209,9 +213,13 @@ public class Game {
             @Override
             public void onChanged(Integer integer) {
                 if(!isStart) {
-                    ArrayList<Double> money = currentFunds.getValue();
-                    money.set(money.size() - 1, money.get(money.size() - 1) + payRate.getValue());
-                    currentFunds.postValue(money);
+                    if(integer>prevDay) {
+                        prevDay++;
+                        ArrayList<Double> money = currentFunds.getValue();
+                        money.set(money.size() - 1, money.get(money.size() - 1) + payRate.getValue());
+                        currentFunds.postValue(money);
+
+                    }
                 }
             }
         });
@@ -557,7 +565,7 @@ public class Game {
                 int moneyIndex = this.currentFunds.getValue().size() - 1;
                 double bankAcct = this.currentFunds.getValue().get(moneyIndex); //curr funds
                 double attCost;
-                if(bankAcct < 20){
+                if(bankAcct < 50){
                     attCost = bankAcct - 15;
                     costToPrint = 15;
                 }else{
