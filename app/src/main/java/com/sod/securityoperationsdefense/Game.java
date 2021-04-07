@@ -235,7 +235,7 @@ public class Game {
         String[] businessUpgrades = {"Open New Location", "Cost Benefit Analysis", "Cut Employee Salaries", "Pizza Party"};
         String[] critUpgrades = {"2-Factor Authentication", "Get Latest Software", "Ransomware Prevention", "Data Integrity Validation"};
         String[] secUpgrades = {"Phishing Awareness Training", "Monitoring and Logging", "Firewalls", "Hire More Security Personnel"};
-        String[] iStateUpgrades = {"Data Ecryption", "More Data Storage", "More Processing Power", "More Secure Transmission"};
+        String[] iStateUpgrades = {"Data Encryption", "More Data Storage", "More Processing Power", "More Secure Transmission"};
 
         String[] busDescrip = {"Your reach is expanding! This should increase revenue, but might increase the risk attacks if you aren't careful...",
                 "Cost-Benefit-Analysis improves your analysis of attacks, decrease costs of other upgrades, and allows you to pass your professional security certification exams.",
