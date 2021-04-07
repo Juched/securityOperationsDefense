@@ -84,7 +84,7 @@ public class GameActivity extends AppCompatActivity {
     private StatsViewModel statsViewModel;
     public Handler mHandler;
 
-
+    /* Creates the game view */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //call the super class
@@ -545,7 +545,7 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-
+    /* Creates options Menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -573,6 +573,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    /* Performs consequences of a successful attack */
     public void onSuccessfulAttack(ArrayList<String> attackInfo, double cost) {
         mHandler.post(new Runnable() {
             @Override
@@ -594,6 +595,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
+    /* Logic for failed attacks */
     public void onPreventedAttack() {
         mHandler.post(new Runnable() {
             @Override
