@@ -601,7 +601,10 @@ public class Game {
 
     }
 
-
+    //Method for retrieving attacks
+    public HashMap<Integer, ArrayList<String>> getAttInfo(){
+        return attackList;
+    }
     /* Determines if an attack is prevented */
     private boolean isAttackPrevented(int attack) {
         double preventionCheck = Math.random();

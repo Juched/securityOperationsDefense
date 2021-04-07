@@ -27,14 +27,16 @@ import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
+import java.util.HashMap;
+//the stats view
 public class StatsFragment extends Fragment {
     private StatsViewModel statsViewModel;
     private Game gameclass;
+    //when the view is created
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         statsViewModel = new ViewModelProvider(this).get(StatsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_stats, container, false);
-
+        //grab the game class
         gameclass = StatsViewModel.getGameClass();
 
         //Update the attack rate on creation
@@ -43,18 +45,32 @@ public class StatsFragment extends Fragment {
         TextView attackRText = (TextView) root.findViewById(R.id.attackRate);
         DecimalFormat df2 = new DecimalFormat("#0.0#");
         attackRText.setText(df2.format(attackChance) + "%/day");
-
+        //ids of all of the views
         int[][] ids = new int[][]{
-                {R.id.att1,R.id.att1t},
-                {R.id.att2,R.id.att2t},
-                {R.id.att3,R.id.att3t},
-                {R.id.att4,R.id.att4t},
-                {R.id.att5,R.id.att5t},
-                {R.id.att6,R.id.att6t}
+                {R.id.att1t,R.id.att1t2},
+                {R.id.att2t,R.id.att2t2},
+                {R.id.att3t,R.id.att3t2},
+                {R.id.att4t,R.id.att4t2},
+                {R.id.att5t,R.id.att5t2},
+                {R.id.att6t,R.id.att6t2}
         };
+        //get the attacks
+        HashMap<Integer, ArrayList<String>> attackList = gameclass.getAttInfo();
 
+        //loop through everything and update
+        int i = 0;
         for(int[] e: ids){
+            //set title
+            TextView title = root.findViewById(e[0]);
+            TextView info = root.findViewById(e[1]);
+            ArrayList<String> attack = attackList.get(i);
 
+            title.setText(attack.get(0));
+            //get the amount that each attack will cost you and display
+            double cost = Double.parseDouble(attack.get(2)) * gameclass.getCurrentFunds().getValue().get(gameclass.getCurrentFunds().getValue().size() - 1);
+
+            info.setText("Cost: $" + df2.format(cost));
+            i = i + 1;
         }
 
         return root;
