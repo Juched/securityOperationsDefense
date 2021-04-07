@@ -114,7 +114,7 @@ public class FullscreenActivity extends AppCompatActivity {
         //        Artist: Metre
         //        Used under Creative Commons Non-Commercial License
         //        Help with Audio seek bar from https://stackoverflow.com/questions/10134338/using-seekbar-to-control-volume-in-android
-        backgroundMusic = MediaPlayer.create(getApplicationContext(), R.raw.design);
+        backgroundMusic = MediaPlayer.create(getApplicationContext(), R.raw.design1);
         playMusic(SettingsActivity.musicOn);
 
         Button startButton = (Button) findViewById(R.id.startButton);
