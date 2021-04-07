@@ -62,6 +62,8 @@ import android.content.SharedPreferences;
 import android.widget.TextView;
 import android.graphics.*;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
@@ -79,6 +81,8 @@ public class GameActivity extends AppCompatActivity {
     private CritInfoViewModel critInfoViewModel;
     private BusAdvancementsViewModel busAdvancementsViewModel;
     public Handler mHandler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +100,8 @@ public class GameActivity extends AppCompatActivity {
         secMeasuresViewModel.setGameClass(gameClass);
         critInfoViewModel.setGameClass(gameClass);
         busAdvancementsViewModel.setGameClass(gameClass);
+
+
 
 
         setContentView(R.layout.activity_game);
@@ -368,8 +374,17 @@ public class GameActivity extends AppCompatActivity {
         infoStateViewModel.setGameClass(gameClass);
     }
 
+    public void hideDescription()
+    {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) findViewById(R.id.upgrade_description)).setVisibility(View.GONE);
+            }
+        });
+    }
 
-    public static void displayUpgrades(View root, ArrayList<Upgrade> upgrades, int[] ids, int[] pBars)
+    public void displayUpgrades(View root, ArrayList<Upgrade> upgrades, int[] ids, int[] pBars)
     {
         for(int i = 0; i < upgrades.size(); i++)
         {
@@ -382,7 +397,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public static void manageUpgrades(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int[] ids, int[] pBars, int[] uCards)
+    public void manageUpgrades(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int[] ids, int[] pBars, int[] uCards)
     {
         ArrayList<Upgrade> upgrades = upgradeList.getValue();
 
@@ -393,7 +408,15 @@ public class GameActivity extends AppCompatActivity {
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgradeList, pBars, 0);
+                buyUpgrade(root, upgradeList, pBars, 0);
+            }
+        });
+
+        upgradeListener.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDescription(root, upgradeList, 0);
+                return true;
             }
         });
 
@@ -402,7 +425,15 @@ public class GameActivity extends AppCompatActivity {
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgradeList, pBars, 1);
+                buyUpgrade(root, upgradeList, pBars, 1);
+            }
+        });
+
+        upgradeListener.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDescription(root, upgradeList, 1);
+                return true;
             }
         });
 
@@ -411,7 +442,15 @@ public class GameActivity extends AppCompatActivity {
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgradeList, pBars, 2);
+                buyUpgrade(root, upgradeList, pBars, 2);
+            }
+        });
+
+        upgradeListener.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDescription(root, upgradeList, 2);
+                return true;
             }
         });
 
@@ -420,12 +459,20 @@ public class GameActivity extends AppCompatActivity {
         upgradeListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameActivity.buyUpgrade(root, upgradeList, pBars, 3);
+                buyUpgrade(root, upgradeList, pBars, 3);
+            }
+        });
+
+        upgradeListener.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDescription(root, upgradeList, 3);
+                return true;
             }
         });
     }
 
-    public static void buyUpgrade(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int [] pBars, int upCount)
+    public void buyUpgrade(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int [] pBars, int upCount)
     {
         ArrayList<Upgrade> upgrades = upgradeList.getValue();
         Upgrade u = upgrades.get(upCount);
@@ -439,8 +486,22 @@ public class GameActivity extends AppCompatActivity {
             LinearProgressIndicator upgradeProgress = (LinearProgressIndicator) root.findViewById(pBars[upCount]);
             upgradeProgress.setProgressCompat(upgrades.get(upCount).getLevel(), true);
         }
+    }
 
+    public void showDescription(View root, MutableLiveData<ArrayList<Upgrade>> upgradeList, int upCount)
+    {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Upgrade> upgrades = upgradeList.getValue();
+                Upgrade u = upgrades.get(upCount);
 
+                TextView uDescrip = (TextView) findViewById(R.id.upgrade_description);
+
+                uDescrip.setVisibility(View.VISIBLE);
+                uDescrip.setText(u.getDescription());
+            }
+        });
     }
 
 

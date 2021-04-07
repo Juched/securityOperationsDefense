@@ -55,12 +55,14 @@ public class SecMeasuresFragment extends Fragment {
              */
             @Override
             public void onChanged(ArrayList<Upgrade> upgrades) {
-                GameActivity.displayUpgrades(root, upgrades, ids, pBars);
+                gameClass.getGameForContext().displayUpgrades(root, upgrades, ids, pBars);
 
             }
         });
 
-        GameActivity.manageUpgrades(root,upgrades,ids,pBars,uCards);
+        gameClass.getGameForContext().manageUpgrades(root,upgrades,ids,pBars,uCards);
+        this.gameClass.getGameForContext().hideDescription();
+
 
         return root;
     }

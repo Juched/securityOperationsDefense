@@ -29,9 +29,11 @@ public class Upgrade implements Serializable
         this.description = descrip;
         this.level = 0;
 
+        int localStart = 37;
+
         Random rando = new Random();
 
-        this.costs = Math.abs(rando.nextInt()%16) + 8;
+        this.costs = Math.abs(rando.nextInt()%localStart) + (localStart/2);
 
         allUpgrades.add(this);
     }
@@ -40,14 +42,14 @@ public class Upgrade implements Serializable
 
     //public GameActivity getContext() { return Upgrade.context; }
     public String getName() { return name; }
-    public String getDescription() { return description; }
-    public int getLevel() { return level; }
+    public String getDescription() { return String.format("%s (Level %s): \n %s",name, this.getLevel(), description); }
+    public int getLevel() { return Math.min(level, Upgrade.MAX_LEVEL); }
     public void levelUp()
     {
         level++;
 
 
-        costs *= Math.pow(15, level);
+        costs += Math.pow(15, level + 1);
 
         Random rando = new Random();
         costs += (rando.nextInt()%15) + 7 - (rando.nextInt()%20);
