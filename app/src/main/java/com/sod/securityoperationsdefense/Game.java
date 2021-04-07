@@ -125,7 +125,7 @@ public class Game {
             currFunds = (ArrayList<Double>) ObjectSerializer.deserialize(
                     sharedPreferences.getString("currFunds", ObjectSerializer.serialize(new ArrayList<Double>())));
             if (currFunds.size() < 1) {
-                currFunds.add(0.0);
+                currFunds.add(30.00);
             }
             payR = (Double) ObjectSerializer.deserialize(
                     sharedPreferences.getString("payR", ObjectSerializer.serialize(new Double(20))));
@@ -151,7 +151,7 @@ public class Game {
             //no game exists
             currFunds = new ArrayList<Double>(1);
             currFunds.add(0.0);
-            currFunds.set(0, 0.0);
+            currFunds.set(0, 30.00);
             payR = 10.0;
             payD = 1;
             tDay = 1;
