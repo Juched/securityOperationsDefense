@@ -55,6 +55,7 @@ public class BusAdvancementsFragment extends Fragment {
         int[] pBars = new int[]{R.id.upgradeOneProgress, R.id.upgradeTwoProgress, R.id.upgradeThreeProgress, R.id.upgradeFourProgress};
         int[] uCards = new int[]{R.id.upgradeOneCard, R.id.upgradeTwoCard, R.id.upgradeThreeCard, R.id.upgradeFourCard};
 
+        /* observer for business upgrades */
         gameClass.getBusUpgrades().observe(this.gameClass.getGameForContext(),new Observer<ArrayList<Upgrade>>() {
             /**
              * Called when the data is changed.
