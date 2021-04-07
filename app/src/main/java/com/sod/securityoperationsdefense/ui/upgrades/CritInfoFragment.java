@@ -29,6 +29,7 @@ public class CritInfoFragment extends Fragment {
     private CritInfoViewModel criticalInfoViewModel;
     private Game gameClass;
 
+    /* view created for Critical Information upgrades */
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         criticalInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_crit_info_sec, container, false);
@@ -64,6 +65,7 @@ public class CritInfoFragment extends Fragment {
         return root;
     }
 
+    /* view updated for Critical Information upgrades */
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         criticalInfoViewModel = new ViewModelProvider(this).get(CritInfoViewModel.class);

@@ -10,16 +10,15 @@ import java.util.Random;
 
 public class Upgrade implements Serializable
 {
-    //private static GameActivity context;
-    //private icon;
+
     private String name;
     private String description;
     private int level;
     private int costs;
     private boolean update;
-
+    /* max level of any upgrade */
     public static final int MAX_LEVEL = 3;
-
+    /* List of all upgrades */
     private static final ArrayList<Upgrade> allUpgrades = new ArrayList<Upgrade>();
 
     public Upgrade(GameActivity newContext, String theName, String descrip)
@@ -34,6 +33,7 @@ public class Upgrade implements Serializable
 
         Random rando = new Random();
 
+        /* initial cost */
         this.costs = Math.abs(rando.nextInt()%localStart) + (localStart/2);
 
         allUpgrades.add(this);
@@ -41,10 +41,16 @@ public class Upgrade implements Serializable
 
 
 
-    //public GameActivity getContext() { return Upgrade.context; }
+    /* Public gettors for instance data */
     public String getName() { return name; }
     public String getDescription() { return String.format("%s (Level %s): \n%s",name, this.getLevel(), description); }
     public int getLevel() { return Math.min(level, Upgrade.MAX_LEVEL); }
+    public int getCost() { return costs; }
+    public boolean isUpdated() { return update; }
+    public void toggleUpdate() { update = false; }
+
+
+    /* levels up an upgrade and finds next cost */
     public void levelUp()
     {
         level++;
@@ -55,16 +61,15 @@ public class Upgrade implements Serializable
         Random rando = new Random();
         costs += (rando.nextInt()%15) + 7 - (rando.nextInt()%20);
     }
-    public int getCost() { return costs; }
-    public boolean isUpdated() { return update; }
-    public void toggleUpdate() { update = false; }
 
+    /* reduces cost of a single Upgrade */
     private void reduceCost(double reductionPercentage)
     {
         // 15 % reduction ==> 1 -> .85 and some extra flavor
         this.costs *= Math.pow(1-reductionPercentage, this.level + 1);
     }
 
+    /* reduces costs of all Upgrades */
     public static void reduceAllCosts(double reductionPercentage)
     {
 

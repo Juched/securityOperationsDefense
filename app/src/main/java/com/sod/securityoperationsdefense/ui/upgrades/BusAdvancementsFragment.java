@@ -38,6 +38,8 @@ public class BusAdvancementsFragment extends Fragment {
     public void setGameClass(Game mGameClass){
         this.gameClass = mGameClass;
     }
+
+    /* view created for Business upgrades */
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         busAdvViewModel = new ViewModelProvider(this).get(BusAdvancementsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bus_adv, container, false);
@@ -66,9 +68,8 @@ public class BusAdvancementsFragment extends Fragment {
         });
 
 
-
         gameClass.getGameForContext().manageUpgrades(root,upgrades,ids,pBars,uCards);
-        //((TextView) root.findViewById(R.id.upgrade_description)).setVisibility(View.GONE);
+
 
         this.gameClass.getGameForContext().hideDescription();
 
@@ -77,7 +78,7 @@ public class BusAdvancementsFragment extends Fragment {
 
 
 
-
+    /* view updated for Business upgrades */
     public View onUpdate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         busAdvViewModel = new ViewModelProvider(this).get(BusAdvancementsViewModel.class);
